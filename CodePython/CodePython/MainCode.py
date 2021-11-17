@@ -21,7 +21,7 @@ for j in search(query, num=3, stop=3, pause=0.5): #On se contente des 3 résulta
 for link in links:
     print("-------------------------------------------------------------------------------------------------------------------------------------------------------")
     page=requests.get(link)
-    soup=BeautifulSoup(page.text, "lxml")  #Lecture du code source des pages
+    soup=BeautifulSoup(page.text, "lxml")  #Lecture du code source de la page
     print(link+"\n")
     print(soup.find("title").text+"\n") #Titre de la page (à priori un article)
     paragraphes=soup.find_all("p")
