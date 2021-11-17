@@ -28,4 +28,6 @@ for link in links:
     for paragraphe in paragraphes:
         print(paragraphe.text) #Affichage du contenu rédactionnel de la page
 
-
+#PS: Lorsque vous voulez que votre code trouve un élément en particulier de la page, faire un clique droit -> inspecter pour trouver l'élément html correspondant 
+#et utiliser soup.find("nom de l'élément"). Pour plus d'infos sur html https://developer.mozilla.org/fr/docs/Web/HTML/Element
+                                                                                                
