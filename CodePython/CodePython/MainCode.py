@@ -30,8 +30,7 @@ for link in links:
     paragraphs=soup.find_all("p")
     keywords=["cyberattaque"]
     for paragraph in paragraphs: #Parcourir les paragraphes pour en extraire les informations relatives à une attaque ou faille de sécurité.
-        content=paragraph.text
-        c=nlp(content) #Conversion du texte en un objet spacy
+        c=nlp(paragraph.text) #Conversion du texte en un objet spacy
         sentences=list(c.sents) 
         for sentence in sentences:
             for keyword in keywords:
