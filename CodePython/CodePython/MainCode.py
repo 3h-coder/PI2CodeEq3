@@ -9,6 +9,9 @@
 import requests, webbrowser
 from bs4 import BeautifulSoup
 from googlesearch import search
+import spacy #pyhon -m spacy download en
+nlp = spacy.load('en_core_web_sm')
+
 
 query= "SolarWinds Cyberattaque" #La recherche que l'on effectue sur Google
 links =[] #Liste qui contiendra tous les liens des sites webs que nous allons "scraper" à l'issue de la recherche.
@@ -24,9 +27,17 @@ for link in links:
     soup=BeautifulSoup(page.text, "lxml")  #Lecture du code source de la page
     print(link+"\n")
     print(soup.find("title").text+"\n") #Titre de la page (à priori un article)
-    paragraphes=soup.find_all("p")
-    for paragraphe in paragraphes:
-        print(paragraphe.text) #Affichage du contenu rédactionnel de la page
+    paragraphs=soup.find_all("p")
+    keywords=["cyberattaque"]
+    for paragraph in paragraphs: #Parcourir les paragraphes pour en extraire les informations relatives à une attaque ou faille de sécurité.
+        content=paragraph.text
+        c=nlp(content) #Conversion du texte en un objet spacy
+        sentences=list(c.sents) 
+        for sentence in sentences:
+            for keyword in keywords:
+                if keyword in str(sentence):
+                    print(sentence)
+
 
 # PS: Lorsque vous voulez que votre code trouve un élément en particulier de la page, faire un clique droit -> inspecter pour trouver l'élément html correspondant 
 # et utiliser soup.find("nom de l'élément"). Pour plus d'infos sur html https://developer.mozilla.org/fr/docs/Web/HTML/Element
