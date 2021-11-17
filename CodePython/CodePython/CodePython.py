@@ -2,10 +2,10 @@
 #regarder un tuto sur git hub / git hub desktop
 #installer les librairies nécessaires si non installées (exemple: pip install bs4) 
 
-#On commence par l'exemple de SolarWinds, grande entreprise de contrôle de systèmes informatiques, victime d'une Cyberattaque de grande ampleur en 2020.
-#A priori nous aurons déjà nos sources prédéfinies et lorsque que nous nous intéresserons au statut d'une entreprise en particulier,
-#nous parcourrons nos sources à l'aide de mots clé (dont le nom de l'entreprise).
-#Cependant ici à titre de découverte du web scraping l'approche est un peu différente, nous automatisons le processus de recherche qu'une personne lamba ferait sur Google.
+# On commence par l'exemple de SolarWinds, grande entreprise de contrôle de systèmes informatiques, victime d'une Cyberattaque de grande ampleur en 2020.
+# A priori nous aurons déjà nos sources prédéfinies et lorsque que nous nous intéresserons au statut d'une entreprise en particulier,
+# nous parcourrons nos sources à l'aide de mots clé (dont le nom de l'entreprise).
+# Cependant ici à titre de découverte du web scraping l'approche est un peu différente, nous automatisons le processus de recherche qu'une personne lamba ferait sur Google.
 import requests, webbrowser
 from bs4 import BeautifulSoup
 from googlesearch import search
@@ -28,6 +28,8 @@ for link in links:
     for paragraphe in paragraphes:
         print(paragraphe.text) #Affichage du contenu rédactionnel de la page
 
-#PS: Lorsque vous voulez que votre code trouve un élément en particulier de la page, faire un clique droit -> inspecter pour trouver l'élément html correspondant 
-#et utiliser soup.find("nom de l'élément"). Pour plus d'infos sur html https://developer.mozilla.org/fr/docs/Web/HTML/Element
+# PS: Lorsque vous voulez que votre code trouve un élément en particulier de la page, faire un clique droit -> inspecter pour trouver l'élément html correspondant 
+# et utiliser soup.find("nom de l'élément"). Pour plus d'infos sur html https://developer.mozilla.org/fr/docs/Web/HTML/Element
+# Si vous souhaitez enregistrer du code test sans risquer de détruire le code principal vous pouvez toujours créer une nouvelle branche séparée de la branche main et y téléverser votre code.
+# (Il sera toujours possible de fusionner les branches si le code s'avère plus complet.)
                                                                                                 
