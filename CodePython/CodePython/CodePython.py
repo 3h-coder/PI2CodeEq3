@@ -25,7 +25,7 @@ for link in links:
     print(link+"\n")
     print(soup.find("title").text+"\n") #Titre de la page (à priori un article)
     paragraphes=soup.find_all("p")
-    for p in paragraphes:
-        print(p.text) #Affichage du contenu rédactionnel de la page
+    for paragraphe in paragraphes:
+        print(paragraphe.text) #Affichage du contenu rédactionnel de la page
 
 
