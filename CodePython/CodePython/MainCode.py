@@ -16,7 +16,7 @@ nlp = spacy.load('en_core_web_sm')
 query= "SolarWinds Cyberattaque" #La recherche que l'on effectue sur Google
 links =[] #Liste qui contiendra tous les liens des sites webs que nous allons "scraper" à l'issue de la recherche.
 
-for j in search(query, num=3, stop=3, pause=0.5): #On se contente des 3 résultats jugés les plus pertinents par Google dans cet exemple
+for j in search(query, num=3, stop=3, pause=0.5): #On se contente des 3 résultats jugés les plus pertinents par Google dans cet exemple, idéalement en prendre le plus possible.
     #print(j)
     #webbrowser.open(j)
     links.append(j) #On sauvegarde les liens
@@ -28,7 +28,8 @@ for link in links:
     print(link+"\n")
     print(soup.find("title").text+"\n") #Titre de la page (à priori un article)
     paragraphs=soup.find_all("p")
-    keywords=["cyberattaque"]
+    keywords=["cyberattaque"] #mots clé pour nous aider à extraire l'information voulue
+    keysentences=[] #phrases clé qu'il faudra analyser 
     for paragraph in paragraphs: #Parcourir les paragraphes pour en extraire les informations relatives à une attaque ou faille de sécurité.
         c=nlp(paragraph.text) #Conversion du texte en un objet spacy
         sentences=list(c.sents) 
@@ -36,6 +37,7 @@ for link in links:
             for keyword in keywords:
                 if keyword in str(sentence):
                     print(sentence)
+                    keysentences.append(sentence)
 
 
 # PS: Lorsque vous voulez que votre code trouve un élément en particulier de la page, faire un clique droit -> inspecter pour trouver l'élément html correspondant 
