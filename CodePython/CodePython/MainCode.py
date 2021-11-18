@@ -1,6 +1,7 @@
 #Le code se fera ici
 #regarder un tuto sur git hub / git hub desktop
-#installer les librairies nécessaires si non installées (exemple: pip install bs4) 
+#installer les librairies nécessaires si non installées
+# pip install bs4       pip install google      pip install spacy
 
 # On commence par l'exemple de SolarWinds, grande entreprise de contrôle de systèmes informatiques, victime d'une Cyberattaque de grande ampleur en 2020.
 # A priori nous aurons déjà nos sources prédéfinies et lorsque que nous nous intéresserons au statut d'une entreprise en particulier,
@@ -9,8 +10,8 @@
 import requests, webbrowser
 from bs4 import BeautifulSoup
 from googlesearch import search
-import spacy #pyhon -m spacy download en
-nlp = spacy.load('en_core_web_sm')
+import spacy 
+nlp = spacy.load('en_core_web_sm') #python -m spacy download en
 
 
 query= "SolarWinds Cyberattaque" #La recherche que l'on effectue sur Google
