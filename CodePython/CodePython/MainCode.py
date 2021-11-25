@@ -42,7 +42,7 @@ def introwebscraping():
                         
 
 def webscraping(entreprise): #/!\ La recherche est Case sensitive (les majuscules/minuscules sont différenciées)
-    #Faire un pattern tel que: 
+    #(Peut-être) Faire un pattern tel que: 
     #1 Dans un premier temps on regarde si l'entreprise apparait dans la page
     #2 Si elle apparait dans un bloc qui mène à un lien, ouvrir le lien pour scraper la nouvelle page
     sources=["https://www.darkreading.com/attacks-breaches"] #On part du principe que nos sources sont fiables ici
