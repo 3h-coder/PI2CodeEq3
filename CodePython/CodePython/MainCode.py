@@ -41,29 +41,38 @@ def introwebscraping():
                         keysentences.append(sentence)
                         
 
-def webscraping(entreprise): #/!\ La recherche est Case sensitive (les majuscules/minuscules sont différenciées)
+def webscraping(company): #/!\ La recherche est Case sensitive (les majuscules/minuscules sont différenciées)
     #(Peut-être) Faire un pattern tel que: 
     #1 Dans un premier temps on regarde si l'entreprise apparait dans la page
     #2 Si elle apparait dans un bloc qui mène à un lien, ouvrir le lien pour scraper la nouvelle page
-    sources=["https://www.darkreading.com/attacks-breaches"] #On part du principe que nos sources sont fiables ici
+    #Le but est de créer un programme général de manière à pouvoir ajouter les sources au fur et à mesure.
+
+    sources=["https://www.darkreading.com/attacks-breaches",
+             "https://thehackernews.com/"] #On part du principe que nos sources sont fiables ici  (les ajouter et tester au fur et à mesure)
 
     for source in sources:
+        #print(source+"\n")
         mainpage=requests.get(source)
         soup=BeautifulSoup(mainpage.text, "lxml")
         anchors=soup.find_all('a')
         for a in anchors:
-            if (entreprise in a.get('href')) or (entreprise in a.text):
+            if (company in a.get('href')) or (company in a.text):
                 newpage=requests.get(a.get('href'))
                 newsoup=BeautifulSoup(newpage.text, "lxml")
                 for paragraph in newsoup.find_all('p'):
                     print(paragraph.text)
-                #webbrowser.open(link.get('href'))
+                #webbrowser.open(a.get('href'))
+            elif(" Next Page" in a.text): 
+                newpage=requests.get(a.get('href'))
+                webbrowser.open(a.get('href'))
+           #else open and scrap the next page (until when do we open the next page?) or keep scrolling down (again, until when?)
+        #print("\n---------------------------------------------------------------------------------------------------------------------------\n")
 
 
 
 def main():
     #print("Hello World!") #Remplacer cette ligne par la fonction à executer.
-    webscraping("Microsoft")
+    webscraping("Celo")
 
 
 main()
