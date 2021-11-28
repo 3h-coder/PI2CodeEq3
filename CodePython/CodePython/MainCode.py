@@ -82,3 +82,94 @@ main()
 # et utiliser soup.find("nom de l'élément"). Pour plus d'infos sur html https://developer.mozilla.org/fr/docs/Web/HTML/Element
 # Si vous souhaitez enregistrer du code test sans risquer de détruire le code principal vous pouvez toujours créer une nouvelle branche séparée de la branche main et y téléverser votre code.
 # (/!\ Lorsque vous changez de branche et revenez à la branche principale ne les fusionnez pas à moins d'être sûr de la validité du code ajouté!)
+
+#Recherche Twitter
+
+import tweepy
+import pandas as pd
+
+#Crée un client avec les clés de l'API Twitter
+def getClient():
+    client = tweepy.Client(bearer_token = 'AAAAAAAAAAAAAAAAAAAAABmhVwEAAAAADleMPpAu4nrN%2B5GK%2BPtKRcBh%2FX8%3D6Dy7xUEHppi5vEKwh3fqQs4PVp2ZfoTaxtq18YFePWxYfLJMZh',
+                            consumer_key = "Qu5Qic0NMdaOJCqpcPwaefeum",
+                            consumer_secret = "sgLdwgLaDuTZ9dMaFkBZAH5AgRpYiaRSE8AHhpjDZyNiSXbUuG",
+                            access_token = "1461094274922131459-R7LncaRgehVA1HKwZBQQUNlCE94N2M",
+                            access_token_secret = "ZguIMFulZFAiRqzngznsnJtkudvqwFoqevZuuPynvMQ3l")
+    return client
+
+#Recherche sur twitter des mots clés et renvoie un tableau des tweets les plus récents (au max 15 tweets)
+def RechercheTweetsRecents(query):
+    client = getClient()
+    searchResults = client.search_recent_tweets(query=query, max_results = 15)
+
+    tweets = searchResults.data
+
+    results=[]
+
+    if tweets is not None and len(tweets) != 0:
+        for tweet in tweets:
+            temp = {}
+            temp['id'] = tweet.id
+            temp['text'] = tweet.text
+            results.append(temp) #results est un tableau de dictionnaires
+    
+    return results
+
+#Test de la fonction RechercheTweetsRecents
+#tweets = RechercheTweetsRecents("cyberattaque")
+#for tweet in tweets:
+#    print(tweet)
+
+import requests
+import json
+
+#Pour rechercher les tweets d'un utilisateur précis, il faut récupérer son id
+def getUserId(username):
+    url = 'https://api.twitter.com/2/users/by/username/{}'.format(username)
+
+    bearer_token = 'AAAAAAAAAAAAAAAAAAAAABmhVwEAAAAADleMPpAu4nrN%2B5GK%2BPtKRcBh%2FX8%3D6Dy7xUEHppi5vEKwh3fqQs4PVp2ZfoTaxtq18YFePWxYfLJMZh'
+    headers = {'Authorization': 'Bearer {}'.format(bearer_token)}
+
+    #on extrait le profil du user
+    response = requests.request('GET', url, headers = headers)
+    response = response.json()
+    #response = {'data': {'id': '22790881', 'name': 'briankrebs', 'username': 'briankrebs'}}
+    id = response['data']['id'] #On récupère l'id dans le dictionnaire response
+    
+    return id
+
+import requests
+import json
+
+#test getUserId
+#username = 'briankrebs'
+#print(getUserId(username))
+
+#Recherche parmis les n derniers tweets de l'utilisateur s'il a mentionné un des mots clés du tableau keywords
+def RechercheTweetsUser(username, keywords):
+    id = getUserId(username)
+    mention = False #Si l'on a trouvé un tweet à propos de l'attaque à confirmer
+
+    url = 'https://api.twitter.com/2/users/{}/tweets'.format(id)
+    #le bearer_token permet de se connecter à l'API de twitter
+    bearer_token = 'AAAAAAAAAAAAAAAAAAAAABmhVwEAAAAADleMPpAu4nrN%2B5GK%2BPtKRcBh%2FX8%3D6Dy7xUEHppi5vEKwh3fqQs4PVp2ZfoTaxtq18YFePWxYfLJMZh'
+    headers = {'Authorization': 'Bearer {}'.format(bearer_token)}
+
+    response = requests.request('GET', url, headers = headers)
+
+    tweetsData = response.json()
+    ListAlarmingTweets = []
+    
+    for tweetData in tweetsData['data']:
+        tweetText = tweetData['text']
+        for keyword in keywords:
+            if(keyword in tweetText):
+                ListAlarmingTweets.append(tweetData)
+                mention = True
+                print(tweetData)
+                
+    return mention
+
+
+username = 'briankrebs'
+RechercheTweetsUser(username, 'a')
