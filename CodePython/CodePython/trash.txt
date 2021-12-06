@@ -1,0 +1,49 @@
+if(("next" in a.text) or ("next" in a['href'])):
+            nextURL=a['href']
+        elif(("Next" in a.text) or ("Next" in a['href'])):
+            nextURL=a['href']
+        elif(("older" in a.text) or ("older" in a['href'])):
+            nextURL=a['href']
+        elif(("Older" in a.text) or ("Older" in a['href'])):
+            nextURL=a['href']
+
+elif("Next Page" in str(a)): 
+                newpage=requests.get(a.get('href'))
+                webbrowser.open(a.get('href'))
+
+"https://www.darkreading.com/attacks-breaches",
+
+            else:
+                nextpageURL=FindNextPage(soup)
+                if(nextpageURL!=""):
+                    requests.get(nextpageURL)
+                    webbrowser.open(nextpageURL)
+                else:
+                    pass
+
+
+for a in anchors:
+            if (company in a.get('href')) or (company in a.text):
+                newpage=requests.get(a.get('href'))
+                newsoup=BeautifulSoup(newpage.text, "lxml")
+                for paragraph in newsoup.find_all('p'):
+                    print(paragraph.text)
+                found=True
+                #webbrowser.open(a.get('href'))
+        counter=0
+        while(found==False or counter<5): # Si l'on a rien trouvé sur cette page, on scrape la suivante ou on continue à scroll down (jusqu'à quand?)
+            nextpageURL=FindNextPage(soup)
+            if(nextpageURL!=""):
+                nextpage=requests.get(nextpageURL)
+                soup=BeautifulSoup(nextpage.text, "lxml")
+                anchors=soup.find_all('a')
+                for a in anchors:
+                    if (company in a.get('href')) or (company in a.text):
+                        newpage=requests.get(a.get('href'))
+                        newsoup=BeautifulSoup(newpage.text, "lxml")
+                        for paragraph in newsoup.find_all('p'):
+                            print(paragraph.text)
+                        found=True
+                        webbrowser.open(nextpageURL)
+            else:
+                counter=counter+1

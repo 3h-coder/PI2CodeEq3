@@ -47,11 +47,12 @@ def webscraping(company): #/!\ La recherche est Case sensitive (les majuscules/m
     #2 Si elle apparait dans un bloc qui mène à un lien, ouvrir le lien pour scraper la nouvelle page
     #Le but est de créer un programme général de manière à pouvoir ajouter les sources au fur et à mesure.
 
-    sources=["https://www.darkreading.com/attacks-breaches",
-             "https://thehackernews.com/"] #On part du principe que nos sources sont fiables ici  (les ajouter et tester au fur et à mesure)
+    sources=["https://thehackernews.com/"] #On part du principe que nos sources sont fiables ici  (les ajouter et tester au fur et à mesure)
 
     for source in sources:
         #print(source+"\n")
+        found=False
+        counter=0
         mainpage=requests.get(source)
         soup=BeautifulSoup(mainpage.text, "lxml")
         anchors=soup.find_all('a')
@@ -61,18 +62,51 @@ def webscraping(company): #/!\ La recherche est Case sensitive (les majuscules/m
                 newsoup=BeautifulSoup(newpage.text, "lxml")
                 for paragraph in newsoup.find_all('p'):
                     print(paragraph.text)
+                found=True
                 #webbrowser.open(a.get('href'))
-            elif(" Next Page" in a.text): 
-                newpage=requests.get(a.get('href'))
-                webbrowser.open(a.get('href'))
-           #else open and scrap the next page (until when do we open the next page?) or keep scrolling down (again, until when?)
+        while(found==False and counter<5): #Scraper la page suivante tant que l'on a pas trouvé ou scraper moins de 5 pages
+            nextpageURL=FindNextPage(soup)
+            if(nextpageURL!=""): #On scrape la page suivante
+                counter=counter+1
+                nextpage=requests.get(nextpageURL)
+                webbrowser.open(nextpageURL)
+                soup=BeautifulSoup(nextpage.text, "lxml")
+                anchors=soup.find_all('a')
+                for a in anchors:
+                    if (company in a.get('href')) or (company in a.text):
+                        newpage=requests.get(a.get('href'))
+                        newsoup=BeautifulSoup(newpage.text, "lxml")
+                        for paragraph in newsoup.find_all('p'):
+                            print(paragraph.text)
+                        webbrowser.open(a.get('href'))
+                        found=True
+            else: #pas de page suivante
+                pass
+           
+
+        #Questions et pbs: 
+        #Jusqu'à où va-t-on scraper?
+        #Est-il réaliste de vouloir faire un code général pour une librairie de sources dynamique?
+        #La lenteur d'éxecution du programme est problématique
+        #Affiner la recherche
+           
         #print("\n---------------------------------------------------------------------------------------------------------------------------\n")
 
+def FindNextPage(soup): #Code général pour trouver le lien de la prochaine page (difficile pour plusieurs sources)
+    nextURL=""
+    anchors=soup.find_all('a')
+    for anchor in anchors:
+        a=str(anchor)
+        if(("Next" in a) or ("next" in a) or ("Page" in a) or ("page" in a) or \
+          ("Older" in a) or ("older" in a) ):
+            if(anchor['href'].startswith("https://")):
+                nextURL=anchor['href']
+    return nextURL
 
 
 def main():
     #print("Hello World!") #Remplacer cette ligne par la fonction à executer.
-    webscraping("Celo")
+    webscraping("Ensuring")
 
 
 main()
