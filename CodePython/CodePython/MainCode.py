@@ -39,10 +39,11 @@ def introwebscraping():
                     if keyword in str(sentence):
                         print(sentence)
                         keysentences.append(sentence)
-                              
-           
-        #print("\n---------------------------------------------------------------------------------------------------------------------------\n")
+ 
+                        
 
+
+#L'idée est de créer un algorithme de scraping pour chaque source suivant une architecture commune selon le type de site
 
 def ScrapeHackerNews(company): #Implémenter par la suite le traitement de Texte
     URL="https://thehackernews.com/"
@@ -51,7 +52,7 @@ def ScrapeHackerNews(company): #Implémenter par la suite le traitement de Texte
     
     mainpage=requests.get(URL)
     if(mainpage.ok): 
-        soup=BeautifulSoup(mainpage.text, "lxml")
+        soup=BeautifulSoup(mainpage.text, "lxml") #On scrape la première page
         anchors=soup.find_all('a')
         for a in anchors:
             if (company in a.get('href')) or (company in a.text):
@@ -61,14 +62,14 @@ def ScrapeHackerNews(company): #Implémenter par la suite le traitement de Texte
                     print(paragraph.text)
                 found=True
                 #webbrowser.open(a.get('href'))
-        while(found==False and page_counter<5):
+        while(found==False and page_counter<2): #Tant que l'on a pas trouvé ou scrapé moins de 2 pages, on scrape la page suivante.
             nextpageURL=""
             for a in anchors:
-                a=str(anchor)
-                if(("Next" in a) or ("next" in a) or ("Page" in a) or ("page" in a) or \
-                  ("Older" in a) or ("older" in a) ):
-                    if(anchor['href'].startswith("https://")):
-                        nextURL=anchor['href']
+                anchor=str(a)
+                if(("Next" in anchor) or ("next" in anchor) or ("Page" in anchor) or ("page" in anchor) or \
+                  ("Older" in anchor) or ("older" in anchor) ):
+                    if(a['href'].startswith("https://")):
+                        nextURL=a['href']
             if(nextpageURL!=""):
                 page_counter=page_counter+1
                 nextpage=requests.get(nextpageURL)
@@ -84,22 +85,80 @@ def ScrapeHackerNews(company): #Implémenter par la suite le traitement de Texte
                                 print(paragraph.text)
                             #webbrowser.open(a.get('href'))
                             found=True
-                else:
+                else: #Requête page suivante échoue, on sort de la boucle
                     print("Request Failure: "+nextpageURL)
+                    break
+            else: #Pas de page suivante, on sort de la boucle
+                break
         if(found==False):
-            print("Could not scrape any information on "+URL)
+            print("Could not scrape any information about "+ company+" on "+URL)
+    else:
+        print("Request Failure: "+URL)
+
+
+def ScrapeDarkReading(company): #Site à scroll infini
+    print("Nothing for now.")
+
+def ScrapeCesin(company): #Redirection, login nécessaire
+    URL="https://www.cesin.fr/alerteSecus.html"
+    found=False
+    page_counter=0
+
+    mainpage=requests.get(URL)
+    if(mainpage.ok):
+        soup=BeautifulSoup(mainpage.text, "lxml") #On scrape la première page
+        anchors=soup.find_all('a')
+        for a in anchors:
+            if (company in a.get('href')) or (company in a.text):
+                newpage=requests.get(a.get('href'))
+                newsoup=BeautifulSoup(newpage.text, "lxml")
+                for paragraph in newsoup.find_all('p'):
+                    print(paragraph.text)
+                found=True
+                #webbrowser.open(a.get('href'))
+        while(found==False and page_counter<2): #Tant que l'on a pas trouvé ou scrapé moins de 2 pages, on scrape la page suivante.
+            nextpageURL=""
+            for a in anchors:
+                anchor=str(a)
+                if("page-numbers" in anchor):
+                    if(a['href'].startswith("https://")):
+                        nextURL=a['href']
+            if(nextpageURL!=""):
+                page_counter=page_counter+1
+                nextpage=requests.get(nextpageURL)
+                if(nextpage.ok):
+                    #webbrowser.open(nextpageURL)
+                    soup=BeautifulSoup(nextpage.text, "lxml")
+                    anchors=soup.find_all('a')
+                    for a in anchors:
+                        if (company in a.get('href')) or (company in a.text):
+                            newpage=requests.get(a.get('href'))
+                            newsoup=BeautifulSoup(newpage.text, "lxml")
+                            for paragraph in newsoup.find_all('p'):
+                                print(paragraph.text)
+                            #webbrowser.open(a.get('href'))
+                            found=True
+                else: #Requête échoue, on sort de la boucle
+                    print("Request Failure: "+nextpageURL)
+                    break
+            else: #Pas de page suivante, on sort de la boucle
+                break
+        if(found==False):
+            print("Could not scrape any information about "+ company+" on "+URL)
     else:
         print("Request Failure: "+URL)
 
 
 
-def WebScraping(company): #Attention, la recherche est case sensitive!
-    ScrapeHackerNews(company)
+
+def WebScraping(company): #Attention, la recherche est case sensitive! (exemple: Microsoft!=microsoft)
+    #ScrapeHackerNews(company)
+    ScrapeCesin(company)
 
 
 def main():
     #print("Hello World!") #Remplacer cette ligne par la fonction à executer.
-    WebScraping("Discord")
+    WebScraping("Microsoft")
 
 
 main()
