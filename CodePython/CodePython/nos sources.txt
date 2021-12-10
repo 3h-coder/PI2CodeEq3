@@ -1,0 +1,17 @@
+-Twitter (API: https://developer.twitter.com/en/docs/twitter-api) 
+
+-CISA (cybersecurity & infrastructure security agency-> Américain) https://us-cert.cisa.gov/ncas/current-activity 
+
+-CVE https://cve.mitre.org/ 
+
+-TechRepublic https://www.techrepublic.com/topic/security/ 
+
+-Zero Day Blog https://www.zdnet.com/blog/security/ 
+
+-The hacker news https://thehackernews.com/ 
+
+-McAfee https://www.mcafee.com/blogs/other-blogs/mcafee-labs/ 
+
+-Cesin https://www.cesin.fr/alerteSecus.html 
+
+-DarkReading https://www.darkreading.com/attacks-breaches 
