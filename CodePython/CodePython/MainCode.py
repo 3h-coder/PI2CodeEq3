@@ -41,8 +41,6 @@ def introwebscraping():
                         keysentences.append(sentence)
  
                         
-
-
 #L'idée est de créer un algorithme de scraping pour chaque source suivant une architecture commune selon le type de site
 #On implémentera par la suite le traitement de Texte
 
@@ -211,11 +209,6 @@ def ScrapeZDnet(company): #Reconstrucrtion d'URL nécessaire
         print("Request Failure: "+URL)
 
 
-
-
-
-
-
 def WebScraping(company): #Attention, la recherche est case sensitive! (exemple: Microsoft!=microsoft)
     #ScrapeHackerNews(company)
     #ScrapeCesin(company)
@@ -225,7 +218,6 @@ def WebScraping(company): #Attention, la recherche est case sensitive! (exemple:
 def main():
     #print("Hello World!") #Remplacer cette ligne par la fonction à executer.
     WebScraping("Lyceum")
-
 
 main()
 
