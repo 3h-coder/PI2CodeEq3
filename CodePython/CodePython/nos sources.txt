@@ -16,9 +16,9 @@
 
 -DarkReading https://www.darkreading.com/attacks-breaches (en cours)
 
--Graham Cluley https://grahamcluley.com/ 
+-Graham Cluley https://grahamcluley.com/ (fait)
 
--ITsecurityguru https://www.itsecurityguru.org/news/ 
+-ITsecurityguru https://www.itsecurityguru.org/news/ (en cours)
 
--CSO https://www.csoonline.com/news-analysis/ 
+-CSO https://www.csoonline.com/news-analysis/ (fait)
 

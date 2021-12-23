@@ -106,7 +106,7 @@ def ScrapeCesin(company): # :/!\ Redirection, login nécessaire
     found=False
     page_counter=0
 
-def ScrapeZDnet(company): #Reconstrucrtion d'URL nécessaire
+def ScrapeZDnet(company): #Reconstrucrtion d'URL nécessaire  --> stringObject[start:stop:interval]
     URL="https://www.zdnet.com/blog/security/"
     found=False
     page_counter=0
@@ -328,6 +328,62 @@ def ScrapeGraham(company): #Définition de headers nécessaire
         print("Request Failure: "+URL)
 
 
+def ScrapeITsecguru(company): #Scroll infini
+    print("Nothing for now")
+
+def ScrapeCSO(company): #Reconstruciton d'URL nécessaire / Recherche de page suivante différente
+    URL="https://www.csoonline.com/news-analysis/"
+    found=False
+    article_counter=0
+    headers={"User-Agent" : "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36"}
+
+    mainpage=requests.get(URL)
+    if(mainpage.ok): 
+        soup=BeautifulSoup(mainpage.text, "lxml") #On scrape la première page
+        anchors=soup.find_all('a')
+        for a in anchors:
+            anchor_link=a.get('href')
+            if(anchor_link != None): #On vérifie que le href n'est pas nul
+                if(anchor_link.startswith("/")): #On le reconsitue si besoin
+                    baseURL=URL[:25] #Dans ce site il faut enlever le "/news-analysis/" à la fin de l'URL de base
+                    anchor_link=baseURL+anchor_link #Et ensuite le concaténer avec le href
+                if (company in anchor_link) or (company in a.text):
+                    newpage=requests.get(anchor_link)
+                    newsoup=BeautifulSoup(newpage.text, "lxml")
+                    for paragraph in newsoup.find_all('p'):
+                        print(paragraph.text)
+                    found=True
+                    print("Information found on "+anchor_link)
+                    #webbrowser.open(anchor_link)
+        while(found==False and article_counter<20): #Tant que l'on a pas trouvé ou scrapé moins de 2 pages, on scrape la page suivante. (1 page correspond à 20 articles ici, la premiere page allant de 0 à 20).
+            article_counter=article_counter+20
+            nextpageURL=URL+"?start="+str(article_counter)
+            nextpage=requests.get(nextpageURL)
+            if nextpage.ok:
+                #webbrowser.open(nextpageURL)
+                soup=BeautifulSoup(nextpage.text, "lxml")
+                anchors=soup.find_all('a')
+                for a in anchors:
+                    anchor_link=a.get('href')
+                    if(anchor_link != None):
+                        if(anchor_link.startswith("/")): #On le reconsitue encore si besoin
+                            baseURL=URL[:25]
+                            anchor_link=baseURL+anchor_link
+                        if (company in anchor_link) or (company in a.text):
+                            newpage=requests.get(anchor_link)
+                            newsoup=BeautifulSoup(newpage.text, "lxml")
+                            for paragraph in newsoup.find_all('p'):
+                                print(paragraph.text)
+                            #webbrowser.open(anchor_link)
+                            found=True
+                            print("Information found on "+anchor_link)
+            else: #Requête page suivante échoue, on sort de la boucle
+                print("Request Failure: "+nextpageURL)
+                break
+        if(found==False):
+            print("Could not scrape any information about "+ company+" on "+URL)
+    else: #L'URL de base est invalide
+        print("Request Failure: "+URL)
 
 
 def WebScraping(company): #Attention, la recherche est case sensitive! (exemple: Microsoft!=microsoft)
@@ -338,11 +394,12 @@ def WebScraping(company): #Attention, la recherche est case sensitive! (exemple:
     ScrapeTechRP(company)
     ScrapeMcAfee(company)
     ScrapeGraham(company)
+    ScrapeCSO(company)
 
 
 def main():
     #print("Hello World!") #Remplacer cette ligne par la fonction à executer.
-    WebScraping("Microsoft")
+    WebScraping("Nagios")
 
 main()
 
