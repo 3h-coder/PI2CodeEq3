@@ -4,14 +4,21 @@
 
 -CVE https://cve.mitre.org/ 
 
--TechRepublic https://www.techrepublic.com/topic/security/ 
+-TechRepublic https://www.techrepublic.com/topic/security/ (fait)
 
--Zero Day Blog https://www.zdnet.com/blog/security/ 
+-Zero Day Blog https://www.zdnet.com/blog/security/ (fait)
 
--The hacker news https://thehackernews.com/ 
+-The hacker news https://thehackernews.com/ (fait)
 
--McAfee https://www.mcafee.com/blogs/other-blogs/mcafee-labs/ 
+-McAfee https://www.mcafee.com/blogs/other-blogs/mcafee-labs/ (fait)
 
--Cesin https://www.cesin.fr/alerteSecus.html 
+-Cesin https://www.cesin.fr/alerteSecus.html (en cours)
 
--DarkReading https://www.darkreading.com/attacks-breaches 
+-DarkReading https://www.darkreading.com/attacks-breaches (en cours)
+
+-Graham Cluley https://grahamcluley.com/ 
+
+-ITsecurityguru https://www.itsecurityguru.org/news/ 
+
+-CSO https://www.csoonline.com/news-analysis/ 
+
