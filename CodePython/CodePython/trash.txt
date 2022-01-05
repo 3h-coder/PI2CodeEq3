@@ -1,1 +1,10 @@
-
+mainpage=requests.get("https://twitter.com/"+username)
+        #On vérifie si les noms utilisateurs sont (toujours) valides
+        soup=BeautifulSoup(mainpage.text,"lxml")
+        for span in soup.find_all('span'):
+            print(span)
+            if(span.text=="This account doesn’t exist"): #Le compte n'existe pas
+                print("It seems like https://twitter.com/"+username+" does not exist, please check the username.")
+                break
+            else:
+                print("Nothing for now.")

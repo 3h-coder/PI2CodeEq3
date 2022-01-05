@@ -1,0 +1,31 @@
+Compte Google attaché au compte twitter: 
+
+Pi2eq3@gmail.com 
+
+Mdp: ahj?68tln 
+
+ 
+
+ 
+
+Compte Twitter: 
+
+@pi2eq3 
+
+Mdp: ahj?68tln 
+
+ 
+
+Clés API: 
+
+ 
+
+API Key: SZ4ZCDWtAOi0n5KwX2pHesboZ 
+
+API Key Secret: dOOFcSAC0mlJjG0tLl2yCXCSbUOGEEwnoeGPXcqScMWk0ApH1c 
+
+BearerToken: AAAAAAAAAAAAAAAAAAAAAE8mXwEAAAAARV%2FFWh%2BLCYwGGmXtggtp8ziL1XA%3D1GvEsumiyjcCDwE4aqorg48OIzLaD5blvSolSvXi9ftdbUGkth 
+
+Access Token: 1478730189194600452-UEAxcfNAJhEYOJ6cwNhRnBni9AmRvP
+
+Access Token Secret: bHbPra26P0VWCZxTAtG2blyjSPDvtN8N6l5p3VGIq5qLD

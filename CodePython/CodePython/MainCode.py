@@ -1,7 +1,7 @@
 #Le code se fera ici
 #regarder un tuto sur git hub / git hub desktop
 #installer les librairies nécessaires si non installées
-# pip install bs4       pip install google      pip install spacy
+# pip install bs4       pip install google      pip install spacy      pip install tweepy
 
 # On commence par l'exemple de SolarWinds, grande entreprise de contrôle de systèmes informatiques, victime d'une Cyberattaque de grande ampleur en 2020.
 # A priori nous aurons déjà nos sources prédéfinies et lorsque que nous nous intéresserons au statut d'une entreprise en particulier,
@@ -10,7 +10,13 @@
 import requests, webbrowser
 from bs4 import BeautifulSoup
 from googlesearch import search
+from twitterscraper import query_tweets
 import spacy 
+import twint
+import csv
+import tweepy
+import datetime as dt
+import pandas as pd
 nlp = spacy.load('en_core_web_sm') #python -m spacy download en
 
 def introwebscraping():
@@ -40,9 +46,9 @@ def introwebscraping():
                         print(sentence)
                         keysentences.append(sentence)
  
-                        
+#-----------------------------------------------------------------------------Sites Web-----------------------------------------------------------------------------------------                
 #L'idée est de créer un algorithme de scraping pour chaque source suivant une architecture commune selon le type de site
-#On implémentera par la suite le traitement de Texte
+#On implémentera par la suite l'analyse de Texte
 
 def ScrapeHackerNews(company): 
     URL="https://thehackernews.com/"
@@ -105,6 +111,7 @@ def ScrapeCesin(company): # :/!\ Redirection, login nécessaire
     URL="https://www.cesin.fr/alerteSecus.html"
     found=False
     page_counter=0
+    print("Nothing for now.")
 
 def ScrapeZDnet(company): #Reconstrucrtion d'URL nécessaire  --> stringObject[start:stop:interval]
     URL="https://www.zdnet.com/blog/security/"
@@ -329,7 +336,7 @@ def ScrapeGraham(company): #Définition de headers nécessaire
 
 
 def ScrapeITsecguru(company): #Scroll infini
-    print("Nothing for now")
+    print("Nothing for now.")
 
 def ScrapeCSO(company): #Reconstruciton d'URL nécessaire / Recherche de page suivante différente
     URL="https://www.csoonline.com/news-analysis/"
@@ -385,21 +392,50 @@ def ScrapeCSO(company): #Reconstruciton d'URL nécessaire / Recherche de page su
     else: #L'URL de base est invalide
         print("Request Failure: "+URL)
 
+#-----------------------------------------------------------------------------Twitter-------------------------------------------------------------------------------------------
+#Quelques libraries pour scraper Twitter:
+#twint ->https://github.com/twintproject/twint/wiki/Configuration (semble ne pas fonctionner)
+#twitterscraper -> https://github.com/taspinar/twitterscraper (semble ne pas fonctionner non plus)
+#Nous allons utiliser ici l'API standard de twitter (voir "API Twitter.txt") https://developer.twitter.com/en/docs/twitter-api/getting-started/about-twitter-api || https://developer.twitter.com/en/portal/dashboard
+#documentation->https://docs.tweepy.org/en/stable/client.html  /!\ Limite de 500k tweets par mois
+
+
+def ScrapeTwitter(company):
+
+    consumer_key="SZ4ZCDWtAOi0n5KwX2pHesboZ"
+    consumer_secret="dOOFcSAC0mlJjG0tLl2yCXCSbUOGEEwnoeGPXcqScMWk0ApH1c"
+    access_token="1478730189194600452-UEAxcfNAJhEYOJ6cwNhRnBni9AmRvP"
+    access_token_secret="bHbPra26P0VWCZxTAtG2blyjSPDvtN8N6l5p3VGIq5qLD"
+
+    auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+    auth.set_access_token(access_token, access_token_secret)
+    api = tweepy.Client(auth)
+
+    twitter_accounts=["threatpostmoiuphnàozieur", "briankrebs", "peterkruse"] #On met ici les noms utilisateurs de type: "@exemple" (sans le @)
+    found=False
+
+    for username in twitter_accounts:
+        print("Nothing for now.")
+        
+                
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 def WebScraping(company): #Attention, la recherche est case sensitive! (exemple: Microsoft!=microsoft)
-    ScrapeHackerNews(company)
+    #ScrapeHackerNews(company)
     #ScrapeCesin(company) Ne fonctionne pas encore
     #ScrapeDarkReading(company) Ne fonctionne pas encore
-    ScrapeZDnet(company)
-    ScrapeTechRP(company)
-    ScrapeMcAfee(company)
-    ScrapeGraham(company)
-    ScrapeCSO(company)
+    #ScrapeZDnet(company)
+    #ScrapeTechRP(company)
+    #ScrapeMcAfee(company)
+    #ScrapeGraham(company)
+    #ScrapeCSO(company)
+    ScrapeTwitter(company)
 
 
 def main():
     #print("Hello World!") #Remplacer cette ligne par la fonction à executer.
-    WebScraping("Nagios")
+    WebScraping("Logapalooza")
 
 main()
 
