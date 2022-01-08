@@ -105,7 +105,52 @@ def ScrapeHackerNews(company):
         print("Request Failure: "+URL)
 
 def ScrapeDarkReading(company): #Site à scroll infini
-    print("Nothing for now.")
+    URL="https://www.darkreading.com/attacks-breaches"
+    found=False
+    page_counter=2
+    
+    mainpage=requests.get(URL)
+    if(mainpage.ok): 
+        soup=BeautifulSoup(mainpage.text, "lxml") #On scrape la première page
+        anchors=soup.find_all('a')
+        for a in anchors:
+            if(a.get('href') != None): #On vérifie que le href n'est pas nul
+                if (company in a.get('href')) or (company in a.text):
+                    newpage=requests.get(a.get('href'))
+                    newsoup=BeautifulSoup(newpage.text, "lxml")
+                    for paragraph in newsoup.find_all('p'):
+                        print(paragraph.text)
+                    found=True
+                    print("Information found on "+a.get('href'))
+                    #webbrowser.open(a.get('href'))
+        while(found==False and page_counter<6):#Tant que l'on a pas trouvé ou scrapé moins de 2 pages, on scrape la page suivante.
+            nextpageURL="https://www.darkreading.com/attacks-breaches?page={}".format(page_counter)
+            if(nextpageURL!=""):
+                page_counter=page_counter+1
+                nextpage=requests.get(nextpageURL)
+                if nextpage.ok:
+                    #webbrowser.open(nextpageURL)
+                    soup=BeautifulSoup(nextpage.text, "lxml")
+                    anchors=soup.find_all('a')
+                    for a in anchors:
+                        if(a.get('href') != None):
+                            if (company in a.get('href')) or (company in a.text):
+                                newpage=requests.get(a.get('href'))
+                                newsoup=BeautifulSoup(newpage.text, "lxml")
+                                for paragraph in newsoup.find_all('p'):
+                                    print(paragraph.text)
+                                #webbrowser.open(a.get('href'))
+                                found=True
+                                print("Information found on "+a.get('href'))
+                else: #Requête page suivante échoue, on sort de la boucle
+                    print("Request Failure: "+nextpageURL)
+                    break
+            else: #Pas de page suivante, on sort de la boucle
+                break
+        if(found==False):
+            print("Could not scrape any information about "+ company+" on "+URL)
+    else: #L'URL de base est invalide
+        print("Request Failure: "+URL)
 
 def ScrapeCesin(company): # :/!\ Redirection, login nécessaire
     URL="https://www.cesin.fr/alerteSecus.html"
