@@ -10,9 +10,7 @@
 import requests, webbrowser
 from bs4 import BeautifulSoup
 from googlesearch import search
-from twitterscraper import query_tweets
 import spacy 
-import twint
 import csv
 import tweepy
 import datetime as dt
@@ -151,12 +149,6 @@ def ScrapeDarkReading(company): #Site à scroll infini
             print("Could not scrape any information about "+ company+" on "+URL)
     else: #L'URL de base est invalide
         print("Request Failure: "+URL)
-
-def ScrapeCesin(company): # :/!\ Redirection, login nécessaire
-    URL="https://www.cesin.fr/alerteSecus.html"
-    found=False
-    page_counter=0
-    print("Nothing for now.")
 
 def ScrapeZDnet(company): #Reconstrucrtion d'URL nécessaire  --> stringObject[start:stop:interval]
     URL="https://www.zdnet.com/blog/security/"
@@ -381,6 +373,7 @@ def ScrapeGraham(company): #Définition de headers nécessaire
 
 
 def ScrapeITsecguru(company): #Scroll infini
+    URL="https://www.itsecurityguru.org/news/"
     print("Nothing for now.")
 
 def ScrapeCSO(company): #Reconstruciton d'URL nécessaire / Recherche de page suivante différente
@@ -467,15 +460,15 @@ def ScrapeTwitter(company):
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 def WebScraping(company): #Attention, la recherche est case sensitive! (exemple: Microsoft!=microsoft)
-    #ScrapeHackerNews(company)
-    #ScrapeCesin(company) Ne fonctionne pas encore
-    #ScrapeDarkReading(company) Ne fonctionne pas encore
-    #ScrapeZDnet(company)
-    #ScrapeTechRP(company)
-    #ScrapeMcAfee(company)
-    #ScrapeGraham(company)
-    #ScrapeCSO(company)
-    ScrapeTwitter(company)
+    ScrapeHackerNews(company)
+    ScrapeDarkReading(company) 
+    ScrapeZDnet(company)
+    ScrapeTechRP(company)
+    ScrapeMcAfee(company)
+    ScrapeGraham(company)
+    #ScrapeITsecguru(company) #Ne fonctionne pas encore
+    ScrapeCSO(company)
+    #ScrapeTwitter(company) Ne fonctionne pas encore
 
 
 def main():
