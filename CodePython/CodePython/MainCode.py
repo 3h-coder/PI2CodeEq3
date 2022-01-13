@@ -3,10 +3,6 @@
 #installer les librairies nécessaires si non installées
 # pip install bs4       pip install google      pip install spacy      pip install tweepy
 
-# On commence par l'exemple de SolarWinds, grande entreprise de contrôle de systèmes informatiques, victime d'une Cyberattaque de grande ampleur en 2020.
-# A priori nous aurons déjà nos sources prédéfinies et lorsque que nous nous intéresserons au statut d'une entreprise en particulier,
-# nous parcourrons nos sources à l'aide de mots clé (dont le nom de l'entreprise).
-# Cependant ici à titre de découverte du web scraping l'approche est un peu différente, nous automatisons le processus de recherche qu'une personne lamba ferait sur Google.
 import requests, webbrowser
 from bs4 import BeautifulSoup
 from googlesearch import search
@@ -18,6 +14,10 @@ import datetime as dt
 import pandas as pd
 nlp = spacy.load('en_core_web_sm') #python -m spacy download en
 
+# On commence par l'exemple de SolarWinds, grande entreprise de contrôle de systèmes informatiques, victime d'une Cyberattaque de grande ampleur en 2020.
+# A priori nous aurons déjà nos sources prédéfinies et lorsque que nous nous intéresserons au statut d'une entreprise en particulier,
+# nous parcourrons nos sources à l'aide de mots clé (dont le nom de l'entreprise).
+# Cependant ici à titre de découverte du web scraping l'approche est un peu différente, nous automatisons le processus de recherche qu'une personne lamba ferait sur Google.
 def introwebscraping():
     query= "SolarWinds Cyberattaque" #La recherche que l'on effectue sur Google
     links =[] #Liste qui contiendra tous les liens des sites webs que nous allons "scraper" à l'issue de la recherche.
