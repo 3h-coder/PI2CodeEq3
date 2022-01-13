@@ -13,6 +13,7 @@ from googlesearch import search
 import spacy 
 import csv
 import tweepy
+import json
 import datetime as dt
 import pandas as pd
 nlp = spacy.load('en_core_web_sm') #python -m spacy download en
@@ -436,44 +437,129 @@ def ScrapeCSO(company): #Reconstruciton d'URL nécessaire / Recherche de page su
 #twitterscraper -> https://github.com/taspinar/twitterscraper (semble ne pas fonctionner non plus)
 #Nous allons utiliser ici l'API standard de twitter (voir "API Twitter.txt") https://developer.twitter.com/en/docs/twitter-api/getting-started/about-twitter-api || https://developer.twitter.com/en/portal/dashboard
 #documentation->https://docs.tweepy.org/en/stable/client.html  /!\ Limite de 500k tweets par mois
+ 
+#Crée un client avec les clés de l'API Twitter
+def getClient():
+    client = tweepy.Client(bearer_token = 'AAAAAAAAAAAAAAAAAAAAAE8mXwEAAAAARV%2FFWh%2BLCYwGGmXtggtp8ziL1XA%3D1GvEsumiyjcCDwE4aqorg48OIzLaD5blvSolSvXi9ftdbUGkth',
+                            consumer_key = "SZ4ZCDWtAOi0n5KwX2pHesboZ",
+                            consumer_secret = "dOOFcSAC0mlJjG0tLl2yCXCSbUOGEEwnoeGPXcqScMWk0ApH1c",
+                            access_token = "1478730189194600452-UEAxcfNAJhEYOJ6cwNhRnBni9AmRvP",
+                            access_token_secret = "bHbPra26P0VWCZxTAtG2blyjSPDvtN8N6l5p3VGIq5qLD")
+    return client
+
+#Recherche sur twitter des mots clés et renvoie un tableau des tweets les plus récents (au max 15 tweets)
+def RechercheTweetsRecents(query):
+    client = getClient()
+    searchResults = client.search_recent_tweets(query=query, max_results = 15)
+
+    tweets = searchResults.data
+
+    results=[]
+
+    if tweets is not None and len(tweets) != 0:
+        for tweet in tweets:
+            temp = {}
+            temp['id'] = tweet.id
+            temp['text'] = tweet.text
+            results.append(temp) #results est un tableau de dictionnaires
+    
+    return results
+
+#Test de la fonction RechercheTweetsRecents
+#tweets = RechercheTweetsRecents("cyberattaque")
+#for tweet in tweets:
+#    print(tweet)
+
+#Pour rechercher les tweets d'un utilisateur précis, il faut récupérer son id
+def getUserId(username):
+    url = 'https://api.twitter.com/2/users/by/username/{}'.format(username)
+
+    bearer_token = 'AAAAAAAAAAAAAAAAAAAAAE8mXwEAAAAARV%2FFWh%2BLCYwGGmXtggtp8ziL1XA%3D1GvEsumiyjcCDwE4aqorg48OIzLaD5blvSolSvXi9ftdbUGkth'
+    headers = {'Authorization': 'Bearer {}'.format(bearer_token)}
+
+    #on extrait le profil du user
+    response = requests.request('GET', url, headers = headers)
+    response = response.json()
+    #response = {'data': {'id': '22790881', 'name': 'briankrebs', 'username': 'briankrebs'}}
+    id = response['data']['id'] #On récupère l'id dans le dictionnaire response
+    
+    return id
+
+#test getUserId
+#username = 'briankrebs'
+#print(getUserId(username))
+
+#Recherche parmi les 10 derniers tweets de l'utilisateur s'il a mentionné l'entreprise recherchée
+def SearchTweetsUser(username, company):
+    id = getUserId(username)
+    mention = False #Si l'on a trouvé un tweet à propos de l'entreprise
+    page_counter=0
+
+    url = 'https://api.twitter.com/2/users/{}/tweets'.format(id)
+    #le bearer_token permet de se connecter à l'API de twitter
+    bearer_token = 'AAAAAAAAAAAAAAAAAAAAAE8mXwEAAAAARV%2FFWh%2BLCYwGGmXtggtp8ziL1XA%3D1GvEsumiyjcCDwE4aqorg48OIzLaD5blvSolSvXi9ftdbUGkth'
+    headers = {'Authorization': 'Bearer {}'.format(bearer_token)}
+    ListAlarmingTweets = []
+
+    while(page_counter<2):
+        new_url=url+'/?page='+str(page_counter)
+        page_counter=page_counter+1
+        response = requests.request('GET', url, headers = headers) #mettre new_url
+        tweetsData = response.json()
+        for tweetData in tweetsData['data']:
+            if(company in tweetData['text']):
+                ListAlarmingTweets.append(tweetData)
+                mention = True
+                #print(tweetData)
+                
+    return mention, ListAlarmingTweets #On retourne ici un tuple
+
+def SearchTweetsUser2(username, company):
+    Client=getClient()
+    id = getUserId(username)
+    mention = False #Si l'on a trouvé un tweet à propos de l'entreprise
+
+    result=Client.get_users_tweets(id, pagination_token=2)
 
 
 def ScrapeTwitter(company):
+    usernames=["briankrebs", "threatpost", "peterkruse"]
+    Tweetlist=[]
 
-    consumer_key="SZ4ZCDWtAOi0n5KwX2pHesboZ"
-    consumer_secret="dOOFcSAC0mlJjG0tLl2yCXCSbUOGEEwnoeGPXcqScMWk0ApH1c"
-    access_token="1478730189194600452-UEAxcfNAJhEYOJ6cwNhRnBni9AmRvP"
-    access_token_secret="bHbPra26P0VWCZxTAtG2blyjSPDvtN8N6l5p3VGIq5qLD"
-
-    auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
-    auth.set_access_token(access_token, access_token_secret)
-    api = tweepy.Client(auth)
-
-    twitter_accounts=["threatpostmoiuphnàozieur", "briankrebs", "peterkruse"] #On met ici les noms utilisateurs de type: "@exemple" (sans le @)
-    found=False
-
-    for username in twitter_accounts:
-        print("Nothing for now.")
+    for user in usernames:
+        Tweetsfound=SearchTweetsUser(user,company)[1]
+        Tweetlist.append(Tweetsfound)
+        print(user+" done")
+        print(Tweetsfound)
         
-                
+def TestSearchTweets():
+    result=SearchTweetsUser('briankrebs','a')
+    inc=0
+    for tweet in result[1]:
+        inc=inc+1
+    print(inc)
+
+
+      
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 def WebScraping(company): #Attention, la recherche est case sensitive! (exemple: Microsoft!=microsoft)
-    ScrapeHackerNews(company)
-    ScrapeDarkReading(company) 
-    ScrapeZDnet(company)
-    ScrapeTechRP(company)
-    ScrapeMcAfee(company)
-    ScrapeGraham(company)
+    #ScrapeHackerNews(company)
+    #ScrapeDarkReading(company) 
+    #ScrapeZDnet(company)
+    #ScrapeTechRP(company)
+    #ScrapeMcAfee(company)
+    #ScrapeGraham(company)
     #ScrapeITsecguru(company) #Ne fonctionne pas encore
-    ScrapeCSO(company)
-    #ScrapeTwitter(company) Ne fonctionne pas encore
-
+    #ScrapeCSO(company)
+    ScrapeTwitter(company) #Ne fonctionne pas encore
+    
 
 def main():
     #print("Hello World!") #Remplacer cette ligne par la fonction à executer.
-    WebScraping("Logapalooza")
+    #WebScraping("Norton")
+    TestSearchTweets()
 
 main()
 
