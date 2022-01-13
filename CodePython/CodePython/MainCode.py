@@ -567,7 +567,7 @@ def WebScraping(company): #Attention, la recherche est case sensitive! (exemple:
     #ScrapeGraham(company)
     #ScrapeITsecguru(company) #Ne fonctionne pas encore
     #ScrapeCSO(company)
-    ScrapeTwitter(company) #Ne fonctionne pas encore
+    ScrapeTwitter(company) #Pas terminé
     
 
 def main():
