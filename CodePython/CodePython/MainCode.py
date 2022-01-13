@@ -437,6 +437,11 @@ def ScrapeCSO(company): #Reconstruciton d'URL nécessaire / Recherche de page su
 #twitterscraper -> https://github.com/taspinar/twitterscraper (semble ne pas fonctionner non plus)
 #Nous allons utiliser ici l'API standard de twitter (voir "API Twitter.txt") https://developer.twitter.com/en/docs/twitter-api/getting-started/about-twitter-api || https://developer.twitter.com/en/portal/dashboard
 #documentation->https://docs.tweepy.org/en/stable/client.html  /!\ Limite de 500k tweets par mois
+
+#Questions:
+#Comment sécuriser le code? (ne pas afficher les clés secretes pour l'API)
+#Ou procéder à l'analyse de texte?
+#Comment ne pas parcourir les mêmes tweets (configurer les paramètres de date correctement)
  
 #Crée un client avec les clés de l'API Twitter
 def getClient():
@@ -487,59 +492,68 @@ def getUserId(username):
 
 #test getUserId
 #username = 'briankrebs'
-#print(getUserId(username))
+#print(getUserId(username)) ->22790881
 
 #Recherche parmi les 10 derniers tweets de l'utilisateur s'il a mentionné l'entreprise recherchée
-def SearchTweetsUser(username, company):
+def SearchTweetsUser2(username, company):
     id = getUserId(username)
     mention = False #Si l'on a trouvé un tweet à propos de l'entreprise
-    page_counter=0
 
     url = 'https://api.twitter.com/2/users/{}/tweets'.format(id)
     #le bearer_token permet de se connecter à l'API de twitter
     bearer_token = 'AAAAAAAAAAAAAAAAAAAAAE8mXwEAAAAARV%2FFWh%2BLCYwGGmXtggtp8ziL1XA%3D1GvEsumiyjcCDwE4aqorg48OIzLaD5blvSolSvXi9ftdbUGkth'
     headers = {'Authorization': 'Bearer {}'.format(bearer_token)}
     ListAlarmingTweets = []
-
-    while(page_counter<2):
-        new_url=url+'/?page='+str(page_counter)
-        page_counter=page_counter+1
-        response = requests.request('GET', url, headers = headers) #mettre new_url
-        tweetsData = response.json()
-        for tweetData in tweetsData['data']:
-            if(company in tweetData['text']):
-                ListAlarmingTweets.append(tweetData)
-                mention = True
-                #print(tweetData)
+    response = requests.request('GET', url, headers = headers) #mettre new_url
+    tweetsData = response.json()
+    for tweetData in tweetsData['data']:
+        if(company in tweetData['text']):
+            ListAlarmingTweets.append(tweetData)
+            mention = True
+            #print(tweetData)
                 
     return mention, ListAlarmingTweets #On retourne ici un tuple
 
-def SearchTweetsUser2(username, company):
+# Le lien d'un tweet est du style https://twitter.com/<username>/status/<tweet_id>
+def SearchTweetsUser(username, company): 
     Client=getClient()
     id = getUserId(username)
     mention = False #Si l'on a trouvé un tweet à propos de l'entreprise
 
-    result=Client.get_users_tweets(id, pagination_token=2)
-
+    result=Client.get_users_tweets(id, max_results=5)
+    #Response(data=[<Tweet id=1481279570322071558 text=A couple of these updates are reportedly causing reboots on domain controllers/ https://t.co/8oSwPp6sfF h/t @campuscodi>, 
+    #<Tweet id=1481258396355604487 text="Wazawaka," the handle chosen by a prolific network access broker/ransomware affiliate, has a $5M bounty on his head. “Mother Russia will help you,” Wazawaka concluded. “Love your country, and you will always get away with everything.” https://t.co/1jdNCrgiMh>, 
+    #<Tweet id=1481126293601239041 text=@Mitchell10500 No relation to my brother from another mother.>, 
+    #<Tweet id=1481030224750026764 text=It's Patch Tuesday, Windows users! Today's batch includes fixes for something like 120 vulnerabilities, including a critical, "wormable" flaw in Windows 10/11 and later Server versions, and 3 Exchange bugs, 1 of which was reported to Microsoft by the NSA. https://t.co/zh1UdM3qZq>, 
+    #<Tweet id=1480913660805627913 text=Twitter is prompting me to promote this tweet. For once, I'm intrigued. Treating this as a PSA isn't actually a bad idea.>], 
+    #includes={}, errors=[], meta={'oldest_id': '1480913660805627913', 'newest_id': '1481279570322071558', 'result_count': 5, 'next_token': '7140dibdnow9c7btw3z44wd2xpiagw4b026rnpdcajvoz'})
+    tweets=result.data
+    tweetsFound=[]
+    for tweet in tweets:
+        if(company in tweet.text):
+            tweet_id=tweet.id
+            tweet_content=tweet.text
+            #Analyser tweet_content d'abord avant de l'ajouter à tweetsFound?
+            tweetsFound.append(tweet)
+            mention=True
+            
+    return tweetsFound
 
 def ScrapeTwitter(company):
     usernames=["briankrebs", "threatpost", "peterkruse"]
-    Tweetlist=[]
+    Tweetlist={}
 
     for user in usernames:
-        Tweetsfound=SearchTweetsUser(user,company)[1]
-        Tweetlist.append(Tweetsfound)
-        print(user+" done")
-        print(Tweetsfound)
-        
-def TestSearchTweets():
-    result=SearchTweetsUser('briankrebs','a')
-    inc=0
-    for tweet in result[1]:
-        inc=inc+1
-    print(inc)
-
-
+        Tweetsfound=SearchTweetsUser(user,company)
+        Tweetlist[user]=Tweetsfound
+        #print(user+" done")
+        #print(Tweetsfound)
+    
+    print("---------------------------------------------------------------------------------------------------------------------------------")
+    print(Tweetlist)
+    #{'briankrebs': [<Tweet id=1481030224750026764 text=It's Patch Tuesday, Windows users! Today's batch includes fixes for something like 120 vulnerabilities, including a critical, "wormable" flaw in Windows 10/11 and later Server versions, and 3 Exchange bugs, 1 of which was reported to Microsoft by the NSA. https://t.co/zh1UdM3qZq>], 
+    #'threatpost': [<Tweet id=1471484422469955585 text=@Prevailion’s PACT discovered a novel RAT, #DarkWatchman, w/ new #fileless malware techniques, sent in a Russian-language spear-phishing campaign, uniquely manipulating Windows Registry to evade most security detections. #cybersecurity https://t.co/I3HhSiNmSI>], 
+    #'peterkruse': []}
       
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -558,8 +572,7 @@ def WebScraping(company): #Attention, la recherche est case sensitive! (exemple:
 
 def main():
     #print("Hello World!") #Remplacer cette ligne par la fonction à executer.
-    #WebScraping("Norton")
-    TestSearchTweets()
+    WebScraping("Windows")
 
 main()
 

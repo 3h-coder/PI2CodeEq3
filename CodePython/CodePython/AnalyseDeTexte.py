@@ -21,7 +21,7 @@ def CompteurOccurences(keywords, text):
                     occurence += 1
     return occurence
 
-#Test de la fonction CompteOccurencesKeyWord
+#Test de la fonction Compte Occurences KeyWord
 def TestCompteurOccurences():
     keywords = ['breach']
     with open('article.txt', 'r') as f:
