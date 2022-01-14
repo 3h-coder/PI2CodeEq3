@@ -445,11 +445,14 @@ def ScrapeCSO(company): #Reconstruciton d'URL nécessaire / Recherche de page su
  
 #Crée un client avec les clés de l'API Twitter
 def getClient():
-    client = tweepy.Client(bearer_token = 'AAAAAAAAAAAAAAAAAAAAAE8mXwEAAAAARV%2FFWh%2BLCYwGGmXtggtp8ziL1XA%3D1GvEsumiyjcCDwE4aqorg48OIzLaD5blvSolSvXi9ftdbUGkth',
-                            consumer_key = "SZ4ZCDWtAOi0n5KwX2pHesboZ",
-                            consumer_secret = "dOOFcSAC0mlJjG0tLl2yCXCSbUOGEEwnoeGPXcqScMWk0ApH1c",
-                            access_token = "1478730189194600452-UEAxcfNAJhEYOJ6cwNhRnBni9AmRvP",
-                            access_token_secret = "bHbPra26P0VWCZxTAtG2blyjSPDvtN8N6l5p3VGIq5qLD")
+    with open("api/keys.txt", "r") as secretfile:
+        bearer_token=secretfile.readline().rstrip()
+        consumer_key=secretfile.readline().rstrip()
+        consumer_secret=secretfile.readline().rstrip()
+        access_token=secretfile.readline().rstrip()
+        access_token_secret=secretfile.readline().rstrip()
+        client=tweepy.Client(bearer_token,consumer_key,consumer_secret,access_token,access_token_secret)
+    secretfile.close()
     return client
 
 #Recherche sur twitter des mots clés et renvoie un tableau des tweets les plus récents (au max 15 tweets)
