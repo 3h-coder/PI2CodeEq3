@@ -575,7 +575,9 @@ def WebScraping(company): #Attention, la recherche est case sensitive! (exemple:
 
 def main():
     #print("Hello World!") #Remplacer cette ligne par la fonction à executer.
-    WebScraping("Windows")
+    #WebScraping("Windows")
+    Client=getClient()
+    print(Client.bearer_token)
 
 main()
 
