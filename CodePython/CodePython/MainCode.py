@@ -483,6 +483,62 @@ def ScrapeInfosecmag(company):
     else: #L'URL de base est invalide
         print("Request Failure: "+URL)
 
+def ScrapeNakedsec(company):
+    URL="https://nakedsecurity.sophos.com/"
+    found=False
+    page_counter=1
+
+    mainpage=requests.get(URL)
+    if(mainpage.ok): 
+        soup=BeautifulSoup(mainpage.text, "lxml") #On scrape la première page
+        anchors=soup.find_all('a')
+        for a in anchors:
+            if(a.get('href') != None): #On vérifie que le href n'est pas nul
+                if (company in a.get('href')) or (company in a.text) or (company.lower() in a.get('href')) or (company.lower() in a.text):
+                    newpage=requests.get(a.get('href'))
+                    newsoup=BeautifulSoup(newpage.text, "lxml")
+                    for paragraph in newsoup.find_all('p'):
+                        print(paragraph.text)
+                    found=True
+                    print("Information found on "+a.get('href'))
+                    #webbrowser.open(a.get('href'))
+        while(found==False and page_counter<2): #Tant que l'on a pas trouvé ou scrapé moins de 2 pages, on scrape la page suivante.
+            nextpageURL=""
+            for a in anchors: #Recherche de la page suivante
+                anchor=str(a)
+                if("Load more articles" in anchor):
+                    if(a['href'].startswith("https://")):
+                        nextpageURL=a['href']
+            if(nextpageURL!=""):
+                page_counter=page_counter+1
+                nextpage=requests.get(nextpageURL)
+                if nextpage.ok:
+                    #webbrowser.open(nextpageURL)
+                    soup=BeautifulSoup(nextpage.text, "lxml")
+                    anchors=soup.find_all('a')
+                    for a in anchors:
+                        if(a.get('href') != None):
+                            if (company in a.get('href')) or (company in a.text) or (company.lower() in a.get('href')) or (company.lower() in a.text):
+                                newpage=requests.get(a.get('href'))
+                                newsoup=BeautifulSoup(newpage.text, "lxml")
+                                for paragraph in newsoup.find_all('p'):
+                                    print(paragraph.text)
+                                #webbrowser.open(a.get('href'))
+                                found=True
+                                print("Information found on "+a.get('href'))
+                else: #Requête page suivante échoue, on sort de la boucle
+                    print("Request Failure: "+nextpageURL)
+                    break
+            else: #Pas de page suivante, on sort de la boucle
+                break
+        if(found==False):
+            print("Could not scrape any information about "+ company+" on "+URL)
+    else: #L'URL de base est invalide
+        print("Request Failure: "+URL)
+
+
+
+
 #-----------------------------------------------------------------------------Twitter-------------------------------------------------------------------------------------------
 #Quelques libraries pour scraper Twitter:
 #twint ->https://github.com/twintproject/twint/wiki/Configuration (semble ne pas fonctionner)
@@ -622,13 +678,13 @@ def WebScraping(company): #Attention, la recherche est case sensitive! (exemple:
     #ScrapeGraham(company)
     #ScrapeITsecguru(company) #Ne fonctionne pas encore
     #ScrapeCSO(company)
-    ScrapeInfosecmag(company)
+    #ScrapeInfosecmag(company)
+    ScrapeNakedsec(company)
     #ScrapeTwitter(company) #Pas terminé
     
 
 def main():
-    #print("Hello World!") #Remplacer cette ligne par la fonction à executer.
-    WebScraping("Tesla")
+    WebScraping("REAL DIAL")
 
 main()
 
