@@ -52,7 +52,7 @@ def introwebscraping():
 def ScrapeHackerNews(company): 
     URL="https://thehackernews.com/"
     found=False
-    page_counter=0
+    page_counter=1
     
     mainpage=requests.get(URL)
     if(mainpage.ok): 
@@ -60,7 +60,7 @@ def ScrapeHackerNews(company):
         anchors=soup.find_all('a')
         for a in anchors:
             if(a.get('href') != None): #On vérifie que le href n'est pas nul
-                if (company in a.get('href')) or (company in a.text):
+                if (company in a.get('href')) or (company in a.text) or (company.lower() in a.get('href')) or (company.lower() in a.text):
                     newpage=requests.get(a.get('href'))
                     newsoup=BeautifulSoup(newpage.text, "lxml")
                     for paragraph in newsoup.find_all('p'):
@@ -85,7 +85,7 @@ def ScrapeHackerNews(company):
                     anchors=soup.find_all('a')
                     for a in anchors:
                         if(a.get('href') != None):
-                            if (company in a.get('href')) or (company in a.text):
+                            if (company in a.get('href')) or (company in a.text) or (company.lower() in a.get('href')) or (company.lower() in a.text):
                                 newpage=requests.get(a.get('href'))
                                 newsoup=BeautifulSoup(newpage.text, "lxml")
                                 for paragraph in newsoup.find_all('p'):
@@ -114,7 +114,7 @@ def ScrapeDarkReading(company): #Site à scroll infini
         anchors=soup.find_all('a')
         for a in anchors:
             if(a.get('href') != None): #On vérifie que le href n'est pas nul
-                if (company in a.get('href')) or (company in a.text):
+                if (company in a.get('href')) or (company in a.text) or (company.lower() in a.get('href')) or (company.lower() in a.text):
                     newpage=requests.get(a.get('href'))
                     newsoup=BeautifulSoup(newpage.text, "lxml")
                     for paragraph in newsoup.find_all('p'):
@@ -133,7 +133,7 @@ def ScrapeDarkReading(company): #Site à scroll infini
                     anchors=soup.find_all('a')
                     for a in anchors:
                         if(a.get('href') != None):
-                            if (company in a.get('href')) or (company in a.text):
+                            if (company in a.get('href')) or (company in a.text) or (company.lower() in a.get('href')) or (company.lower() in a.text):
                                 newpage=requests.get(a.get('href'))
                                 newsoup=BeautifulSoup(newpage.text, "lxml")
                                 for paragraph in newsoup.find_all('p'):
@@ -154,7 +154,7 @@ def ScrapeDarkReading(company): #Site à scroll infini
 def ScrapeZDnet(company): #Reconstrucrtion d'URL nécessaire  --> stringObject[start:stop:interval]
     URL="https://www.zdnet.com/blog/security/"
     found=False
-    page_counter=0
+    page_counter=1
 
     mainpage=requests.get(URL)
     if(mainpage.ok): 
@@ -166,7 +166,7 @@ def ScrapeZDnet(company): #Reconstrucrtion d'URL nécessaire  --> stringObject[s
                 if(anchor_link.startswith("/")): #On le reconsitue si besoin
                     anchor_link=anchor_link[1:] #Enlever le "/" du début
                     anchor_link=URL+anchor_link #Et ensuite le concaténer avec l'URL de base
-                if (company in anchor_link) or (company in a.text):
+                if (company in anchor_link) or (company in a.text) or (company.lower() in a.get('href')) or (company.lower() in a.text):
                     newpage=requests.get(anchor_link)
                     newsoup=BeautifulSoup(newpage.text, "lxml")
                     for paragraph in newsoup.find_all('p'):
@@ -194,7 +194,7 @@ def ScrapeZDnet(company): #Reconstrucrtion d'URL nécessaire  --> stringObject[s
                             if(anchor_link.startswith("/")): #On le reconsitue encore si besoin
                                 anchor_link=anchor_link[1:]
                                 anchor_link=URL+anchor_link
-                            if (company in anchor_link) or (company in a.text):
+                            if (company in anchor_link) or (company in a.text) or (company.lower() in a.get('href')) or (company.lower() in a.text):
                                 newpage=requests.get(anchor_link)
                                 newsoup=BeautifulSoup(newpage.text, "lxml")
                                 for paragraph in newsoup.find_all('p'):
@@ -215,7 +215,7 @@ def ScrapeZDnet(company): #Reconstrucrtion d'URL nécessaire  --> stringObject[s
 def ScrapeTechRP(company):
     URL="https://www.techrepublic.com/topic/security/"
     found=False
-    page_counter=0
+    page_counter=1
     
     mainpage=requests.get(URL)
     if(mainpage.ok): 
@@ -223,7 +223,7 @@ def ScrapeTechRP(company):
         anchors=soup.find_all('a')
         for a in anchors:
             if(a.get('href') != None): #On vérifie que le href n'est pas nul
-                if (company in a.get('href')) or (company in a.text):
+                if (company in a.get('href')) or (company in a.text) or (company.lower() in a.get('href')) or (company.lower() in a.text):
                     newpage=requests.get(a.get('href'))
                     newsoup=BeautifulSoup(newpage.text, "lxml")
                     for paragraph in newsoup.find_all('p'):
@@ -247,7 +247,7 @@ def ScrapeTechRP(company):
                     anchors=soup.find_all('a')
                     for a in anchors:
                         if(a.get('href') != None):
-                            if (company in a.get('href')) or (company in a.text):
+                            if (company in a.get('href')) or (company in a.text) or (company.lower() in a.get('href')) or (company.lower() in a.text):
                                 newpage=requests.get(a.get('href'))
                                 newsoup=BeautifulSoup(newpage.text, "lxml")
                                 for paragraph in newsoup.find_all('p'):
@@ -268,7 +268,7 @@ def ScrapeTechRP(company):
 def ScrapeMcAfee(company):
     URL="https://www.mcafee.com/blogs/other-blogs/mcafee-labs/"
     found=False
-    page_counter=0
+    page_counter=1
 
     mainpage=requests.get(URL)
     if(mainpage.ok): 
@@ -276,7 +276,7 @@ def ScrapeMcAfee(company):
         anchors=soup.find_all('a')
         for a in anchors:
             if(a.get('href') != None): #On vérifie que le href n'est pas nul
-                if (company in a.get('href')) or (company in a.text):
+                if (company in a.get('href')) or (company in a.text) or (company.lower() in a.get('href')) or (company.lower() in a.text):
                     newpage=requests.get(a.get('href'))
                     newsoup=BeautifulSoup(newpage.text, "lxml")
                     for paragraph in newsoup.find_all('p'):
@@ -300,7 +300,7 @@ def ScrapeMcAfee(company):
                     anchors=soup.find_all('a')
                     for a in anchors:
                         if(a.get('href') != None):
-                            if (company in a.get('href')) or (company in a.text):
+                            if (company in a.get('href')) or (company in a.text) or (company.lower() in a.get('href')) or (company.lower() in a.text):
                                 newpage=requests.get(a.get('href'))
                                 newsoup=BeautifulSoup(newpage.text, "lxml")
                                 for paragraph in newsoup.find_all('p'):
@@ -321,7 +321,7 @@ def ScrapeMcAfee(company):
 def ScrapeGraham(company): #Définition de headers nécessaire
     URL="https://grahamcluley.com/"
     found=False
-    page_counter=0
+    page_counter=1
     headers={"User-Agent" : "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36"}
 
     mainpage=requests.get(URL, headers=headers)
@@ -330,7 +330,7 @@ def ScrapeGraham(company): #Définition de headers nécessaire
         anchors=soup.find_all('a')
         for a in anchors:
             if(a.get('href') != None): #On vérifie que le href n'est pas nul
-                if (company in a.get('href')) or (company in a.text):
+                if (company in a.get('href')) or (company in a.text) or (company.lower() in a.get('href')) or (company.lower() in a.text):
                     newpage=requests.get(a.get('href'), headers=headers)
                     newsoup=BeautifulSoup(newpage.text, "lxml")
                     for paragraph in newsoup.find_all('p'):
@@ -354,7 +354,7 @@ def ScrapeGraham(company): #Définition de headers nécessaire
                     anchors=soup.find_all('a')
                     for a in anchors:
                         if(a.get('href') != None):
-                            if (company in a.get('href')) or (company in a.text):
+                            if (company in a.get('href')) or (company in a.text) or (company.lower() in a.get('href')) or (company.lower() in a.text):
                                 newpage=requests.get(a.get('href'), headers=headers)
                                 newsoup=BeautifulSoup(newpage.text, "lxml")
                                 for paragraph in newsoup.find_all('p'):
@@ -371,7 +371,6 @@ def ScrapeGraham(company): #Définition de headers nécessaire
             print("Could not scrape any information about "+ company+" on "+URL)
     else: #L'URL de base est invalide
         print("Request Failure: "+URL)
-
 
 def ScrapeITsecguru(company): #Scroll infini
     URL="https://www.itsecurityguru.org/news/"
@@ -393,7 +392,7 @@ def ScrapeCSO(company): #Reconstruciton d'URL nécessaire / Recherche de page su
                 if(anchor_link.startswith("/")): #On le reconsitue si besoin
                     baseURL=URL[:25] #Dans ce site il faut enlever le "/news-analysis/" à la fin de l'URL de base
                     anchor_link=baseURL+anchor_link #Et ensuite le concaténer avec le href
-                if (company in anchor_link) or (company in a.text):
+                if (company in anchor_link) or (company in a.text) or (company.lower() in a.get('href')) or (company.lower() in a.text):
                     newpage=requests.get(anchor_link)
                     newsoup=BeautifulSoup(newpage.text, "lxml")
                     for paragraph in newsoup.find_all('p'):
@@ -415,7 +414,7 @@ def ScrapeCSO(company): #Reconstruciton d'URL nécessaire / Recherche de page su
                         if(anchor_link.startswith("/")): #On le reconsitue encore si besoin
                             baseURL=URL[:25]
                             anchor_link=baseURL+anchor_link
-                        if (company in anchor_link) or (company in a.text):
+                        if (company in anchor_link) or (company in a.text) or (company.lower() in a.get('href')) or (company.lower() in a.text):
                             newpage=requests.get(anchor_link)
                             newsoup=BeautifulSoup(newpage.text, "lxml")
                             for paragraph in newsoup.find_all('p'):
@@ -425,6 +424,59 @@ def ScrapeCSO(company): #Reconstruciton d'URL nécessaire / Recherche de page su
                             print("Information found on "+anchor_link)
             else: #Requête page suivante échoue, on sort de la boucle
                 print("Request Failure: "+nextpageURL)
+                break
+        if(found==False):
+            print("Could not scrape any information about "+ company+" on "+URL)
+    else: #L'URL de base est invalide
+        print("Request Failure: "+URL)
+
+def ScrapeInfosecmag(company):
+    URL="https://www.infosecurity-magazine.com/news/"
+    found=False
+    page_counter=1
+
+    mainpage=requests.get(URL)
+    if(mainpage.ok): 
+        soup=BeautifulSoup(mainpage.text, "lxml") #On scrape la première page
+        anchors=soup.find_all('a')
+        for a in anchors:
+            if(a.get('href') != None): #On vérifie que le href n'est pas nul
+                if (company in a.get('href')) or (company in a.text) or (company.lower() in a.get('href')) or (company.lower() in a.text):
+                    newpage=requests.get(a.get('href'))
+                    newsoup=BeautifulSoup(newpage.text, "lxml")
+                    for paragraph in newsoup.find_all('p'):
+                        print(paragraph.text)
+                    found=True
+                    print("Information found on "+a.get('href'))
+                    #webbrowser.open(a.get('href'))
+        while(found==False and page_counter<2): #Tant que l'on a pas trouvé ou scrapé moins de 2 pages, on scrape la page suivante.
+            nextpageURL=""
+            for a in anchors: #Recherche de la page suivante
+                anchor=str(a)
+                if("rel=\"next\"" in anchor):
+                    if(a['href'].startswith("https://")):
+                        nextpageURL=a['href']
+            if(nextpageURL!=""):
+                page_counter=page_counter+1
+                nextpage=requests.get(nextpageURL)
+                if nextpage.ok:
+                    #webbrowser.open(nextpageURL)
+                    soup=BeautifulSoup(nextpage.text, "lxml")
+                    anchors=soup.find_all('a')
+                    for a in anchors:
+                        if(a.get('href') != None):
+                            if (company in a.get('href')) or (company in a.text) or (company.lower() in a.get('href')) or (company.lower() in a.text):
+                                newpage=requests.get(a.get('href'))
+                                newsoup=BeautifulSoup(newpage.text, "lxml")
+                                for paragraph in newsoup.find_all('p'):
+                                    print(paragraph.text)
+                                #webbrowser.open(a.get('href'))
+                                found=True
+                                print("Information found on "+a.get('href'))
+                else: #Requête page suivante échoue, on sort de la boucle
+                    print("Request Failure: "+nextpageURL)
+                    break
+            else: #Pas de page suivante, on sort de la boucle
                 break
         if(found==False):
             print("Could not scrape any information about "+ company+" on "+URL)
@@ -570,14 +622,13 @@ def WebScraping(company): #Attention, la recherche est case sensitive! (exemple:
     #ScrapeGraham(company)
     #ScrapeITsecguru(company) #Ne fonctionne pas encore
     #ScrapeCSO(company)
-    ScrapeTwitter(company) #Pas terminé
+    ScrapeInfosecmag(company)
+    #ScrapeTwitter(company) #Pas terminé
     
 
 def main():
     #print("Hello World!") #Remplacer cette ligne par la fonction à executer.
-    #WebScraping("Windows")
-    Client=getClient()
-    print(Client.bearer_token)
+    WebScraping("Tesla")
 
 main()
 
