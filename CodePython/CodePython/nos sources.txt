@@ -1,24 +1,17 @@
--Twitter (API: https://developer.twitter.com/en/docs/twitter-api) 
+Regarder sur: https://blog.feedspot.com/cyber_security_news_websites/
 
--CISA (cybersecurity & infrastructure security agency-> Américain) https://us-cert.cisa.gov/ncas/current-activity 
 
--CVE https://cve.mitre.org/ 
 
+-Twitter (API: https://developer.twitter.com/en/docs/twitter-api)   
 -TechRepublic https://www.techrepublic.com/topic/security/ (fait)
-
 -Zero Day Blog https://www.zdnet.com/blog/security/ (fait)
-
 -The hacker news https://thehackernews.com/ (fait)
-
 -McAfee https://www.mcafee.com/blogs/other-blogs/mcafee-labs/ (fait)
-
 -Cesin https://www.cesin.fr/alerteSecus.html (en cours)
-
--DarkReading https://www.darkreading.com/attacks-breaches (en cours)
-
+-DarkReading https://www.darkreading.com/attacks-breaches (fait)
 -Graham Cluley https://grahamcluley.com/ (fait)
-
 -ITsecurityguru https://www.itsecurityguru.org/news/ (en cours)
-
 -CSO https://www.csoonline.com/news-analysis/ (fait)
-
+-Info security magazine https://www.infosecurity-magazine.com/news/ (fait)
+-Naked Security https://nakedsecurity.sophos.com/
+-Cyberwire https://thecyberwire.com/
