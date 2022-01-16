@@ -536,9 +536,6 @@ def ScrapeNakedsec(company):
     else: #L'URL de base est invalide
         print("Request Failure: "+URL)
 
-
-
-
 #-----------------------------------------------------------------------------Twitter-------------------------------------------------------------------------------------------
 #Quelques libraries pour scraper Twitter:
 #twint ->https://github.com/twintproject/twint/wiki/Configuration (semble ne pas fonctionner)
@@ -553,7 +550,7 @@ def ScrapeNakedsec(company):
  
 #Crée un client avec les clés de l'API Twitter
 def getClient():
-    with open("api/keys.txt", "r") as secretfile:
+    with open("keys.txt", "r") as secretfile:
         bearer_token=secretfile.readline().rstrip()
         consumer_key=secretfile.readline().rstrip()
         consumer_secret=secretfile.readline().rstrip()
