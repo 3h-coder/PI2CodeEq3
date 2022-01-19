@@ -38,7 +38,7 @@ example_sentence=("Cisco Systems has rolled out security updates for a critical 
 " Management Portal (Unified CCMP) and Unified Contact Center Domain Manager (Unified CCDM) that could be exploited by a remote attacker to take control of an affected system.")
 
 #Retourne le nombre de fois qu'un mot clé ait apparu dans le texte
-def CompteurOccurences(keywords, text):
+def CountOccurences(keywords, text):
     print('\n-------------------Identifier des mots clés dans les textes à analyser----------------------------\n')
 
     occurence = 0
@@ -53,38 +53,30 @@ def CompteurOccurences(keywords, text):
     return occurence
 
 #Test de la fonction Compte Occurences KeyWord
-
-
-def TestCompteurOccurences():
+def TestCountOccurences(text):
     keywords = ['breach']
-    with open('article.txt', 'r') as f:
-        text = f.read() 
-    occ = CompteurOccurences(keywords, text)
+    occ = CountOccurences(keywords, text)
     print(occ)
-#TestCompteurOccurences()
 
 
 #Retourne un string qui est le sujet de la phrase passée en paramètre
-def IdentifierSujet(sentence):
+def IdentifySubject(sentence):
     doc = nlp(sentence)
     for token in doc:
         if token.dep_ == 'nsubj':
             return token.text
 
 #Test de la fonction IdentifierSujet
-def TestIdentifierSujet():
-    with open('article.txt', 'r') as f:
-        text = f.read()
+def TestIdentifySubject(text):
     doc = nlp(text)
-    print("Phrase test : " + list(doc.sents)[0].text)
-    sentence = list(doc.sents)[0].text
-    sujet = IdentifierSujet(sentence)
-    print("Sujet : " + sujet)
-
-#TestIdentifierSujet()
+    first_sentence = list(doc.sents)[0].text
+    print("Test sentence : " + first_sentence)
+    subject = IdentifySubject(first_sentence)
+    print("Subject : " + subject)
 
 def main():
-    print(example_bloc)
+    #print(example_bloc)
+    TestIdentifySubject(example_bloc)
 
 main()
 
