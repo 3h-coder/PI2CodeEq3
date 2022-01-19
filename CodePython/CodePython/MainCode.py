@@ -1,7 +1,7 @@
 #Le code se fera ici
 #regarder un tuto sur git hub / git hub desktop
 #installer les librairies nécessaires si non installées
-# pip install bs4       pip install google      pip install spacy      pip install tweepy
+# pip install bs4       pip install google      pip install spacy      pip install tweepy      pip install pickle
 
 import requests, webbrowser
 from bs4 import BeautifulSoup

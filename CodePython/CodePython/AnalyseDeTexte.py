@@ -50,14 +50,16 @@ def CompteurOccurences(keywords, text):
     return occurence
 
 #Test de la fonction Compte Occurences KeyWord
+
+
 def TestCompteurOccurences():
     keywords = ['breach']
     with open('article.txt', 'r') as f:
         text = f.read() 
     occ = CompteurOccurences(keywords, text)
     print(occ)
-
 #TestCompteurOccurences()
+
 
 #Retourne un string qui est le sujet de la phrase passée en paramètre
 def IdentifierSujet(sentence):
