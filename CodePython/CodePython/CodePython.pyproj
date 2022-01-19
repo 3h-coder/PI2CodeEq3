@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>50bf56e7-2440-434a-b0f4-bb04e27c2c9f</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>AnalyseDeTexte.py</StartupFile>
+    <StartupFile>TextAnalysis.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -22,10 +22,13 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="AnalyseDeTexte.py">
+    <Compile Include="TextAnalysis.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="MainCode.py" />
+    <Compile Include="TextAnalyzer.py">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <InterpreterReference Include="Global|VisualStudio|Python 3.8 (64 bit)" />

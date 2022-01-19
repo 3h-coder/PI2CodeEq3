@@ -6,6 +6,8 @@ import pickle
 #python -m spacy download en_core_web_md
 nlp = spacy.load('en_core_web_md')
 
+#Pour extraire un article depuis une page web qui servira ensuite d'exemple pour toutes nos fonctions de test.
+#On extraie un article que l'on sauvegarde ensuite dans un objet string puis dans un fichier pickle.
 def extract_example():
     URL="https://thehackernews.com/2022/01/cisco-releases-patch-for-critical-bug.html"
     page=requests.get(URL)
@@ -37,6 +39,10 @@ example_bloc=LoadExampleText()
 example_sentence=("Cisco Systems has rolled out security updates for a critical security vulnerability affecting Unified Contact Center" 
 " Management Portal (Unified CCMP) and Unified Contact Center Domain Manager (Unified CCDM) that could be exploited by a remote attacker to take control of an affected system.")
 
+#Les mots clés que l'on utilisera pour trouver/cibler certaines phrases de notre texte, 
+keywords=["vulnerability", "attack"]
+
+
 #Retourne le nombre de fois qu'un mot clé ait apparu dans le texte
 def CountOccurences(keywords, text):
     occurence = 0
@@ -51,8 +57,9 @@ def CountOccurences(keywords, text):
     return occurence
 
 #Test de la fonction Compte Occurences KeyWord
+
 def TestCountOccurences(text):
-    keywords = ['rolled']
+    keywords = ['security']
     occ = CountOccurences(keywords, text)
     print(occ)
 
@@ -72,10 +79,27 @@ def TestIdentifySubject(text):
     subject = IdentifySubject(first_sentence)
     print("Subject : " + subject)
 
+#Pour identifier les phrases contenant nos mots clés
+def DetectKeySentences(text):
+
+    doc=nlp(text)
+    keysentences=[]
+
+    for sentence in list(doc.sents):
+        for keyword in keywords:
+            if keyword in str(sentence):
+                keysentences.append(sentence)
+
+    return keysentences
+
+def TestDetectKeySentences(text):
+    sentences=DetectKeySentences(text)
+    print(sentences)
+
+
 def main():
     #print(example_bloc)
-    TestIdentifySubject(example_bloc)
-    TestCountOccurences(example_bloc)
+    TestDetectKeySentences(example_bloc)
 
 main()
 
