@@ -2,9 +2,37 @@
 
 import numpy as np
 import spacy
+import pickle
 #python -m spacy download en_core_web_md
 nlp = spacy.load('en_core_web_md')
 
+def extract_example():
+    URL="https://thehackernews.com/2022/01/cisco-releases-patch-for-critical-bug.html"
+    page=requests.get(URL)
+    soup=BeautifulSoup(page.text, "lxml")
+
+    example_bloc=""
+    for paragraph in soup.find_all('p'):
+        example_bloc+=(paragraph.text)+"\n"
+
+    with open("paragraphex.pickle", "wb") as file:
+        pickle.dump(example_bloc, file)
+    file.close()
+
+def LoadExampleParagraph():
+    with open("paragraphex.pickle", "rb") as file:
+        par=pickle.load(file)
+    file.close()
+    return par
+
+#Pour effectuer des tests, nous utiliserons un paragraphe à titre d'exemple.
+example_bloc=LoadExampleParagraph()
+#Cisco Systems has rolled out security updates for a critical security vulnerability affecting Unified Contact Center Management Portal (Unified CCMP) and Unified Contact Center Domain Manager (Unified CCDM) that could be exploited by a remote attacker to take control of an affected system.
+#Tracked as CVE-2022-20658, the vulnerability has been rated 9.6 in severity on the CVSS scoring system, and concerns a privilege escalation flaw arising out of a lack of server-side validation of user permissions that could be weaponized to create rogue Administrator accounts by submitting a crafted HTTP request.
+#"With these accounts, the attacker could access and modify telephony and user resources across all the Unified platforms that are associated to the vulnerable Cisco Unified CCMP," Cisco noted in an advisory published this week. " To successfully exploit this vulnerability, an attacker would need valid Advanced User credentials."
+#Unified CCMP and Unified CCDM product versions 12.5.1, 12.0.1, and 11.6.1 and earlier running with default configuration are impacted, the networking equipment company said, adding it found the issue as part of a Technical Assistance Center (TAC) support case. Version 12.6.1 of the software is not affected.
+#While there is no evidence that the security flaw has been exploited in real-world attacks, it's recommended that users upgrade to the latest version to mitigate the risk associated with the flaws.
+#Sign up for cybersecurity newsletter and get latest news updates delivered straight to your inbox daily.
 
 #Retourne le nombre de fois qu'un mot clé ait apparu dans le texte
 def CompteurOccurences(keywords, text):
@@ -50,7 +78,10 @@ def TestIdentifierSujet():
 
 #TestIdentifierSujet()
 
+def main():
+    print(example_bloc)
 
+main()
 
 ##Pour trouver les mots similaires au mot cyberattack et les placer dans la liste keywords
 #your_word = "cyberattack"

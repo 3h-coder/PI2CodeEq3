@@ -12,6 +12,7 @@ import tweepy
 import json
 import datetime as dt
 import pandas as pd
+import pickle
 nlp = spacy.load('en_core_web_sm') #python -m spacy download en
 
 # On commence par l'exemple de SolarWinds, grande entreprise de contrôle de systèmes informatiques, victime d'une Cyberattaque de grande ampleur en 2020.
@@ -680,8 +681,11 @@ def WebScraping(company): #Attention, la recherche est case sensitive! (exemple:
     #ScrapeTwitter(company) #Pas terminé
     
 
+
+
 def main():
     WebScraping("REAL DIAL")
+    
 
 main()
 
