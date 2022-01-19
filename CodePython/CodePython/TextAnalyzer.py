@@ -5,11 +5,17 @@ class TextAnalyzer(object):
 
     #Class attributes
     company=""
+    text=""
     result=""
 
-    def __init__(self, company, result):
+    def __init__(self, company, text):
         self.company=company
-        self.result=result
+        self.text=text
+
+    def toString(self):
+        return "Company: "+company+" Analysis result: "+result
+
+
 
     
 
