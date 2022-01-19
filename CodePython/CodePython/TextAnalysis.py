@@ -23,9 +23,9 @@ def extract_example():
 
 def LoadExampleText():
     with open("paragraphex.pickle", "rb") as file:
-        par=pickle.load(file)
+        text=pickle.load(file)
     file.close()
-    return par
+    return text
 
 #Pour effectuer des tests, nous utiliserons un paragraphe à titre d'exemple.
 example_bloc=LoadExampleText()
@@ -98,6 +98,11 @@ def DetectSentences(text, keywords):
 def TestDetectSentences(text):
     sentences=DetectSentences(text, keywords)
     print(sentences)
+
+#Pour déterminer le temps de la phrase (passé, présent ou futur). :!\ En anglais!
+def DetectTense(sentence):
+    tense=""
+    return tense
 
 def main():
     #print(example_bloc)
