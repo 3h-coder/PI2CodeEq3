@@ -58,11 +58,11 @@ def CountOccurences(keywords, text):
 
 #Test de la fonction Compte Occurences KeyWord
 
+#Test de la fonction CountOccurences
 def TestCountOccurences(text):
     keywords = ['security']
     occ = CountOccurences(keywords, text)
     print(occ)
-
 
 #Retourne un string qui est le sujet de la phrase passée en paramètre
 def IdentifySubject(sentence):
@@ -71,7 +71,7 @@ def IdentifySubject(sentence):
         if token.dep_ == 'nsubj':
             return token.text
 
-#Test de la fonction IdentifierSujet
+#Test de la fonction IdentifySubject
 def TestIdentifySubject(text):
     doc = nlp(text)
     first_sentence = list(doc.sents)[0].text
@@ -94,6 +94,7 @@ def DetectSentences(text, keywords):
 
     return keysentences
 
+#Test de la fonction DetectSentences 
 def TestDetectSentences(text):
     sentences=DetectSentences(text, keywords)
     print(sentences)

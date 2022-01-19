@@ -8,9 +8,14 @@ class TextAnalyzer(object):
     text=""
     result=""
 
+    #Constructor
     def __init__(self, company, text):
         self.company=company
         self.text=text
+
+    #Instance Method
+    def __str__(self):
+        return "Company: "+company+"\nText: \n"+text+"\nAnalysis result: "+result
 
     def toString(self):
         return "Company: "+company+" Analysis result: "+result
