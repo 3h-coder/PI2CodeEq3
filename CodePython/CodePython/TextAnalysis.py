@@ -79,27 +79,28 @@ def TestIdentifySubject(text):
     subject = IdentifySubject(first_sentence)
     print("Subject : " + subject)
 
-#Pour identifier les phrases contenant nos mots clés
-def DetectKeySentences(text):
-
+#Pour identifier les phrases contenant une liste de mots spécifiés
+def DetectSentences(text, keywords):
     doc=nlp(text)
-    keysentences=[]
+    keysentences={}
+    count=0
 
     for sentence in list(doc.sents):
         for keyword in keywords:
             if keyword in str(sentence):
-                keysentences.append(sentence)
+                count+=1
+                keysentences[count]=sentence
+                break #Pour ne pas prendre plusieurs fois la même phrase si elle contient plusieurs des mots présents dans la liste
 
     return keysentences
 
-def TestDetectKeySentences(text):
-    sentences=DetectKeySentences(text)
+def TestDetectSentences(text):
+    sentences=DetectSentences(text, keywords)
     print(sentences)
-
 
 def main():
     #print(example_bloc)
-    TestDetectKeySentences(example_bloc)
+    TestDetectSentences(example_bloc)
 
 main()
 

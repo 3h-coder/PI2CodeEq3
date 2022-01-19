@@ -15,6 +15,10 @@ class TextAnalyzer(object):
     def toString(self):
         return "Company: "+company+" Analysis result: "+result
 
+    def RunAnalysis(self):
+        #Tout le traitement se fera ici, c'est un peu le main() de notre classe.
+        result="<Analysis result>"
+
 
 
     
