@@ -39,8 +39,6 @@ example_sentence=("Cisco Systems has rolled out security updates for a critical 
 
 #Retourne le nombre de fois qu'un mot clé ait apparu dans le texte
 def CountOccurences(keywords, text):
-    print('\n-------------------Identifier des mots clés dans les textes à analyser----------------------------\n')
-
     occurence = 0
 
     doc = nlp(text) #On crée un objet spacy appelé doc qui contient le texte passé en paramètre
@@ -54,7 +52,7 @@ def CountOccurences(keywords, text):
 
 #Test de la fonction Compte Occurences KeyWord
 def TestCountOccurences(text):
-    keywords = ['breach']
+    keywords = ['rolled']
     occ = CountOccurences(keywords, text)
     print(occ)
 
@@ -77,6 +75,7 @@ def TestIdentifySubject(text):
 def main():
     #print(example_bloc)
     TestIdentifySubject(example_bloc)
+    TestCountOccurences(example_bloc)
 
 main()
 
