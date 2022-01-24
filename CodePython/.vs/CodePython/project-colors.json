@@ -5,6 +5,11 @@
       "ProjectGuid": "50bf56e7-2440-434a-b0f4-bb04e27c2c9f",
       "DisplayName": "CodePython",
       "ColorIndex": 0
+    },
+    "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3": {
+      "ProjectGuid": "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3",
+      "DisplayName": "Fichiers divers",
+      "ColorIndex": -1
     }
   },
   "NextColorIndex": 1

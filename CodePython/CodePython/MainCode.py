@@ -588,7 +588,9 @@ def RechercheTweetsRecents(query):
 def getUserId(username):
     url = 'https://api.twitter.com/2/users/by/username/{}'.format(username)
 
-    bearer_token = 'AAAAAAAAAAAAAAAAAAAAAE8mXwEAAAAARV%2FFWh%2BLCYwGGmXtggtp8ziL1XA%3D1GvEsumiyjcCDwE4aqorg48OIzLaD5blvSolSvXi9ftdbUGkth'
+    with open("keys.txt", "r") as secretfile:
+        bearer_token=secretfile.readline().rstrip()
+    secretfile.close()
     headers = {'Authorization': 'Bearer {}'.format(bearer_token)}
 
     #on extrait le profil du user

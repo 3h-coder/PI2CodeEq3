@@ -44,7 +44,7 @@ example_sentence=("Cisco Systems has rolled out security updates for a critical 
 " Management Portal (Unified CCMP) and Unified Contact Center Domain Manager (Unified CCDM) that could be exploited by a remote attacker to take control of an affected system.")
 
 #Les mots clés que l'on utilisera pour trouver/cibler certaines phrases de notre texte, 
-keywords=["vulnerability", "attack"]
+keywords=["vulnerability", "attack", "threat", "breach"]
 
 
 #Retourne le nombre de fois qu'un mot clé ait apparu dans le texte
@@ -142,7 +142,7 @@ def TestIdentifyDate():
         if(sentence is not None):
             print("---------------Phrase---------------\n" + sentence.text)
             text = sentence.text
-            dates = IdentifierDate(text)
+            dates = IdentifyDate(text)
             if len(dates) != 0:
                 print("Dates identifiées : ")
                 for date in dates:
