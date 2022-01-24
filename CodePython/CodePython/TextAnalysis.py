@@ -3,6 +3,10 @@
 import numpy as np
 import spacy
 import pickle
+import requests
+from bs4 import BeautifulSoup
+from dateparser import parse 
+from dateparser.search import search_dates
 #python -m spacy download en_core_web_md
 nlp = spacy.load('en_core_web_md')
 
@@ -117,9 +121,8 @@ def DetectTense(sentence):
 import warnings
 warnings.filterwarnings("ignore", message="The localize method is no longer necessary, as this time zone supports the fold attribute")
 
-def IdentifierDate(sentence):
-    from dateparser import parse 
-    from dateparser.search import search_dates
+def IdentifyDate(sentence):
+
 
     #La méthode search_dates renvoie une liste de tuples
     #Chaque tuple correspond à (date ou expression temporelle repérée dans un string, objet datetime correspondant)
@@ -131,7 +134,7 @@ def IdentifierDate(sentence):
             print(extractedDates[i])
     return tableauDates
 
-def TestIdentifierDate():
+def TestIdentifyDate():
     with open('article.txt', 'r') as f:
         text = f.read()
     doc = nlp(text)
@@ -153,7 +156,7 @@ def main():
     #TestDetectSentences(example_bloc)
     #TestCompteurOccurences()
     #TestIdentifierSujet()
-    TestIdentifierDate()
+    TestIdentifyDate()
 
 main()
 
