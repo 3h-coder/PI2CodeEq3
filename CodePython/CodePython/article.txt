@@ -1,0 +1,13 @@
+Panasonic Suffers Data Breach After Hackers Hack Into Its Network
+
+Japanese consumer electronics giant Panasonic has disclosed a security breach wherein an unauthorized third-party broke into its network and potentially accessed data from one of its file servers.
+
+As the result of an internal investigation, it was determined that some data on a file server had been accessed during the intrusion," the company said in a short statement published on November 26. Panasonic didn't reveal the exact nature of the data that was accessed, but TechCrunch reported that the breach began on June 22 and ended on November 3.
+
+The Osaka-based company said that immediately upon discovering the intrusion on November 11, it took steps to report the incident to the relevant authorities and that it implemented security countermeasures, including preventing external access to the network.
+
+Panasonic also noted it's currently working with an independent "specialist" organization to probe the extent of the leak and determine if the access resulted in the exposure of customers' personal information.
+
+We have reached out to the company for further comment and we'll update the story if we hear back.
+
+Found this article interesting? Follow THN on Facebook, Twitter  and LinkedIn to read more exclusive content we post.
