@@ -57,6 +57,12 @@ def CountOccurences(keywords, text):
     return occurence
 
 #Test de la fonction Compte Occurences KeyWord
+def TestCountOccurences():
+    keywords = ['breach']
+    with open('article.txt', 'r') as f:
+        text = f.read() 
+    occ = CountOccurences(keywords, text)
+    print(occ)
 
 #Test de la fonction CountOccurences
 def TestCountOccurences(text):
@@ -104,9 +110,50 @@ def DetectTense(sentence):
     tense=""
     return tense
 
+#Identifier une date dans une phrase et la retourne en un objet de type datetime
+#pip install dateparser
+
+#Pour supprimer les warnings du package dateparser
+import warnings
+warnings.filterwarnings("ignore", message="The localize method is no longer necessary, as this time zone supports the fold attribute")
+
+def IdentifierDate(sentence):
+    from dateparser import parse 
+    from dateparser.search import search_dates
+
+    #La méthode search_dates renvoie une liste de tuples
+    #Chaque tuple correspond à (date ou expression temporelle repérée dans un string, objet datetime correspondant)
+    extractedDates = search_dates(sentence, languages = ['en']) #Tableau contenant les dates repérées dans la phrase passée ne paramètre
+    tableauDates = [] #Tableau des dates extraites sous forme d'objet datetime
+    if extractedDates is not None:
+        for i in range(len(extractedDates)):
+            tableauDates.append(extractedDates[i][1])
+            print(extractedDates[i])
+    return tableauDates
+
+def TestIdentifierDate():
+    with open('article.txt', 'r') as f:
+        text = f.read()
+    doc = nlp(text)
+    for sentence in list(doc.sents):
+        if(sentence is not None):
+            print("---------------Phrase---------------\n" + sentence.text)
+            text = sentence.text
+            dates = IdentifierDate(text)
+            if len(dates) != 0:
+                print("Dates identifiées : ")
+                for date in dates:
+                    print(date)
+            else:
+                print("Aucune date trouvée.")
+            print("\n")
+
 def main():
     #print(example_bloc)
-    TestDetectSentences(example_bloc)
+    #TestDetectSentences(example_bloc)
+    #TestCompteurOccurences()
+    #TestIdentifierSujet()
+    TestIdentifierDate()
 
 main()
 
