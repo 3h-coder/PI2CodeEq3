@@ -1,0 +1,8 @@
+google
+bs4
+numpy
+pandas
+spacy
+dateparser
+tweepy
+

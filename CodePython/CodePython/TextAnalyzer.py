@@ -4,6 +4,7 @@ class TextAnalyzer(object):
     import TextAnalysis
 
     #Class attributes
+    id=0
     company=""
     text=""
     link=""
@@ -13,6 +14,8 @@ class TextAnalyzer(object):
 
     #Constructor
     def __init__(self, company, text, link):
+        id+=1
+        self.id=id
         self.company=company
         self.text=text
         self.link=link
