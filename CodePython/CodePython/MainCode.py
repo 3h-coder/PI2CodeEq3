@@ -13,7 +13,10 @@ import json
 import datetime as dt
 import pandas as pd
 import pickle
+import dateparser
+import warnings
 nlp = spacy.load('en_core_web_sm') #python -m spacy download en
+warnings.filterwarnings("ignore", message="The localize method is no longer necessary, as this time zone supports the fold attribute")
 
 # On commence par l'exemple de SolarWinds, grande entreprise de contrôle de systèmes informatiques, victime d'une Cyberattaque de grande ampleur en 2020.
 # A priori nous aurons déjà nos sources prédéfinies et lorsque que nous nous intéresserons au statut d'une entreprise en particulier,
@@ -77,7 +80,8 @@ def ScrapeHackerNews(company):
                 if (company in a.get('href')) or (company in a.text) or (company.lower() in a.get('href')) \
                 or (company.capitalize() in a.get('href')) or (company.capitalize() in a.text) \
                 or (company.lower() in a.text) or (company in title.text) or (company.lower() in title.text) or (company.capitalize() in title.text):
-                    article_date=a.find('i', {"class": "icon-font icon-calendar"}).next_sibling #On extrait la date de l'article qu'il faudra ensuite formatter
+                    article_date=a.find('i', {"class": "icon-font icon-calendar"}).next_sibling #On extrait la date de l'article qu'il faudra ensuite formater
+                    article_date=dateparser.parse(article_date).date()
                     newpage=requests.get(a.get('href'))
                     newsoup=BeautifulSoup(newpage.text, "lxml")
                     for paragraph in newsoup.find_all('p'):
@@ -109,6 +113,7 @@ def ScrapeHackerNews(company):
                             or (company.capitalize() in a.get('href')) or (company.capitalize() in a.text) \
                             or (company.lower() in a.text) or (company in title.text) or (company.lower() in title.text) or (company.capitalize() in title.text):
                                 article_date=a.find('i', {"class": "icon-font icon-calendar"}).next_sibling
+                                article_date=dateparser.parse(article_date).date()
                                 newpage=requests.get(a.get('href'))
                                 newsoup=BeautifulSoup(newpage.text, "lxml")
                                 for paragraph in newsoup.find_all('p'):
@@ -142,7 +147,8 @@ def ScrapeDarkReading(company): #Site à scroll infini
                 or (company.capitalize() in a.get('href')) or (company.capitalize() in a.text):
                     link_found=a.get('href')
                     wrapper=a.parent.parent
-                    article_date=(wrapper.find("div", {"class": "d-md-none arcile-date"}).text) #On extrait la date de l'article qu'il faudra ensuite formatter
+                    article_date=(wrapper.find("div", {"class": "d-md-none arcile-date"}).text) #On extrait la date de l'article qu'il faudra ensuite formater
+                    article_date=dateparser.parse(article_date).date()
                     newpage=requests.get(a.get('href'))
                     newsoup=BeautifulSoup(newpage.text, "lxml")
                     for paragraph in newsoup.find_all('p'):
@@ -166,6 +172,7 @@ def ScrapeDarkReading(company): #Site à scroll infini
                                 link_found=a.get('href')
                                 wrapper=a.parent.parent
                                 article_date=(wrapper.find("div", {"class": "d-md-none arcile-date"}).text)
+                                article_date=dateparser.parse(article_date).date()
                                 newpage=requests.get(a.get('href'))
                                 newsoup=BeautifulSoup(newpage.text, "lxml")
                                 for paragraph in newsoup.find_all('p'):
@@ -203,7 +210,9 @@ def ScrapeZDnet(company): #Reconstrucrtion d'URL nécessaire  --> stringObject[s
                 or (company.capitalize() in a.get('href')) or (company.capitalize() in a.text):
                     link_found=a.get('href')
                     wrapper=a.parent.parent
-                    article_date=wrapper.find('p', {"class":"meta"}).find('span')['data-date'] #On extrait la date de l'article qu'il faudra ensuite formatter
+                    article_date=wrapper.find('p', {"class":"meta"}).find('span')['data-date'] #On extrait la date de l'article qu'il faudra ensuite formater
+                    article_date=dateparser.parse(article_date).date()
+                    print(article_date)
                     newpage=requests.get(anchor_link)
                     newsoup=BeautifulSoup(newpage.text, "lxml")
                     for paragraph in newsoup.find_all('p'):
@@ -236,6 +245,7 @@ def ScrapeZDnet(company): #Reconstrucrtion d'URL nécessaire  --> stringObject[s
                                 link_found=a.get('href')
                                 wrapper=a.parent.parent
                                 article_date=wrapper.find('p', {"class":"meta"}).find('span')['data-date']
+                                article_date=dateparser.parse(article_date).date()
                                 newpage=requests.get(anchor_link)
                                 newsoup=BeautifulSoup(newpage.text, "lxml")
                                 for paragraph in newsoup.find_all('p'):
@@ -268,18 +278,16 @@ def ScrapeTechRP(company):
                 if (company in a.get('href')) or (company in a.text) or (company.lower() in a.get('href')) or (company.lower() in a.text) \
                 or (company.capitalize() in a.get('href')) or (company.capitalize() in a.text):
                     link_found=a.get('href')
-                    wrapper=a.parent
-                    span=wrapper.find('span',{"class":"separator"})
-                    try:
-                        article_date=wrapper.find('span',{"class":"separator"}).next_sibling.strip() #On extrait la date de l'article qu'il faudra ensuite formatter
-                    except:
-                        pass
                     newpage=requests.get(a.get('href'))
                     newsoup=BeautifulSoup(newpage.text, "lxml")
+                    wrapper=a.parent
+                    span=wrapper.find('span',{"class":"separator"})
+                    article_date=wrapper.find('span',{"class":"separator"}).next_sibling.strip() #On extrait la date de l'article qu'il faudra ensuite formater
+                    article_date=dateparser.parse(article_date).date()
                     for paragraph in newsoup.find_all('p'):
                         print(paragraph.text)
                     found=True
-                    print("Information found on "+a.get('href')+" date: "+article_date)
+                    print("Information found on "+a.get('href'))
                     #webbrowser.open(a.get('href'))
         while(found==False and page_counter<2): #Tant que l'on a pas trouvé ou scrapé moins de 2 pages, on scrape la page suivante en répétant les mêmes étapes.
             nextpageURL=""
@@ -298,16 +306,15 @@ def ScrapeTechRP(company):
                     for a in anchors:
                         if(a.get('href') != None and a.get('href')!=link_found):
                             link_found=a.get('href')
-                            wrapper=a.parent
-                            span=wrapper.find('span',{"class":"separator"})
-                            try:
-                                article_date=wrapper.find('span',{"class":"separator"}).next_sibling.strip() 
-                            except:
-                                pass
                             if (company in a.get('href')) or (company in a.text) or (company.lower() in a.get('href')) or (company.lower() in a.text) \
                             or (company.capitalize() in a.get('href')) or (company.capitalize() in a.text):
                                 newpage=requests.get(a.get('href'))
                                 newsoup=BeautifulSoup(newpage.text, "lxml")
+                                wrapper=a.parent
+                                span=wrapper.find('span',{"class":"separator"})
+                                article_date=wrapper.find('span',{"class":"separator"}).next_sibling.strip() #On extrait la date de l'article qu'il faudra ensuite formater
+                                article_date=dateparser.parse(article_date).date()
+                                print(article_date)
                                 for paragraph in newsoup.find_all('p'):
                                     print(paragraph.text)
                                 #webbrowser.open(a.get('href'))
@@ -339,7 +346,8 @@ def ScrapeMcAfee(company):
                 or (company.capitalize() in a.get('href')) or (company.capitalize() in a.text):
                     link_found=a.get('href')
                     wrapper=a.find_parent('div', {"class":"card"})
-                    article_date=wrapper.find('small', {"class":"text-muted"}).text #On extrait la date de l'article qu'il faudra ensuite formatter
+                    article_date=wrapper.find('small', {"class":"text-muted"}).text #On extrait la date de l'article qu'il faudra ensuite formater
+                    article_date=dateparser.parse(article_date).date()
                     newpage=requests.get(a.get('href'))
                     newsoup=BeautifulSoup(newpage.text, "lxml")
                     for paragraph in newsoup.find_all('p'):
@@ -368,6 +376,7 @@ def ScrapeMcAfee(company):
                                 link_found=a.get('href')
                                 wrapper=a.find_parent('div', {"class":"card"})
                                 article_date=wrapper.find('small', {"class":"text-muted"}).text
+                                article_date=dateparser.parse(article_date).date()
                                 newpage=requests.get(a.get('href'))
                                 newsoup=BeautifulSoup(newpage.text, "lxml")
                                 for paragraph in newsoup.find_all('p'):
@@ -405,6 +414,7 @@ def ScrapeGraham(company): #Définition de headers nécessaire
                     newsoup=BeautifulSoup(newpage.text, "lxml")
                     wrapper=a.find_parent('header', {"class":"entry-header"})
                     article_date=wrapper.find('span', {"class":"post-date"}).text #On extrait la date de l'article qu'il faudra ensuite formatter
+                    article_date=dateparser.parse(article_date).date()
                     for paragraph in newsoup.find_all('p'):
                         print(paragraph.text)
                     found=True
@@ -433,6 +443,7 @@ def ScrapeGraham(company): #Définition de headers nécessaire
                                 newsoup=BeautifulSoup(newpage.text, "lxml")
                                 wrapper=a.find_parent('header', {"class":"entry-header"})
                                 article_date=wrapper.find('span', {"class":"post-date"}).text
+                                article_date=dateparser.parse(article_date).date()
                                 for paragraph in newsoup.find_all('p'):
                                     print(paragraph.text)
                                 #webbrowser.open(a.get('href'))
@@ -475,6 +486,7 @@ def ScrapeCSO(company): #Reconstruciton d'URL nécessaire / Recherche de page su
                     newpage=requests.get(anchor_link)
                     newsoup=BeautifulSoup(newpage.text, "lxml")
                     article_date=newsoup.find('span', {"class":"pub-date"})['content'] #Ici l'extraction de la date se fait sur la page de l'article
+                    article_date=dateparser.parse(article_date).date()
                     for paragraph in newsoup.find_all('p'):
                         print(paragraph.text)
                     found=True
@@ -500,6 +512,7 @@ def ScrapeCSO(company): #Reconstruciton d'URL nécessaire / Recherche de page su
                             newpage=requests.get(anchor_link)
                             newsoup=BeautifulSoup(newpage.text, "lxml")
                             article_date=newsoup.find('span', {"class":"pub-date"})['content']
+                            article_date=dateparser.parse(article_date).date()
                             for paragraph in newsoup.find_all('p'):
                                 print(paragraph.text)
                             #webbrowser.open(anchor_link)
@@ -531,6 +544,7 @@ def ScrapeInfosecmag(company):
                     newpage=requests.get(a.get('href'))
                     newsoup=BeautifulSoup(newpage.text, "lxml")
                     article_date=a.parent.find('time').text #On extrait la date de l'article qu'il faudra ensuite formatter
+                    article_date=dateparser.parse(article_date).date()
                     for paragraph in newsoup.find_all('p'):
                         print(paragraph.text)
                     found=True
@@ -558,6 +572,7 @@ def ScrapeInfosecmag(company):
                                 newpage=requests.get(a.get('href'))
                                 newsoup=BeautifulSoup(newpage.text, "lxml")
                                 article_date=a.parent.find('time').text
+                                article_date=dateparser.parse(article_date).date()
                                 for paragraph in newsoup.find_all('p'):
                                     print(paragraph.text)
                                 #webbrowser.open(a.get('href'))
@@ -591,6 +606,7 @@ def ScrapeNakedsec(company):
                     newpage=requests.get(a.get('href'))
                     newsoup=BeautifulSoup(newpage.text, "lxml")
                     article_date=newsoup.find('time').text #Ici également, la date s'extrait à partir de la page de l'article
+                    article_date=dateparser.parse(article_date).date()
                     for paragraph in newsoup.find_all('p'):
                         print(paragraph.text)
                     found=True
@@ -618,6 +634,7 @@ def ScrapeNakedsec(company):
                                 newpage=requests.get(a.get('href'))
                                 newsoup=BeautifulSoup(newpage.text, "lxml")
                                 article_date=newsoup.find('time').text
+                                article_date=dateparser.parse(article_date).date()
                                 for paragraph in newsoup.find_all('p'):
                                     print(paragraph.text)
                                 #webbrowser.open(a.get('href'))
@@ -768,7 +785,7 @@ def ScrapeTwitter(company):
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 def WebScraping(company): 
-    ScrapeHackerNews(company)
+    #ScrapeHackerNews(company)
     #ScrapeDarkReading(company) 
     #ScrapeZDnet(company)
     #ScrapeTechRP(company)
@@ -776,12 +793,12 @@ def WebScraping(company):
     #ScrapeGraham(company)
     #ScrapeITsecguru(company) #Ne fonctionne pas encore
     #ScrapeCSO(company)
-    #ScrapeInfosecmag(company)
+    ScrapeInfosecmag(company)
     #ScrapeNakedsec(company)
     #ScrapeTwitter(company) #Pas terminé
 
 def main():
-    WebScraping("apple")
+    WebScraping("sase")
     
     
 
