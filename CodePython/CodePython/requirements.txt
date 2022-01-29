@@ -5,4 +5,5 @@ pandas
 spacy
 dateparser
 tweepy
+lxml
 

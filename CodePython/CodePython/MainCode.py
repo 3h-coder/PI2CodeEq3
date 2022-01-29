@@ -69,8 +69,10 @@ def ScrapeHackerNews(company):
     if(mainpage.ok): 
         soup=BeautifulSoup(mainpage.text, "lxml") #On scrape la première page
         anchors=soup.find_all('a', {"class": "story-link"})
+        link_found=""
         for a in anchors:
-            if(a.get('href') != None): #On vérifie que le href n'est pas nul
+            if(a.get('href') != None and a.get('href')!=link_found): #On vérifie que le href n'est pas nul et que l'on ne retombe pas sur le même lien
+                link_found=a.get('href')
                 title=a.find('h2')
                 if (company in a.get('href')) or (company in a.text) or (company.lower() in a.get('href')) \
                 or (company.capitalize() in a.get('href')) or (company.capitalize() in a.text) \
@@ -82,6 +84,7 @@ def ScrapeHackerNews(company):
                         print(paragraph.text)
                     found=True
                     print("Information found on "+a.get('href'))
+                    break #On s'arrête dès que l'on a trouvé quelque chose
                     #webbrowser.open(a.get('href'))
         while(found==False and page_counter<2): #Tant que l'on a pas trouvé ou scrapé moins de 2 pages, on scrape la page suivante.
             nextpageURL=""
@@ -99,7 +102,8 @@ def ScrapeHackerNews(company):
                     soup=BeautifulSoup(nextpage.text, "lxml")
                     anchors=soup.find_all('a',{"class": "story-link"})
                     for a in anchors:
-                        if(a.get('href') != None):
+                        if(a.get('href') != None and a.get('href')!=link_found):
+                            link_found=a.get('href')
                             title=a.find('h2')
                             if (company in a.get('href')) or (company in a.text) or (company.lower() in a.get('href')) \
                             or (company.capitalize() in a.get('href')) or (company.capitalize() in a.text) \
@@ -131,12 +135,14 @@ def ScrapeDarkReading(company): #Site à scroll infini
     if(mainpage.ok): 
         soup=BeautifulSoup(mainpage.text, "lxml") #On scrape la première page
         anchors=soup.find_all('a')
+        link_found=""
         for a in anchors:
-            if(a.get('href') != None): #On vérifie que le href n'est pas nul
+            if(a.get('href') != None and a.get('href')!=link_found): #On vérifie que le href n'est pas nul et que l'on ne retombe pas sur le même lien
                 if (company in a.get('href')) or (company in a.text) or (company.lower() in a.get('href')) or (company.lower() in a.text) \
                 or (company.capitalize() in a.get('href')) or (company.capitalize() in a.text):
+                    link_found=a.get('href')
                     wrapper=a.parent.parent
-                    article_date=(wrapper.find("div", {"class": "d-md-none arcile-date"}).text)
+                    article_date=(wrapper.find("div", {"class": "d-md-none arcile-date"}).text) #On extrait la date de l'article qu'il faudra ensuite formatter
                     newpage=requests.get(a.get('href'))
                     newsoup=BeautifulSoup(newpage.text, "lxml")
                     for paragraph in newsoup.find_all('p'):
@@ -154,9 +160,10 @@ def ScrapeDarkReading(company): #Site à scroll infini
                     soup=BeautifulSoup(nextpage.text, "lxml")
                     anchors=soup.find_all('a')
                     for a in anchors:
-                        if(a.get('href') != None):
+                        if(a.get('href') != None and a.get('href')!=link_found):
                             if (company in a.get('href')) or (company in a.text) or (company.lower() in a.get('href')) or (company.lower() in a.text) \
                             or (company.capitalize() in a.get('href')) or (company.capitalize() in a.text):
+                                link_found=a.get('href')
                                 wrapper=a.parent.parent
                                 article_date=(wrapper.find("div", {"class": "d-md-none arcile-date"}).text)
                                 newpage=requests.get(a.get('href'))
@@ -185,16 +192,18 @@ def ScrapeZDnet(company): #Reconstrucrtion d'URL nécessaire  --> stringObject[s
     if(mainpage.ok): 
         soup=BeautifulSoup(mainpage.text, "lxml") #On scrape la première page
         anchors=soup.find_all('a')
+        link_found=""
         for a in anchors:
             anchor_link=a.get('href')
-            if(anchor_link != None): #On vérifie que le href n'est pas nul
+            if(a.get('href') != None and a.get('href')!=link_found): #On vérifie que le href n'est pas nul et que l'on ne retombe pas sur le même lien
                 if(anchor_link.startswith("/")): #On le reconsitue si besoin
                     anchor_link=anchor_link[1:] #Enlever le "/" du début
                     anchor_link=URL+anchor_link #Et ensuite le concaténer avec l'URL de base
                 if (company in a.get('href')) or (company in a.text) or (company.lower() in a.get('href')) or (company.lower() in a.text) \
                 or (company.capitalize() in a.get('href')) or (company.capitalize() in a.text):
+                    link_found=a.get('href')
                     wrapper=a.parent.parent
-                    article_date=wrapper.find('p', {"class":"meta"}).find('span')['data-date']
+                    article_date=wrapper.find('p', {"class":"meta"}).find('span')['data-date'] #On extrait la date de l'article qu'il faudra ensuite formatter
                     newpage=requests.get(anchor_link)
                     newsoup=BeautifulSoup(newpage.text, "lxml")
                     for paragraph in newsoup.find_all('p'):
@@ -218,12 +227,13 @@ def ScrapeZDnet(company): #Reconstrucrtion d'URL nécessaire  --> stringObject[s
                     anchors=soup.find_all('a')
                     for a in anchors:
                         anchor_link=a.get('href')
-                        if(anchor_link != None):
+                        if(anchor_link != None and a.get('href')!=link_found):
                             if(anchor_link.startswith("/")): #On le reconsitue encore si besoin
                                 anchor_link=anchor_link[1:]
                                 anchor_link=URL+anchor_link
                             if (company in a.get('href')) or (company in a.text) or (company.lower() in a.get('href')) or (company.lower() in a.text) \
                             or (company.capitalize() in a.get('href')) or (company.capitalize() in a.text):
+                                link_found=a.get('href')
                                 wrapper=a.parent.parent
                                 article_date=wrapper.find('p', {"class":"meta"}).find('span')['data-date']
                                 newpage=requests.get(anchor_link)
@@ -252,20 +262,26 @@ def ScrapeTechRP(company):
     if(mainpage.ok): 
         soup=BeautifulSoup(mainpage.text, "lxml") #On scrape la première page
         anchors=soup.find_all('a')
+        link_found="" #si l'on trouve quelque chose on enregistre le lien dans cette variable
         for a in anchors:
-            if(a.get('href') != None): #On vérifie que le href n'est pas nul
+            if(a.get('href') != None and a.get('href')!=link_found): #On vérifie que le href n'est pas nul et que l'on ne retombe pas sur le même lien
                 if (company in a.get('href')) or (company in a.text) or (company.lower() in a.get('href')) or (company.lower() in a.text) \
                 or (company.capitalize() in a.get('href')) or (company.capitalize() in a.text):
+                    link_found=a.get('href')
                     wrapper=a.parent
-                    article_date=wrapper.find('span',{"class":"separator"}).next_sibling #on extrait la date de l'article
+                    span=wrapper.find('span',{"class":"separator"})
+                    try:
+                        article_date=wrapper.find('span',{"class":"separator"}).next_sibling.strip() #On extrait la date de l'article qu'il faudra ensuite formatter
+                    except:
+                        pass
                     newpage=requests.get(a.get('href'))
                     newsoup=BeautifulSoup(newpage.text, "lxml")
                     for paragraph in newsoup.find_all('p'):
                         print(paragraph.text)
                     found=True
-                    print("Information found on "+a.get('href'))
+                    print("Information found on "+a.get('href')+" date: "+article_date)
                     #webbrowser.open(a.get('href'))
-        while(found==False and page_counter<2): #Tant que l'on a pas trouvé ou scrapé moins de 2 pages, on scrape la page suivante.
+        while(found==False and page_counter<2): #Tant que l'on a pas trouvé ou scrapé moins de 2 pages, on scrape la page suivante en répétant les mêmes étapes.
             nextpageURL=""
             for a in anchors: #Recherche de la page suivante
                 anchor=str(a)
@@ -280,7 +296,14 @@ def ScrapeTechRP(company):
                     soup=BeautifulSoup(nextpage.text, "lxml")
                     anchors=soup.find_all('a')
                     for a in anchors:
-                        if(a.get('href') != None):
+                        if(a.get('href') != None and a.get('href')!=link_found):
+                            link_found=a.get('href')
+                            wrapper=a.parent
+                            span=wrapper.find('span',{"class":"separator"})
+                            try:
+                                article_date=wrapper.find('span',{"class":"separator"}).next_sibling.strip() 
+                            except:
+                                pass
                             if (company in a.get('href')) or (company in a.text) or (company.lower() in a.get('href')) or (company.lower() in a.text) \
                             or (company.capitalize() in a.get('href')) or (company.capitalize() in a.text):
                                 newpage=requests.get(a.get('href'))
@@ -309,10 +332,14 @@ def ScrapeMcAfee(company):
     if(mainpage.ok): 
         soup=BeautifulSoup(mainpage.text, "lxml") #On scrape la première page
         anchors=soup.find_all('a')
+        link_found=""
         for a in anchors:
-            if(a.get('href') != None): #On vérifie que le href n'est pas nul
+            if(a.get('href') != None and a.get('href')!=link_found): #On vérifie que le href n'est pas nul et que l'on ne retombe pas sur le même lien
                 if (company in a.get('href')) or (company in a.text) or (company.lower() in a.get('href')) or (company.lower() in a.text) \
                 or (company.capitalize() in a.get('href')) or (company.capitalize() in a.text):
+                    link_found=a.get('href')
+                    wrapper=a.find_parent('div', {"class":"card"})
+                    article_date=wrapper.find('small', {"class":"text-muted"}).text #On extrait la date de l'article qu'il faudra ensuite formatter
                     newpage=requests.get(a.get('href'))
                     newsoup=BeautifulSoup(newpage.text, "lxml")
                     for paragraph in newsoup.find_all('p'):
@@ -335,9 +362,12 @@ def ScrapeMcAfee(company):
                     soup=BeautifulSoup(nextpage.text, "lxml")
                     anchors=soup.find_all('a')
                     for a in anchors:
-                        if(a.get('href') != None):
+                        if(a.get('href') != None and a.get('href')!=link_found):
                             if (company in a.get('href')) or (company in a.text) or (company.lower() in a.get('href')) or (company.lower() in a.text) \
                             or (company.capitalize() in a.get('href')) or (company.capitalize() in a.text):
+                                link_found=a.get('href')
+                                wrapper=a.find_parent('div', {"class":"card"})
+                                article_date=wrapper.find('small', {"class":"text-muted"}).text
                                 newpage=requests.get(a.get('href'))
                                 newsoup=BeautifulSoup(newpage.text, "lxml")
                                 for paragraph in newsoup.find_all('p'):
@@ -365,12 +395,16 @@ def ScrapeGraham(company): #Définition de headers nécessaire
     if(mainpage.ok): 
         soup=BeautifulSoup(mainpage.text, "lxml") #On scrape la première page
         anchors=soup.find_all('a')
+        link_found=""
         for a in anchors:
-            if(a.get('href') != None): #On vérifie que le href n'est pas nul
+            if(a.get('href') != None and a.get('href')!=link_found): #On vérifie que le href n'est pas nul et que l'on ne retombe pas sur le même lien
                 if (company in a.get('href')) or (company in a.text) or (company.lower() in a.get('href')) or (company.lower() in a.text) \
                 or (company.capitalize() in a.get('href')) or (company.capitalize() in a.text):
+                    link_found=a.get('href')
                     newpage=requests.get(a.get('href'), headers=headers)
                     newsoup=BeautifulSoup(newpage.text, "lxml")
+                    wrapper=a.find_parent('header', {"class":"entry-header"})
+                    article_date=wrapper.find('span', {"class":"post-date"}).text #On extrait la date de l'article qu'il faudra ensuite formatter
                     for paragraph in newsoup.find_all('p'):
                         print(paragraph.text)
                     found=True
@@ -394,8 +428,11 @@ def ScrapeGraham(company): #Définition de headers nécessaire
                         if(a.get('href') != None):
                             if (company in a.get('href')) or (company in a.text) or (company.lower() in a.get('href')) or (company.lower() in a.text) \
                             or (company.capitalize() in a.get('href')) or (company.capitalize() in a.text):
+                                link_found=a.get('href')
                                 newpage=requests.get(a.get('href'), headers=headers)
                                 newsoup=BeautifulSoup(newpage.text, "lxml")
+                                wrapper=a.find_parent('header', {"class":"entry-header"})
+                                article_date=wrapper.find('span', {"class":"post-date"}).text
                                 for paragraph in newsoup.find_all('p'):
                                     print(paragraph.text)
                                 #webbrowser.open(a.get('href'))
@@ -425,16 +462,19 @@ def ScrapeCSO(company): #Reconstruciton d'URL nécessaire / Recherche de page su
     if(mainpage.ok): 
         soup=BeautifulSoup(mainpage.text, "lxml") #On scrape la première page
         anchors=soup.find_all('a')
+        link_found=""
         for a in anchors:
             anchor_link=a.get('href')
-            if(anchor_link != None): #On vérifie que le href n'est pas nul
+            if(a.get('href') != None and a.get('href')!=link_found): #On vérifie que le href n'est pas nul et que l'on ne retombe pas sur le même lien
                 if(anchor_link.startswith("/")): #On le reconsitue si besoin
                     baseURL=URL[:25] #Dans ce site il faut enlever le "/news-analysis/" à la fin de l'URL de base
                     anchor_link=baseURL+anchor_link #Et ensuite le concaténer avec le href
                 if (company in a.get('href')) or (company in a.text) or (company.lower() in a.get('href')) or (company.lower() in a.text) \
                 or (company.capitalize() in a.get('href')) or (company.capitalize() in a.text):
+                    link_found=a.get('href')
                     newpage=requests.get(anchor_link)
                     newsoup=BeautifulSoup(newpage.text, "lxml")
+                    article_date=newsoup.find('span', {"class":"pub-date"})['content'] #Ici l'extraction de la date se fait sur la page de l'article
                     for paragraph in newsoup.find_all('p'):
                         print(paragraph.text)
                     found=True
@@ -450,14 +490,16 @@ def ScrapeCSO(company): #Reconstruciton d'URL nécessaire / Recherche de page su
                 anchors=soup.find_all('a')
                 for a in anchors:
                     anchor_link=a.get('href')
-                    if(anchor_link != None):
+                    if(anchor_link != None and a.get('href')!=link_found):
                         if(anchor_link.startswith("/")): #On le reconsitue encore si besoin
                             baseURL=URL[:25]
                             anchor_link=baseURL+anchor_link
                         if (company in a.get('href')) or (company in a.text) or (company.lower() in a.get('href')) or (company.lower() in a.text) \
                         or (company.capitalize() in a.get('href')) or (company.capitalize() in a.text):
+                            link_found=a.get('href')
                             newpage=requests.get(anchor_link)
                             newsoup=BeautifulSoup(newpage.text, "lxml")
+                            article_date=newsoup.find('span', {"class":"pub-date"})['content']
                             for paragraph in newsoup.find_all('p'):
                                 print(paragraph.text)
                             #webbrowser.open(anchor_link)
@@ -480,12 +522,15 @@ def ScrapeInfosecmag(company):
     if(mainpage.ok): 
         soup=BeautifulSoup(mainpage.text, "lxml") #On scrape la première page
         anchors=soup.find_all('a')
+        link_found=""
         for a in anchors:
-            if(a.get('href') != None): #On vérifie que le href n'est pas nul
+            if(a.get('href') != None and a.get('href')!=link_found): #On vérifie que le href n'est pas nul et que l'on ne retombe pas sur le même lien
                 if (company in a.get('href')) or (company in a.text) or (company.lower() in a.get('href')) or (company.lower() in a.text) \
                 or (company.capitalize() in a.get('href')) or (company.capitalize() in a.text):
+                    link_found=a.get('href')
                     newpage=requests.get(a.get('href'))
                     newsoup=BeautifulSoup(newpage.text, "lxml")
+                    article_date=a.parent.find('time').text #On extrait la date de l'article qu'il faudra ensuite formatter
                     for paragraph in newsoup.find_all('p'):
                         print(paragraph.text)
                     found=True
@@ -506,11 +551,13 @@ def ScrapeInfosecmag(company):
                     soup=BeautifulSoup(nextpage.text, "lxml")
                     anchors=soup.find_all('a')
                     for a in anchors:
-                        if(a.get('href') != None):
+                        if(a.get('href') != None and a.get('href')!=link_found):
                             if (company in a.get('href')) or (company in a.text) or (company.lower() in a.get('href')) or (company.lower() in a.text) \
                             or (company.capitalize() in a.get('href')) or (company.capitalize() in a.text):
+                                link_found=a.get('href')
                                 newpage=requests.get(a.get('href'))
                                 newsoup=BeautifulSoup(newpage.text, "lxml")
+                                article_date=a.parent.find('time').text
                                 for paragraph in newsoup.find_all('p'):
                                     print(paragraph.text)
                                 #webbrowser.open(a.get('href'))
@@ -535,12 +582,15 @@ def ScrapeNakedsec(company):
     if(mainpage.ok): 
         soup=BeautifulSoup(mainpage.text, "lxml") #On scrape la première page
         anchors=soup.find_all('a')
+        link_found=""
         for a in anchors:
-            if(a.get('href') != None): #On vérifie que le href n'est pas nul
+            if(a.get('href') != None and a.get('href')!=link_found): #On vérifie que le href n'est pas nul et que l'on ne retombe pas sur le même lien
                 if (company in a.get('href')) or (company in a.text) or (company.lower() in a.get('href')) or (company.lower() in a.text) \
                 or (company.capitalize() in a.get('href')) or (company.capitalize() in a.text):
+                    link_found=a.get('href')
                     newpage=requests.get(a.get('href'))
                     newsoup=BeautifulSoup(newpage.text, "lxml")
+                    article_date=newsoup.find('time').text #Ici également, la date s'extrait à partir de la page de l'article
                     for paragraph in newsoup.find_all('p'):
                         print(paragraph.text)
                     found=True
@@ -561,11 +611,13 @@ def ScrapeNakedsec(company):
                     soup=BeautifulSoup(nextpage.text, "lxml")
                     anchors=soup.find_all('a')
                     for a in anchors:
-                        if(a.get('href') != None):
+                        if(a.get('href') != None and a.get('href')!=link_found):
                             if (company in a.get('href')) or (company in a.text) or (company.lower() in a.get('href')) or (company.lower() in a.text) \
                             or (company.capitalize() in a.get('href')) or (company.capitalize() in a.text):
+                                link_found=a.get('href')
                                 newpage=requests.get(a.get('href'))
                                 newsoup=BeautifulSoup(newpage.text, "lxml")
+                                article_date=newsoup.find('time').text
                                 for paragraph in newsoup.find_all('p'):
                                     print(paragraph.text)
                                 #webbrowser.open(a.get('href'))
@@ -716,10 +768,10 @@ def ScrapeTwitter(company):
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 def WebScraping(company): 
-    #ScrapeHackerNews(company)
+    ScrapeHackerNews(company)
     #ScrapeDarkReading(company) 
     #ScrapeZDnet(company)
-    ScrapeTechRP(company)
+    #ScrapeTechRP(company)
     #ScrapeMcAfee(company)
     #ScrapeGraham(company)
     #ScrapeITsecguru(company) #Ne fonctionne pas encore
@@ -729,7 +781,7 @@ def WebScraping(company):
     #ScrapeTwitter(company) #Pas terminé
 
 def main():
-    WebScraping("docker")
+    WebScraping("apple")
     
     
 
