@@ -7,6 +7,7 @@ import requests
 from bs4 import BeautifulSoup
 from dateparser import parse 
 from dateparser.search import search_dates
+import datetime
 #python -m spacy download en_core_web_md
 nlp = spacy.load('en_core_web_md')
 
@@ -121,28 +122,24 @@ def DetectTense(sentence):
 import warnings
 warnings.filterwarnings("ignore", message="The localize method is no longer necessary, as this time zone supports the fold attribute")
 
-def IdentifyDate(sentence):
-
+def IdentifyDate(sentence, relativeDate):
 
     #La méthode search_dates renvoie une liste de tuples
     #Chaque tuple correspond à (date ou expression temporelle repérée dans un string, objet datetime correspondant)
-    extractedDates = search_dates(sentence, languages = ['en']) #Tableau contenant les dates repérées dans la phrase passée ne paramètre
+    extractedDates = search_dates(sentence, languages = ['en'], settings={'RELATIVE_BASE' : relativeDate}) #Tableau contenant les dates repérées dans la phrase passée ne paramètre
     tableauDates = [] #Tableau des dates extraites sous forme d'objet datetime
     if extractedDates is not None:
         for i in range(len(extractedDates)):
             tableauDates.append(extractedDates[i][1])
-            print(extractedDates[i])
     return tableauDates
 
-def TestIdentifyDate():
-    with open('article.txt', 'r') as f:
-        text = f.read()
+def IdentifyDateInText(text, relativeDate):
     doc = nlp(text)
     for sentence in list(doc.sents):
         if(sentence is not None):
             print("---------------Phrase---------------\n" + sentence.text)
             text = sentence.text
-            dates = IdentifyDate(text)
+            dates = IdentifyDate(text, relativeDate)
             if len(dates) != 0:
                 print("Dates identifiées : ")
                 for date in dates:
@@ -151,23 +148,41 @@ def TestIdentifyDate():
                 print("Aucune date trouvée.")
             print("\n")
 
+def TestIdentifyDateInText():
+    with open('article.txt', 'r') as f:
+        text = f.read()
+    #text = LoadExampleText()
+    relativeDate = datetime.datetime(2021, 1, 2)
+    IdentifyDateInText(text, relativeDate)
+
+
+#Pour trouver les mots similaires au mot cyberattack et les placer dans la liste keywords
+def LexicalField(keyword):
+    #Cette fonction spacy trouve les mots les plus similaires et les place dans un array appelé ici ms
+    ms = nlp.vocab.vectors.most_similar(np.asarray([nlp.vocab.vectors[nlp.vocab.strings[keyword]]]), n=10)
+    for word in ms[0][0]:
+        keyword = nlp.vocab.strings[word]
+        print(keyword)
+        #On demande à l'admin s'il veut rajouter ce mot à la liste de mots clés
+        add = input("Add to the list of keyword ? (y/n) : ") 
+        if(add == 'y'):
+            keywords.append(keyword)
+    #Puis les ajouter à la liste de mots-clés
+
+def TestLexicalField():
+    keyword = 'cyberattack'
+    LexicalField(keyword)
+    print(keywords)
+
 def main():
     #print(example_bloc)
     #TestDetectSentences(example_bloc)
     #TestCompteurOccurences()
     #TestIdentifierSujet()
-    TestIdentifyDate()
+    #TestIdentifyDateInText()
+    TestLexicalField()
 
 main()
-
-##Pour trouver les mots similaires au mot cyberattack et les placer dans la liste keywords
-#your_word = "cyberattack"
-#ms = nlp.vocab.vectors.most_similar(np.asarray([nlp.vocab.vectors[nlp.vocab.strings[your_word]]]), n=10)
-#keywords = []
-#for word in ms[0][0]:
-#    keywords.append(nlp.vocab.strings[word]) 
-#distances = ms[2]
-#print(keywords)
 
 ##Tester la similarité de deux phrases
 #doc1 = nlp("PNB customers' data exposed for seven months du to server vulnerability")
