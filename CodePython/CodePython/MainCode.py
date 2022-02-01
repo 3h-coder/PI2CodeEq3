@@ -15,6 +15,7 @@ import pandas as pd
 import pickle
 import dateparser
 import warnings
+from textAnalyzer import TextAnalyzer
 nlp = spacy.load('en_core_web_sm') #python -m spacy download en
 warnings.filterwarnings("ignore", message="The localize method is no longer necessary, as this time zone supports the fold attribute")
 
@@ -75,21 +76,22 @@ def ScrapeHackerNews(company):
         link_found=""
         for a in anchors:
             if(a.get('href') != None and a.get('href')!=link_found): #On vérifie que le href n'est pas nul et que l'on ne retombe pas sur le même lien
-                link_found=a.get('href')
                 title=a.find('h2')
                 if (company in a.get('href')) or (company in a.text) or (company.lower() in a.get('href')) \
                 or (company.capitalize() in a.get('href')) or (company.capitalize() in a.text) \
                 or (company.lower() in a.text) or (company in title.text) or (company.lower() in title.text) or (company.capitalize() in title.text):
+                    link_found=a.get('href')
                     article_date=a.find('i', {"class": "icon-font icon-calendar"}).next_sibling #On extrait la date de l'article qu'il faudra ensuite formater
                     article_date=dateparser.parse(article_date).date()
                     newpage=requests.get(a.get('href'))
                     newsoup=BeautifulSoup(newpage.text, "lxml")
+                    article=""
                     for paragraph in newsoup.find_all('p'):
-                        print(paragraph.text)
+                        article+="\n"+paragraph.text
+                    ta=TextAnalyzer(company, article, link_found, article_date) #On crée notre objet analyseur de texte
+                    ta.RunAnalysis() #On procède à l'analyse de l'article pour déterminer le statut de cybersécurité de l'entreprise
                     found=True
                     print("Information found on "+a.get('href'))
-                    break #On s'arrête dès que l'on a trouvé quelque chose
-                    #webbrowser.open(a.get('href'))
         while(found==False and page_counter<2): #Tant que l'on a pas trouvé ou scrapé moins de 2 pages, on scrape la page suivante.
             nextpageURL=""
             for a in anchors: #Recherche de la page suivante
@@ -102,23 +104,24 @@ def ScrapeHackerNews(company):
                 page_counter=page_counter+1
                 nextpage=requests.get(nextpageURL)
                 if nextpage.ok:
-                    #webbrowser.open(nextpageURL)
                     soup=BeautifulSoup(nextpage.text, "lxml")
                     anchors=soup.find_all('a',{"class": "story-link"})
                     for a in anchors:
                         if(a.get('href') != None and a.get('href')!=link_found):
-                            link_found=a.get('href')
                             title=a.find('h2')
                             if (company in a.get('href')) or (company in a.text) or (company.lower() in a.get('href')) \
                             or (company.capitalize() in a.get('href')) or (company.capitalize() in a.text) \
                             or (company.lower() in a.text) or (company in title.text) or (company.lower() in title.text) or (company.capitalize() in title.text):
+                                link_found=a.get('href')
                                 article_date=a.find('i', {"class": "icon-font icon-calendar"}).next_sibling
                                 article_date=dateparser.parse(article_date).date()
                                 newpage=requests.get(a.get('href'))
                                 newsoup=BeautifulSoup(newpage.text, "lxml")
+                                article=""
                                 for paragraph in newsoup.find_all('p'):
-                                    print(paragraph.text)
-                                #webbrowser.open(a.get('href'))
+                                    article+="\n"+paragraph.text
+                                ta=TextAnalyzer(company, article, link_found, article_date) 
+                                ta.RunAnalysis()
                                 found=True
                                 print("Information found on "+a.get('href'))
                 else: #Requête page suivante échoue, on sort de la boucle
@@ -151,18 +154,19 @@ def ScrapeDarkReading(company): #Site à scroll infini
                     article_date=dateparser.parse(article_date).date()
                     newpage=requests.get(a.get('href'))
                     newsoup=BeautifulSoup(newpage.text, "lxml")
+                    article=""
                     for paragraph in newsoup.find_all('p'):
-                        print(paragraph.text)
+                        article+="\n"+paragraph.text
+                    ta=TextAnalyzer(company, article, link_found, article_date) #On crée notre objet analyseur de texte
+                    ta.RunAnalysis() #On procède à l'analyse de l'article pour déterminer le statut de cybersécurité de l'entreprise
                     found=True
                     print("Information found on "+a.get('href'))
-                    #webbrowser.open(a.get('href'))
         while(found==False and page_counter<6):#Tant que l'on a pas trouvé ou scrapé moins de 2 pages, on scrape la page suivante.
             nextpageURL="https://www.darkreading.com/attacks-breaches?page={}".format(page_counter)
             if(nextpageURL!=""):
                 page_counter=page_counter+1
                 nextpage=requests.get(nextpageURL)
                 if nextpage.ok:
-                    #webbrowser.open(nextpageURL)
                     soup=BeautifulSoup(nextpage.text, "lxml")
                     anchors=soup.find_all('a')
                     for a in anchors:
@@ -175,9 +179,11 @@ def ScrapeDarkReading(company): #Site à scroll infini
                                 article_date=dateparser.parse(article_date).date()
                                 newpage=requests.get(a.get('href'))
                                 newsoup=BeautifulSoup(newpage.text, "lxml")
+                                article=""
                                 for paragraph in newsoup.find_all('p'):
-                                    print(paragraph.text)
-                                #webbrowser.open(a.get('href'))
+                                    article+="\n"+paragraph.text
+                                ta=TextAnalyzer(company, article, link_found, article_date) 
+                                ta.RunAnalysis() 
                                 found=True
                                 print("Information found on "+a.get('href'))
                 else: #Requête page suivante échoue, on sort de la boucle
@@ -215,11 +221,13 @@ def ScrapeZDnet(company): #Reconstrucrtion d'URL nécessaire  --> stringObject[s
                     print(article_date)
                     newpage=requests.get(anchor_link)
                     newsoup=BeautifulSoup(newpage.text, "lxml")
+                    article=""
                     for paragraph in newsoup.find_all('p'):
-                        print(paragraph.text)
+                        article+="\n"+paragraph.text
+                    ta=TextAnalyzer(company, article, link_found, article_date) #On crée notre objet analyseur de texte
+                    ta.RunAnalysis() #On procède à l'analyse de l'article pour déterminer le statut de cybersécurité de l'entreprise
                     found=True
                     print("Information found on "+anchor_link)
-                    #webbrowser.open(anchor_link)
         while(found==False and page_counter<2): #Tant que l'on a pas trouvé ou scrapé moins de 2 pages, on scrape la page suivante.
             nextpageURL=""
             for a in anchors:
@@ -231,7 +239,6 @@ def ScrapeZDnet(company): #Reconstrucrtion d'URL nécessaire  --> stringObject[s
                 page_counter=page_counter+1
                 nextpage=requests.get(nextpageURL)
                 if nextpage.ok:
-                    #webbrowser.open(nextpageURL)
                     soup=BeautifulSoup(nextpage.text, "lxml")
                     anchors=soup.find_all('a')
                     for a in anchors:
@@ -248,9 +255,11 @@ def ScrapeZDnet(company): #Reconstrucrtion d'URL nécessaire  --> stringObject[s
                                 article_date=dateparser.parse(article_date).date()
                                 newpage=requests.get(anchor_link)
                                 newsoup=BeautifulSoup(newpage.text, "lxml")
+                                article=""
                                 for paragraph in newsoup.find_all('p'):
-                                    print(paragraph.text)
-                                #webbrowser.open(anchor_link)
+                                    article+="\n"+paragraph.text
+                                ta=TextAnalyzer(company, article, link_found, article_date) 
+                                ta.RunAnalysis() 
                                 found=True
                                 print("Information found on "+anchor_link)
                 else: #Requête page suivante échoue, on sort de la boucle
@@ -284,11 +293,13 @@ def ScrapeTechRP(company):
                     span=wrapper.find('span',{"class":"separator"})
                     article_date=wrapper.find('span',{"class":"separator"}).next_sibling.strip() #On extrait la date de l'article qu'il faudra ensuite formater
                     article_date=dateparser.parse(article_date).date()
+                    article=""
                     for paragraph in newsoup.find_all('p'):
-                        print(paragraph.text)
+                        article+="\n"+paragraph.text
+                    ta=TextAnalyzer(company, article, link_found, article_date) #On crée notre objet analyseur de texte
+                    ta.RunAnalysis() #On procède à l'analyse de l'article pour déterminer le statut de cybersécurité de l'entreprise
                     found=True
                     print("Information found on "+a.get('href'))
-                    #webbrowser.open(a.get('href'))
         while(found==False and page_counter<2): #Tant que l'on a pas trouvé ou scrapé moins de 2 pages, on scrape la page suivante en répétant les mêmes étapes.
             nextpageURL=""
             for a in anchors: #Recherche de la page suivante
@@ -300,7 +311,6 @@ def ScrapeTechRP(company):
                 page_counter=page_counter+1
                 nextpage=requests.get(nextpageURL)
                 if nextpage.ok:
-                    #webbrowser.open(nextpageURL)
                     soup=BeautifulSoup(nextpage.text, "lxml")
                     anchors=soup.find_all('a')
                     for a in anchors:
@@ -314,10 +324,11 @@ def ScrapeTechRP(company):
                                 span=wrapper.find('span',{"class":"separator"})
                                 article_date=wrapper.find('span',{"class":"separator"}).next_sibling.strip() #On extrait la date de l'article qu'il faudra ensuite formater
                                 article_date=dateparser.parse(article_date).date()
-                                print(article_date)
+                                article=""
                                 for paragraph in newsoup.find_all('p'):
-                                    print(paragraph.text)
-                                #webbrowser.open(a.get('href'))
+                                    article+="\n"+paragraph.text
+                                ta=TextAnalyzer(company, article, link_found, article_date) 
+                                ta.RunAnalysis() 
                                 found=True
                                 print("Information found on "+a.get('href'))
                 else: #Requête page suivante échoue, on sort de la boucle
@@ -350,11 +361,13 @@ def ScrapeMcAfee(company):
                     article_date=dateparser.parse(article_date).date()
                     newpage=requests.get(a.get('href'))
                     newsoup=BeautifulSoup(newpage.text, "lxml")
+                    article=""
                     for paragraph in newsoup.find_all('p'):
-                        print(paragraph.text)
+                        article+="\n"+paragraph.text
+                    ta=TextAnalyzer(company, article, link_found, article_date) #On crée notre objet analyseur de texte
+                    ta.RunAnalysis() #On procède à l'analyse de l'article pour déterminer le statut de cybersécurité de l'entreprise
                     found=True
                     print("Information found on "+a.get('href'))
-                    #webbrowser.open(a.get('href'))
         while(found==False and page_counter<2): #Tant que l'on a pas trouvé ou scrapé moins de 2 pages, on scrape la page suivante.
             nextpageURL=""
             for a in anchors: #Recherche de la page suivante
@@ -366,7 +379,6 @@ def ScrapeMcAfee(company):
                 page_counter=page_counter+1
                 nextpage=requests.get(nextpageURL)
                 if nextpage.ok:
-                    #webbrowser.open(nextpageURL)
                     soup=BeautifulSoup(nextpage.text, "lxml")
                     anchors=soup.find_all('a')
                     for a in anchors:
@@ -379,9 +391,11 @@ def ScrapeMcAfee(company):
                                 article_date=dateparser.parse(article_date).date()
                                 newpage=requests.get(a.get('href'))
                                 newsoup=BeautifulSoup(newpage.text, "lxml")
+                                article=""
                                 for paragraph in newsoup.find_all('p'):
-                                    print(paragraph.text)
-                                #webbrowser.open(a.get('href'))
+                                    article+="\n"+paragraph.text
+                                ta=TextAnalyzer(company, article, link_found, article_date) 
+                                ta.RunAnalysis() 
                                 found=True
                                 print("Information found on "+a.get('href'))
                 else: #Requête page suivante échoue, on sort de la boucle
@@ -415,11 +429,13 @@ def ScrapeGraham(company): #Définition de headers nécessaire
                     wrapper=a.find_parent('header', {"class":"entry-header"})
                     article_date=wrapper.find('span', {"class":"post-date"}).text #On extrait la date de l'article qu'il faudra ensuite formatter
                     article_date=dateparser.parse(article_date).date()
+                    article=""
                     for paragraph in newsoup.find_all('p'):
-                        print(paragraph.text)
+                        article+="\n"+paragraph.text
+                    ta=TextAnalyzer(company, article, link_found, article_date) #On crée notre objet analyseur de texte
+                    ta.RunAnalysis() #On procède à l'analyse de l'article pour déterminer le statut de cybersécurité de l'entreprise
                     found=True
                     print("Information found on "+a.get('href'))
-                    #webbrowser.open(a.get('href'))
         while(found==False and page_counter<2): #Tant que l'on a pas trouvé ou scrapé moins de 2 pages, on scrape la page suivante.
             nextpageURL=""
             for a in anchors: #Recherche de la page suivante
@@ -431,7 +447,6 @@ def ScrapeGraham(company): #Définition de headers nécessaire
                 page_counter=page_counter+1
                 nextpage=requests.get(nextpageURL)
                 if nextpage.ok:
-                    #webbrowser.open(nextpageURL)
                     soup=BeautifulSoup(nextpage.text, "lxml")
                     anchors=soup.find_all('a')
                     for a in anchors:
@@ -444,9 +459,11 @@ def ScrapeGraham(company): #Définition de headers nécessaire
                                 wrapper=a.find_parent('header', {"class":"entry-header"})
                                 article_date=wrapper.find('span', {"class":"post-date"}).text
                                 article_date=dateparser.parse(article_date).date()
+                                article=""
                                 for paragraph in newsoup.find_all('p'):
-                                    print(paragraph.text)
-                                #webbrowser.open(a.get('href'))
+                                    article+="\n"+paragraph.text
+                                ta=TextAnalyzer(company, article, link_found, article_date) 
+                                ta.RunAnalysis() 
                                 found=True
                                 print("Information found on "+a.get('href'))
                 else: #Requête page suivante échoue, on sort de la boucle
@@ -467,7 +484,6 @@ def ScrapeCSO(company): #Reconstruciton d'URL nécessaire / Recherche de page su
     URL="https://www.csoonline.com/news-analysis/"
     found=False
     article_counter=0
-    headers={"User-Agent" : "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36"}
 
     mainpage=requests.get(URL)
     if(mainpage.ok): 
@@ -487,17 +503,18 @@ def ScrapeCSO(company): #Reconstruciton d'URL nécessaire / Recherche de page su
                     newsoup=BeautifulSoup(newpage.text, "lxml")
                     article_date=newsoup.find('span', {"class":"pub-date"})['content'] #Ici l'extraction de la date se fait sur la page de l'article
                     article_date=dateparser.parse(article_date).date()
+                    article=""
                     for paragraph in newsoup.find_all('p'):
-                        print(paragraph.text)
+                        article+="\n"+paragraph.text
+                    ta=TextAnalyzer(company, article, link_found, article_date) #On crée notre objet analyseur de texte
+                    ta.RunAnalysis() #On procède à l'analyse de l'article pour déterminer le statut de cybersécurité de l'entreprise
                     found=True
                     print("Information found on "+anchor_link)
-                    #webbrowser.open(anchor_link)
         while(found==False and article_counter<20): #Tant que l'on a pas trouvé ou scrapé moins de 2 pages, on scrape la page suivante. (1 page correspond à 20 articles ici, la premiere page allant de 0 à 20).
             article_counter=article_counter+20
             nextpageURL=URL+"?start="+str(article_counter)
             nextpage=requests.get(nextpageURL)
             if nextpage.ok:
-                #webbrowser.open(nextpageURL)
                 soup=BeautifulSoup(nextpage.text, "lxml")
                 anchors=soup.find_all('a')
                 for a in anchors:
@@ -513,9 +530,11 @@ def ScrapeCSO(company): #Reconstruciton d'URL nécessaire / Recherche de page su
                             newsoup=BeautifulSoup(newpage.text, "lxml")
                             article_date=newsoup.find('span', {"class":"pub-date"})['content']
                             article_date=dateparser.parse(article_date).date()
+                            article=""
                             for paragraph in newsoup.find_all('p'):
-                                print(paragraph.text)
-                            #webbrowser.open(anchor_link)
+                                article+="\n"+paragraph.text
+                            ta=TextAnalyzer(company, article, link_found, article_date) 
+                            ta.RunAnalysis()
                             found=True
                             print("Information found on "+anchor_link)
             else: #Requête page suivante échoue, on sort de la boucle
@@ -545,11 +564,13 @@ def ScrapeInfosecmag(company):
                     newsoup=BeautifulSoup(newpage.text, "lxml")
                     article_date=a.parent.find('time').text #On extrait la date de l'article qu'il faudra ensuite formatter
                     article_date=dateparser.parse(article_date).date()
+                    article=""
                     for paragraph in newsoup.find_all('p'):
-                        print(paragraph.text)
+                        article+="\n"+paragraph.text
+                    ta=TextAnalyzer(company, article, link_found, article_date) #On crée notre objet analyseur de texte
+                    ta.RunAnalysis() #On procède à l'analyse de l'article pour déterminer le statut de cybersécurité de l'entreprise
                     found=True
                     print("Information found on "+a.get('href'))
-                    #webbrowser.open(a.get('href'))
         while(found==False and page_counter<2): #Tant que l'on a pas trouvé ou scrapé moins de 2 pages, on scrape la page suivante.
             nextpageURL=""
             for a in anchors: #Recherche de la page suivante
@@ -561,7 +582,6 @@ def ScrapeInfosecmag(company):
                 page_counter=page_counter+1
                 nextpage=requests.get(nextpageURL)
                 if nextpage.ok:
-                    #webbrowser.open(nextpageURL)
                     soup=BeautifulSoup(nextpage.text, "lxml")
                     anchors=soup.find_all('a')
                     for a in anchors:
@@ -573,10 +593,12 @@ def ScrapeInfosecmag(company):
                                 newsoup=BeautifulSoup(newpage.text, "lxml")
                                 article_date=a.parent.find('time').text
                                 article_date=dateparser.parse(article_date).date()
+                                article=""
                                 for paragraph in newsoup.find_all('p'):
-                                    print(paragraph.text)
-                                #webbrowser.open(a.get('href'))
+                                    article+="\n"+paragraph.text
                                 found=True
+                                ta=TextAnalyzer(company, article, link_found, article_date) 
+                                ta.RunAnalysis() 
                                 print("Information found on "+a.get('href'))
                 else: #Requête page suivante échoue, on sort de la boucle
                     print("Request Failure: "+nextpageURL+" returned: "+nextpage)
@@ -607,11 +629,13 @@ def ScrapeNakedsec(company):
                     newsoup=BeautifulSoup(newpage.text, "lxml")
                     article_date=newsoup.find('time').text #Ici également, la date s'extrait à partir de la page de l'article
                     article_date=dateparser.parse(article_date).date()
+                    article=""
                     for paragraph in newsoup.find_all('p'):
-                        print(paragraph.text)
+                        article+="\n"+paragraph.text
+                    ta=TextAnalyzer(company, article, link_found, article_date) #On crée notre objet analyseur de texte
+                    ta.RunAnalysis() #On procède à l'analyse de l'article pour déterminer le statut de cybersécurité de l'entreprise
                     found=True
                     print("Information found on "+a.get('href'))
-                    #webbrowser.open(a.get('href'))
         while(found==False and page_counter<2): #Tant que l'on a pas trouvé ou scrapé moins de 2 pages, on scrape la page suivante.
             nextpageURL=""
             for a in anchors: #Recherche de la page suivante
@@ -623,7 +647,6 @@ def ScrapeNakedsec(company):
                 page_counter=page_counter+1
                 nextpage=requests.get(nextpageURL)
                 if nextpage.ok:
-                    #webbrowser.open(nextpageURL)
                     soup=BeautifulSoup(nextpage.text, "lxml")
                     anchors=soup.find_all('a')
                     for a in anchors:
@@ -635,9 +658,11 @@ def ScrapeNakedsec(company):
                                 newsoup=BeautifulSoup(newpage.text, "lxml")
                                 article_date=newsoup.find('time').text
                                 article_date=dateparser.parse(article_date).date()
+                                article=""
                                 for paragraph in newsoup.find_all('p'):
-                                    print(paragraph.text)
-                                #webbrowser.open(a.get('href'))
+                                    article+="\n"+paragraph.text
+                                ta=TextAnalyzer(company, article, link_found, article_date) 
+                                ta.RunAnalysis() 
                                 found=True
                                 print("Information found on "+a.get('href'))
                 else: #Requête page suivante échoue, on sort de la boucle
@@ -649,6 +674,78 @@ def ScrapeNakedsec(company):
             print("Could not scrape any information about "+ company+" on "+URL)
     else: #L'URL de base est invalide
         print("Request Failure: "+URL+" returned: "+mainpage)
+
+def ScrapeKebronsec(company):
+    URL="https://krebsonsecurity.com/"
+    found=False
+    page_counter=1
+
+    mainpage=requests.get(URL)
+    if(mainpage.ok): 
+        soup=BeautifulSoup(mainpage.text, "lxml") #On scrape la première page
+        titles=soup.find_all('h2', {"class":"entry-title"})
+        link_found=""
+        for title in titles:
+            a=title.find('a')
+            if(a.get('href') != None and a.get('href')!=link_found): #On vérifie que le href n'est pas nul et que l'on ne retombe pas sur le même lien
+                if (company in a.get('href')) or (company in a.text) or (company.lower() in a.get('href')) or (company.lower() in a.text) \
+                or (company.capitalize() in a.get('href')) or (company.capitalize() in a.text):
+                    link_found=a.get('href')
+                    newpage=requests.get(a.get('href'))
+                    newsoup=BeautifulSoup(newpage.text, "lxml")
+                    wrapper=a.parent.parent
+                    article_date=wrapper.find('span',{"class":"date updated"}).text #Ici également, la date s'extrait à partir de la page de l'article
+                    article_date=dateparser.parse(article_date).date()
+                    article=""
+                    for paragraph in newsoup.find_all('p'):
+                        article+="\n"+paragraph.text
+                    ta=TextAnalyzer(company, article, link_found, article_date) #On crée notre objet analyseur de texte
+                    ta.RunAnalysis() #On procède à l'analyse de l'article pour déterminer le statut de cybersécurité de l'entreprise
+                    print(ta)
+                    found=True
+                    print("Information found on "+a.get('href'))
+        while(found==False and page_counter<2): #Tant que l'on a pas trouvé ou scrapé moins de 2 pages, on scrape la page suivante.
+            nextpageURL=""
+            for a in anchors: #Recherche de la page suivante
+                anchor=str(a)
+                if("Next >" in anchor):
+                    if(a['href'].startswith("https://")):
+                        nextpageURL=a['href']
+            if(nextpageURL!=""):
+                page_counter=page_counter+1
+                nextpage=requests.get(nextpageURL)
+                if nextpage.ok:
+                    soup=BeautifulSoup(nextpage.text, "lxml")
+                    anchors=soup.find_all('a')
+                    titles=soup.find_all('h2', {"class":"entry-title"})
+                    for title in titles:
+                        a=soup.find('a')
+                        if(a.get('href') != None and a.get('href')!=link_found):
+                            if (company in a.get('href')) or (company in a.text) or (company.lower() in a.get('href')) or (company.lower() in a.text) \
+                            or (company.capitalize() in a.get('href')) or (company.capitalize() in a.text):
+                                link_found=a.get('href')
+                                newpage=requests.get(a.get('href'))
+                                newsoup=BeautifulSoup(newpage.text, "lxml")
+                                wrapper=a.parent.parent
+                                article_date=wrapper.find('span',{"class":"date updated"}).text
+                                article_date=dateparser.parse(article_date).date()
+                                article=""
+                                for paragraph in newsoup.find_all('p'):
+                                    article+="\n"+paragraph.text
+                                ta=TextAnalyzer(company, article, link_found, article_date) 
+                                ta.RunAnalysis() 
+                                found=True
+                                print("Information found on "+a.get('href'))
+                else: #Requête page suivante échoue, on sort de la boucle
+                    print("Request Failure: "+nextpageURL+" returned: "+nextpage)
+                    break
+            else: #Pas de page suivante, on sort de la boucle
+                break
+        if(found==False):
+            print("Could not scrape any information about "+ company+" on "+URL)
+    else: #L'URL de base est invalide
+        print("Request Failure: "+URL+" returned: "+mainpage)
+
 
 #-----------------------------------------------------------------------------Twitter-------------------------------------------------------------------------------------------
 #Quelques libraries pour scraper Twitter:
@@ -743,10 +840,9 @@ def SearchTweetsUser2(username, company):
 # Le lien d'un tweet est du style https://twitter.com/<username>/status/<tweet_id>
 def SearchTweetsUser(username, company): 
     Client=getClient()
-    id = getUserId(username)
-    mention = False #Si l'on a trouvé un tweet à propos de l'entreprise
+    user_id = getUserId(username)
 
-    result=Client.get_users_tweets(id, max_results=5)
+    result=Client.get_users_tweets(user_id, exclude=['replies'],max_results=5, tweet_fields=['created_at','id','text'])
     #Response(data=[<Tweet id=1481279570322071558 text=A couple of these updates are reportedly causing reboots on domain controllers/ https://t.co/8oSwPp6sfF h/t @campuscodi>, 
     #<Tweet id=1481258396355604487 text="Wazawaka," the handle chosen by a prolific network access broker/ransomware affiliate, has a $5M bounty on his head. “Mother Russia will help you,” Wazawaka concluded. “Love your country, and you will always get away with everything.” https://t.co/1jdNCrgiMh>, 
     #<Tweet id=1481126293601239041 text=@Mitchell10500 No relation to my brother from another mother.>, 
@@ -754,29 +850,27 @@ def SearchTweetsUser(username, company):
     #<Tweet id=1480913660805627913 text=Twitter is prompting me to promote this tweet. For once, I'm intrigued. Treating this as a PSA isn't actually a bad idea.>], 
     #includes={}, errors=[], meta={'oldest_id': '1480913660805627913', 'newest_id': '1481279570322071558', 'result_count': 5, 'next_token': '7140dibdnow9c7btw3z44wd2xpiagw4b026rnpdcajvoz'})
     tweets=result.data
-    tweetsFound=[]
     for tweet in tweets:
-        if(company in tweet.text):
-            tweet_id=tweet.id
-            tweet_content=tweet.text
-            #Analyser tweet_content d'abord avant de l'ajouter à tweetsFound?
-            tweetsFound.append(tweet)
-            mention=True
-            
-    return tweetsFound
+        if((company in tweet.text) or (company.lower() in tweet.text) or (company.capitalize() in tweet.text)) or(company.upper() in tweet.text):
+            tweet_date=(tweet.created_at).date()
+            tweet_link='https://twitter.com/{}/status/{}'.format(username, tweet.id)
+            ta=TextAnalyzer(company, tweet.text, tweet_link, tweet_date)
+            ta.RunAnalysis()
+            yield ta
+
+     
 
 def ScrapeTwitter(company):
     usernames=["briankrebs", "threatpost", "peterkruse"]
-    Tweetlist={}
+    Tweetlist=[]
 
     for user in usernames:
-        Tweetsfound=SearchTweetsUser(user,company)
-        Tweetlist[user]=Tweetsfound
-        #print(user+" done")
-        #print(Tweetsfound)
+        for ta in SearchTweetsUser(user, company):
+            Tweetlist.append(ta)
     
     print("---------------------------------------------------------------------------------------------------------------------------------")
-    print(Tweetlist)
+    for ta in Tweetlist:
+        print(ta)
     #{'briankrebs': [<Tweet id=1481030224750026764 text=It's Patch Tuesday, Windows users! Today's batch includes fixes for something like 120 vulnerabilities, including a critical, "wormable" flaw in Windows 10/11 and later Server versions, and 3 Exchange bugs, 1 of which was reported to Microsoft by the NSA. https://t.co/zh1UdM3qZq>], 
     #'threatpost': [<Tweet id=1471484422469955585 text=@Prevailion’s PACT discovered a novel RAT, #DarkWatchman, w/ new #fileless malware techniques, sent in a Russian-language spear-phishing campaign, uniquely manipulating Windows Registry to evade most security detections. #cybersecurity https://t.co/I3HhSiNmSI>], 
     #'peterkruse': []}
@@ -793,12 +887,14 @@ def WebScraping(company):
     #ScrapeGraham(company)
     #ScrapeITsecguru(company) #Ne fonctionne pas encore
     #ScrapeCSO(company)
-    ScrapeInfosecmag(company)
+    #ScrapeInfosecmag(company)
     #ScrapeNakedsec(company)
-    #ScrapeTwitter(company) #Pas terminé
+    #ScrapeKebronsec(company)
+    ScrapeTwitter(company) 
 
 def main():
-    WebScraping("sase")
+    WebScraping("ALPHV")
+    
     
     
 

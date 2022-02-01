@@ -1,28 +1,32 @@
+import TextAnalysis
+from datetime import datetime
+
 class TextAnalyzer(object):
     """description of class"""
 
-    import TextAnalysis
-
     #Class attributes
-    id=0
-    company=""
-    text=""
-    link=""
-    result=""
-    #text_date=""  #Date de parution de l'article ou tweet extrait
-    #date=""  #Date d'analyse 
+    Id=0
 
     #Constructor
-    def __init__(self, company, text, link):
-        id+=1
-        self.id=id
-        self.company=company
+    def __init__(self, company, text, link, text_date):
+        TextAnalyzer.Id+=1
+        self.id=TextAnalyzer.Id
+        self.company=company.capitalize()
         self.text=text
         self.link=link
+        self.text_date=text_date
+        self.status=0 #0 si RAS, 1 sinon
+        self.result=None
+        self.date=None
 
     #Instance Method
     def __str__(self):
-        return "Company: "+self.company+"\nText: \n"+self.text+"\nFound on:"+self.link+"\nAnalysis result: "+self.result
+        if((self.link).startswith("https://twitter.com")):
+            return "Id: "+str(self.id)+"\nCompany: "+self.company+"\nText: "+self.text+"\n\nFound on:"+self.link+"\nTweet date: "+str(self.text_date)+"\nAnalysis date: "+str(self.date)+ \
+            "\nStatus: "+str(self.status)+"\nAnalysis result: "+self.result
+        else:
+            return "Id: "+str(self.id)+"\nCompany: "+self.company+"\nText: "+self.text+"\n\nFound on:"+self.link+"\nArctile date: "+str(self.text_date)+"\nAnalysis date: "+str(self.date)+ \
+            "\nStatus: "+str(self.status)+"\nAnalysis result: "+self.result
 
     def toString(self):
         return "Company: "+self.company+" Analysis result: "+self.result
@@ -35,10 +39,13 @@ class TextAnalyzer(object):
 
     def RunAnalysis(self):
         #Tout le traitement se fera ici, c'est un peu le main() de notre classe.
-        result="<Analysis result>"
+        self.date=datetime.now()
+        self.result="<Analysis result>"
 
 
     
+
+
 
 
 

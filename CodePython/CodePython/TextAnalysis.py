@@ -8,7 +8,7 @@ from bs4 import BeautifulSoup
 from dateparser import parse 
 from dateparser.search import search_dates
 #python -m spacy download en_core_web_md
-nlp = spacy.load('en_core_web_md')
+nlp = spacy.load('en_core_web_sm')
 
 #Pour extraire un article depuis une page web qui servira ensuite d'exemple pour toutes nos fonctions de test.
 #On extraie un article que l'on sauvegarde ensuite dans un objet string puis dans un fichier pickle.
@@ -134,9 +134,7 @@ def IdentifyDate(sentence):
             print(extractedDates[i])
     return tableauDates
 
-def TestIdentifyDate():
-    with open('article.txt', 'r') as f:
-        text = f.read()
+def TestIdentifyDate(text):
     doc = nlp(text)
     for sentence in list(doc.sents):
         if(sentence is not None):
@@ -156,7 +154,8 @@ def main():
     #TestDetectSentences(example_bloc)
     #TestCompteurOccurences()
     #TestIdentifierSujet()
-    TestIdentifyDate()
+    #TestIdentifyDate(example_bloc)
+    print("")
 
 main()
 
