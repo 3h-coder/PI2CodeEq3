@@ -124,7 +124,6 @@ warnings.filterwarnings("ignore", message="The localize method is no longer nece
 
 def IdentifyDate(sentence, relativeDate):
 
-
     #La méthode search_dates renvoie une liste de tuples
     #Chaque tuple correspond à (date ou expression temporelle repérée dans un string, objet datetime correspondant)
     extractedDates = search_dates(sentence, languages = ['en'], settings={'RELATIVE_BASE' : relativeDate}) #Tableau contenant les dates repérées dans la phrase passée ne paramètre
