@@ -867,10 +867,12 @@ def ScrapeTwitter(company):
     for user in usernames:
         for ta in SearchTweetsUser(user, company):
             Tweetlist.append(ta)
-    
-    print("---------------------------------------------------------------------------------------------------------------------------------")
-    for ta in Tweetlist:
-        print(ta)
+
+    if not Tweetlist:
+        print("No information found on twitter about company")
+    else:
+        for ta in Tweetlist:
+            print(ta)
     #{'briankrebs': [<Tweet id=1481030224750026764 text=It's Patch Tuesday, Windows users! Today's batch includes fixes for something like 120 vulnerabilities, including a critical, "wormable" flaw in Windows 10/11 and later Server versions, and 3 Exchange bugs, 1 of which was reported to Microsoft by the NSA. https://t.co/zh1UdM3qZq>], 
     #'threatpost': [<Tweet id=1471484422469955585 text=@Prevailion’s PACT discovered a novel RAT, #DarkWatchman, w/ new #fileless malware techniques, sent in a Russian-language spear-phishing campaign, uniquely manipulating Windows Registry to evade most security detections. #cybersecurity https://t.co/I3HhSiNmSI>], 
     #'peterkruse': []}
@@ -879,21 +881,21 @@ def ScrapeTwitter(company):
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 def WebScraping(company): 
-    #ScrapeHackerNews(company)
-    #ScrapeDarkReading(company) 
-    #ScrapeZDnet(company)
-    #ScrapeTechRP(company)
-    #ScrapeMcAfee(company)
-    #ScrapeGraham(company)
-    #ScrapeITsecguru(company) #Ne fonctionne pas encore
-    #ScrapeCSO(company)
-    #ScrapeInfosecmag(company)
-    #ScrapeNakedsec(company)
-    #ScrapeKebronsec(company)
-    ScrapeTwitter(company) 
+    ScrapeHackerNews(company)
+    ScrapeDarkReading(company) 
+    ScrapeZDnet(company)
+    ScrapeTechRP(company)
+    ScrapeMcAfee(company)
+    ScrapeGraham(company)
+    ScrapeITsecguru(company) #Ne fonctionne pas encore
+    ScrapeCSO(company)
+    ScrapeInfosecmag(company)
+    ScrapeNakedsec(company)
+    ScrapeKebronsec(company)
+    #ScrapeTwitter(company) 
 
 def main():
-    WebScraping("ALPHV")
+    WebScraping("Samsung")
     
     
     
