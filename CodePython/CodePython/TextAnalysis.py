@@ -48,7 +48,7 @@ example_sentence=("Cisco Systems has rolled out security updates for a critical 
 keywords=["vulnerability", "attack", "threat", "breach"]
 
 
-#Retourne le nombre de fois qu'un mot clé ait apparu dans le texte
+#Retourne le nombre de fois qu'un mot clé est apparu dans le texte
 def CountOccurences(keywords, text):
     occurence = 0
 
@@ -110,11 +110,6 @@ def TestDetectSentences(text):
     sentences=DetectSentences(text, keywords)
     print(sentences)
 
-#Pour déterminer le temps de la phrase (passé, présent ou futur). /!\ En anglais!
-def DetectTense(sentence):
-    tense=""
-    return tense
-
 #Identifier une date dans une phrase et la retourne en un objet de type datetime
 #pip install dateparser
 
@@ -122,7 +117,7 @@ def DetectTense(sentence):
 import warnings
 warnings.filterwarnings("ignore", message="The localize method is no longer necessary, as this time zone supports the fold attribute")
 
-def IdentifyDate(sentence, relativeDate):
+def IdentifyDateSentence(sentence, relativeDate):
 
     #La méthode search_dates renvoie une liste de tuples
     #Chaque tuple correspond à (date ou expression temporelle repérée dans un string, objet datetime correspondant)
@@ -139,7 +134,7 @@ def IdentifyDateInText(text, relativeDate):
         if(sentence is not None):
             print("---------------Phrase---------------\n" + sentence.text)
             text = sentence.text
-            dates = IdentifyDate(text, relativeDate)
+            dates = IdentifyDateSentence(text, relativeDate)
             if len(dates) != 0:
                 print("Dates identifiées : ")
                 for date in dates:
@@ -164,16 +159,42 @@ def LexicalField(keyword):
         keyword = nlp.vocab.strings[word]
         print(keyword)
         #On demande à l'admin s'il veut rajouter ce mot à la liste de mots clés
-        add = input("Add to the list of keyword ? (y/n) : ") 
+        add = input("Add '" + keyword + "' to the list of keyword ? (y/n) : ") 
+        while(add != 'y' and add != 'n'):
+            add = input("Incorrect entry. \nAdd '" + keyword + "' to the list of keyword ? (y/n) : ") 
         if(add == 'y'):
-            keywords.append(keyword)
-    #Puis les ajouter à la liste de mots-clés
+            keywords.append(keyword) #On ajoute le mot clé validé par l'admin
 
 def TestLexicalField():
     keyword = 'cyberattack'
     LexicalField(keyword)
     print(keywords)
 
+#A faire la première fois que vous lancez le code:
+#import nltk
+#nltk.download('punkt')
+#nltk.download('averaged_perceptron_tagger')
+#nltk.download('universal_tagset')
+
+from nltk import word_tokenize, pos_tag
+#Pour déterminer le temps de la phrase (passé, présent ou futur). /!\ En anglais!
+def DetectTense(sentence):
+    tense=[]
+    text = word_tokenize(sentence)
+    #pos_tag renvoie une liste de tuples sous la forme [(mot1, tag1), (mot2, tag2), ... ]
+    tagged = pos_tag(text)
+    for word in tagged:
+        if(word[1] == ('VBD' or 'VBN')):
+            tense.append((word[0], 'past'))
+        elif(word[1] == ('VBP' or 'VBZ' or 'VBG')):
+            tense.append((word[0], 'present'))
+        elif(word[1] == 'MD'):
+            tense.append((word[0], 'future'))
+    return tense
+
+def TestDetectTense():
+    sentence = 'With these accounts, the attacker could access and modify telephony and user resources across all the Unified platforms that are associated to the vulnerable Cisco Unified CCMP," Cisco noted in an advisory published this week.'
+    print(DetectTense(sentence))
 
 def main():
     #print(example_bloc)
@@ -181,7 +202,8 @@ def main():
     #TestCompteurOccurences()
     #TestIdentifierSujet()
     #TestIdentifyDateInText()
-    TestLexicalField()
+    #TestLexicalField()
+    TestDetectTense()
 
 main()
 
