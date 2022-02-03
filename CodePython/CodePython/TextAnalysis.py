@@ -172,10 +172,10 @@ def TestLexicalField():
     print(keywords)
 
 #A faire la première fois que vous lancez le code:
-import nltk
-nltk.download('punkt')
-nltk.download('averaged_perceptron_tagger')
-nltk.download('universal_tagset')
+#import nltk
+#nltk.download('punkt')
+#nltk.download('averaged_perceptron_tagger')
+#nltk.download('universal_tagset')
 
 
 #Pour déterminer le temps de la phrase (passé, présent ou futur). /!\ En anglais!
@@ -197,7 +197,7 @@ def TestDetectTense():
     sentence = 'With these accounts, the attacker could access and modify telephony and user resources across all the Unified platforms that are associated to the vulnerable Cisco Unified CCMP," Cisco noted in an advisory published this week.'
     print(DetectTense(sentence))
 
-def main():
+def main2():
     #print(example_bloc)
     #TestDetectSentences(example_bloc)
     #TestCompteurOccurences()
@@ -206,7 +206,7 @@ def main():
     #TestLexicalField()
     TestDetectTense()
 
-main()
+main2()
 
 
 ##Tester la similarité de deux phrases
