@@ -215,7 +215,7 @@ def TestDetectTense():
     sentence = 'Cisco is going to do it in an advisory published this week.'
     print(DetectTense(sentence))
 
-def main2():
+def main_function():
     #print(example_bloc)
     #TestDetectSentences(example_bloc)
     #TestCompteurOccurences()
@@ -224,7 +224,8 @@ def main2():
     #TestLexicalField()
     TestDetectTense()
 
-main2()
+if __name__=="__main__":
+    main_function()
 
 
 ##Tester la similarité de deux phrases
