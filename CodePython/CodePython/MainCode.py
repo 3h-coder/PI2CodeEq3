@@ -15,7 +15,7 @@ import pandas as pd
 import pickle
 import dateparser
 import warnings
-from TextAnalyzer import TextAnalyzer
+from textAnalyzer import TextAnalyzer
 nlp = spacy.load('en_core_web_sm') #python -m spacy download en
 warnings.filterwarnings("ignore", message="The localize method is no longer necessary, as this time zone supports the fold attribute")
 
