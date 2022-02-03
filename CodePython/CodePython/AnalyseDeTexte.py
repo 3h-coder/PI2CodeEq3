@@ -1,9 +1,30 @@
 #Objectif : trier les données des textes après scraping pour ensuite identifier une éventuelle menace/attaque visant une des entreprises partenaire
 
+
+import pandas
+from nltk.corpus import stopwords
+from nltk.stem.snowball import SnowballStemmer
+stemmer = SnowballStemmer(language='english')
+#CMD
+#pip install nltk
+
+#Python console
+#import nltk
+#nltk.download('stopwords')
+
+
+from dateparser import parse 
+from dateparser.search import search_dates
 import numpy as np
 import spacy
 #python -m spacy download en_core_web_md
-nlp = spacy.load('en_core_web_md')
+#nlp = spacy.load('en_core_web_md')
+
+
+#python -m spacy download en_core_web_lg
+nlp = spacy.load('en_core_web_lg')
+
+
 
 
 #Retourne le nombre de fois qu'un mot clé ait apparu dans le texte
@@ -63,9 +84,6 @@ import warnings
 warnings.filterwarnings("ignore", message="The localize method is no longer necessary, as this time zone supports the fold attribute")
 
 def IdentifierDate(sentence):
-    from dateparser import parse 
-    from dateparser.search import search_dates
-
     #La méthode search_dates renvoie une liste de tuples
     #Chaque tuple correspond à (date ou expression temporelle repérée dans un string, objet datetime correspondant)
     extractedDates = search_dates(sentence, languages = ['en']) #Tableau contenant les dates repérées dans la phrase passée ne paramètre
@@ -92,16 +110,67 @@ def TestIdentifierDate():
             else:
                 print("Aucune date trouvée.")
             print("\n")
-        
+
+def GenerateRelevant(CompanyName):
+    Comparison_Relevant=["The company "+CompanyName+" is attacked by pirates","company "+CompanyName+" suffers from cyberattackers","A security breach was detected"]
+
+
+def seperateBySentence(stringarray,CompanyName):
+    count=1
+    Comparison_Relevant=["The company is attacked by pirates","The company suffers from cyberattackers","A security breach was detected"]
+    for string in stringarray:
+        print("Paragraphe "+str(count))
+        if(string==""):
+            print("paragraphe vide")
+        else:
+            # Tokeniser le string
+            doc = nlp(string)
+            # Séparer le string en plusieurs phrases
+            sentences=[X.text for X in doc.sents]
+            print("sentences")
+            for sentence in sentences:
+                print("-----------------New sentence----------------")
+                print(sentence)
+                print("sujet de la phrase")
+                print(IdentifierSujet(sentence))
+                print("dates dans la phrase")
+                IdentifierDate(sentence)
+                print("tokens")
+                extractTokens(sentence)
+                doc_sentence = nlp(sentence)
+                print(doc_sentence, '<->', nlp(compare_sentence1), doc_sentence.similarity(nlp(compare_sentence1)))
+        count+=1
+
+
+def extractTokens(string):
+    #tokenisation
+    doc = nlp(string)
+    tokens= [X.text for X in doc]
+
+    #removing stopwords
+    stopWords = set(stopwords.words('english'))
+    clean_words = []
+    for token in tokens:
+            if token not in stopWords:
+                clean_words.append(token)   #removes "stop words", useless words such as 'the', 'and'... etc.
+    stems=[stemmer.stem(X) for X in clean_words]
+    return stems
 
 
 def main():
+    file1 = open('article.txt', 'r',encoding='utf8')
+    stringarray = file1.readlines()
+    CompanyName="Panasonic"
+    #string="Japanese consumer electronics giant Panasonic has disclosed a security breach wherein an unauthorized third-party broke into its network and potentially accessed data from one of its file servers. As the result of an internal investigation, it was determined that some data on a file server had been accessed during the intrusion," the company said in a short statement published on November 26. Panasonic didn't reveal the exact nature of the data that was accessed, but TechCrunch reported that the breach began on June 22 and ended on November 3."
     #TestCompteurOccurences()
     #TestIdentifierSujet()
-    TestIdentifierDate()
+    #TestIdentifierDate()
+    seperateBySentence(stringarray,CompanyName)
     
 
 main()
+
+
 
 
 

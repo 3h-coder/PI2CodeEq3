@@ -11,7 +11,8 @@ import requests, webbrowser
 from bs4 import BeautifulSoup
 from googlesearch import search
 import spacy 
-nlp = spacy.load('en_core_web_sm') #python -m spacy download en
+#nlp = spacy.load('en_core_web_sm') #python -m spacy download en
+import AnalyseDeTexte
 
 def introwebscraping():
     query= "SolarWinds Cyberattaque" #La recherche que l'on effectue sur Google
@@ -72,7 +73,9 @@ def webscraping(company): #/!\ La recherche est Case sensitive (les majuscules/m
 
 def main():
     #print("Hello World!") #Remplacer cette ligne par la fonction à executer.
-    webscraping("Celo")
+    #webscraping("Celo")
+    AnalyseDeTexte.main()
+    
 
 
 main()
