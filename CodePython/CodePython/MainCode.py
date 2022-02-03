@@ -856,9 +856,7 @@ def SearchTweetsUser(username, company):
             tweet_link='https://twitter.com/{}/status/{}'.format(username, tweet.id)
             ta=TextAnalyzer(company, tweet.text, tweet_link, tweet_date)
             ta.RunAnalysis()
-            yield ta
-
-     
+            yield ta    
 
 def ScrapeTwitter(company):
     usernames=["briankrebs", "threatpost", "peterkruse"]

@@ -8,6 +8,7 @@ from bs4 import BeautifulSoup
 from dateparser import parse 
 from dateparser.search import search_dates
 import datetime
+from nltk import word_tokenize, pos_tag
 #python -m spacy download en_core_web_sm
 nlp = spacy.load('en_core_web_sm')
 
@@ -171,12 +172,12 @@ def TestLexicalField():
     print(keywords)
 
 #A faire la première fois que vous lancez le code:
-#import nltk
-#nltk.download('punkt')
-#nltk.download('averaged_perceptron_tagger')
-#nltk.download('universal_tagset')
+import nltk
+nltk.download('punkt')
+nltk.download('averaged_perceptron_tagger')
+nltk.download('universal_tagset')
 
-from nltk import word_tokenize, pos_tag
+
 #Pour déterminer le temps de la phrase (passé, présent ou futur). /!\ En anglais!
 def DetectTense(sentence):
     tense=[]
