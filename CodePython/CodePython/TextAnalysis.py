@@ -182,18 +182,36 @@ def DetectTense(sentence):
     tense=[]
     text = word_tokenize(sentence)
     #pos_tag renvoie une liste de tuples sous la forme [(mot1, tag1), (mot2, tag2), ... ]
-    tagged = pos_tag(text)
-    for word in tagged:
-        if(word[1] == ('VBD' or 'VBN')):
-            tense.append((word[0], 'past'))
-        elif(word[1] == ('VBP' or 'VBZ' or 'VBG')):
-            tense.append((word[0], 'present'))
-        elif(word[1] == 'MD'):
-            tense.append((word[0], 'future'))
+    words = pos_tag(text)
+    print(words)
+    for i in range(len(words)):
+        #Si le verbe est au past tense 
+        if(words[i][1] == 'VBD'):
+            #S'il est suivi par un participe passé, 
+            if(words[i+1][1] == 'VBN'):
+                tense.append((str(words[i][0]) + str(words[i][0]), 'recent past'))
+                i += 1
+            #S'il y a un adverbe entre le modal et le participe passé
+            elif(words[i+2][1] == 'VBN'):
+                i += 2
+            #Si c'est un verbe au preterit
+            else:
+                tense.append((words[i][0], 'recent past'))
+        
+        #Si le verbe est au présent
+        elif(words[i][1] in ['VBP', 'VBZ']):
+            tense.append((words[i][0], 'present'))
+            #S'il est suivi par un participe présent, on évite la répétition
+            if (words[i+1][1] == 'VBG'):
+                i += 1
+
+        #Si le verbe est un modal
+        elif(words[i][1] == 'MD'):
+            tense.append((words[i][0], 'modal'))
     return tense
 
 def TestDetectTense():
-    sentence = 'With these accounts, the attacker could access and modify telephony and user resources across all the Unified platforms that are associated to the vulnerable Cisco Unified CCMP," Cisco noted in an advisory published this week.'
+    sentence = 'Cisco is going to do it in an advisory published this week.'
     print(DetectTense(sentence))
 
 def main():
