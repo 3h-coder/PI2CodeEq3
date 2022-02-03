@@ -289,9 +289,9 @@ def ScrapeTechRP(company):
                     link_found=a.get('href')
                     newpage=requests.get(a.get('href'))
                     newsoup=BeautifulSoup(newpage.text, "lxml")
-                    wrapper=a.parent
-                    span=wrapper.find('span',{"class":"separator"})
-                    article_date=wrapper.find('span',{"class":"separator"}).next_sibling.strip() #On extrait la date de l'article qu'il faudra ensuite formater
+                    wrapper=a.parent.parent
+                    span=wrapper.find('span',{"class":"date-published"})
+                    article_date=span.find('time').text #On extrait la date de l'article qu'il faudra ensuite formater
                     article_date=dateparser.parse(article_date).date()
                     article=""
                     for paragraph in newsoup.find_all('p'):
@@ -320,9 +320,9 @@ def ScrapeTechRP(company):
                             or (company.capitalize() in a.get('href')) or (company.capitalize() in a.text):
                                 newpage=requests.get(a.get('href'))
                                 newsoup=BeautifulSoup(newpage.text, "lxml")
-                                wrapper=a.parent
-                                span=wrapper.find('span',{"class":"separator"})
-                                article_date=wrapper.find('span',{"class":"separator"}).next_sibling.strip() #On extrait la date de l'article qu'il faudra ensuite formater
+                                wrapper=a.parent.parent
+                                span=wrapper.find('span',{"class":"date-published"})
+                                article_date=span.find('time').text #On extrait la date de l'article qu'il faudra ensuite formater
                                 article_date=dateparser.parse(article_date).date()
                                 article=""
                                 for paragraph in newsoup.find_all('p'):
@@ -856,9 +856,7 @@ def SearchTweetsUser(username, company):
             tweet_link='https://twitter.com/{}/status/{}'.format(username, tweet.id)
             ta=TextAnalyzer(company, tweet.text, tweet_link, tweet_date)
             ta.RunAnalysis()
-            yield ta
-
-     
+            yield ta    
 
 def ScrapeTwitter(company):
     usernames=["briankrebs", "threatpost", "peterkruse"]
@@ -881,21 +879,21 @@ def ScrapeTwitter(company):
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 def WebScraping(company): 
-    ScrapeHackerNews(company)
-    ScrapeDarkReading(company) 
-    ScrapeZDnet(company)
+    #ScrapeHackerNews(company)
+    #ScrapeDarkReading(company) 
+    #ScrapeZDnet(company)
     ScrapeTechRP(company)
-    ScrapeMcAfee(company)
-    ScrapeGraham(company)
-    ScrapeITsecguru(company) #Ne fonctionne pas encore
-    ScrapeCSO(company)
-    ScrapeInfosecmag(company)
-    ScrapeNakedsec(company)
-    ScrapeKebronsec(company)
+    #ScrapeMcAfee(company)
+    #ScrapeGraham(company)
+    #ScrapeITsecguru(company) #Ne fonctionne pas encore
+    #ScrapeCSO(company)
+    #ScrapeInfosecmag(company)
+    #ScrapeNakedsec(company)
+    #ScrapeKebronsec(company)
     #ScrapeTwitter(company) 
 
 def main():
-    WebScraping("Samsung")
+    WebScraping("Kaspersky")
     
     
     
