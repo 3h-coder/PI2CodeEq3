@@ -125,14 +125,14 @@ def ScrapeHackerNews(company):
                                 found=True
                                 print("Information found on "+a.get('href'))
                 else: #Requête page suivante échoue, on sort de la boucle
-                    print("Request Failure: "+nextpageURL+" returned: "+nextpage)
+                    print("Request Failure: "+nextpageURL+" returned: "+str(nextpage))
                     break
             else: #Pas de page suivante, on sort de la boucle
                 break
         if(found==False):
             print("Could not scrape any information about "+ company+" on "+URL)
     else: #L'URL de base est invalide
-        print("Request Failure: "+URL+" returned: "+mainpage)
+        print("Request Failure: "+URL+" returned: "+str(mainpage))
 
 def ScrapeDarkReading(company): #Site à scroll infini
     URL="https://www.darkreading.com/attacks-breaches"
@@ -187,14 +187,14 @@ def ScrapeDarkReading(company): #Site à scroll infini
                                 found=True
                                 print("Information found on "+a.get('href'))
                 else: #Requête page suivante échoue, on sort de la boucle
-                    print("Request Failure: "+nextpageURL+" returned: "+nextpage)
+                    print("Request Failure: "+nextpageURL+" returned: "+str(nextpage))
                     break
             else: #Pas de page suivante, on sort de la boucle
                 break
         if(found==False):
             print("Could not scrape any information about "+ company+" on "+URL)
     else: #L'URL de base est invalide
-        print("Request Failure: "+URL+" returned: "+mainpage)
+        print("Request Failure: "+URL+" returned: "+str(mainpage))
 
 def ScrapeZDnet(company): #Reconstrucrtion d'URL nécessaire  --> stringObject[start:stop:interval]
     URL="https://www.zdnet.com/blog/security/"
@@ -263,14 +263,14 @@ def ScrapeZDnet(company): #Reconstrucrtion d'URL nécessaire  --> stringObject[s
                                 found=True
                                 print("Information found on "+anchor_link)
                 else: #Requête page suivante échoue, on sort de la boucle
-                    print("Request Failure: "+nextpageURL+" returned: "+nextpage)
+                    print("Request Failure: "+nextpageURL+" returned: "+str(nextpage))
                     break
             else: #Pas de page suivante, on sort de la boucle
                 break
         if(found==False):
             print("Could not scrape any information about "+ company+" on "+URL)
     else: #L'URL de base est invalide
-        print("Request Failure: "+URL+" returned: "+mainpage)
+        print("Request Failure: "+URL+" returned: "+str(mainpage))
 
 def ScrapeTechRP(company):
     URL="https://www.techrepublic.com/topic/security/"
@@ -289,10 +289,13 @@ def ScrapeTechRP(company):
                     link_found=a.get('href')
                     newpage=requests.get(a.get('href'))
                     newsoup=BeautifulSoup(newpage.text, "lxml")
-                    wrapper=a.parent.parent
-                    span=wrapper.find('span',{"class":"date-published"})
-                    article_date=span.find('time').text #On extrait la date de l'article qu'il faudra ensuite formater
-                    article_date=dateparser.parse(article_date).date()
+                    try:
+                        wrapper=a.parent.parent
+                        span=wrapper.find('span',{"class":"date-published"})
+                        article_date=span.find('time').text #On extrait la date de l'article qu'il faudra ensuite formater
+                        article_date=dateparser.parse(article_date).date()
+                    except:
+                        article_date="undefined"
                     article=""
                     for paragraph in newsoup.find_all('p'):
                         article+="\n"+paragraph.text
@@ -320,10 +323,13 @@ def ScrapeTechRP(company):
                             or (company.capitalize() in a.get('href')) or (company.capitalize() in a.text):
                                 newpage=requests.get(a.get('href'))
                                 newsoup=BeautifulSoup(newpage.text, "lxml")
-                                wrapper=a.parent.parent
-                                span=wrapper.find('span',{"class":"date-published"})
-                                article_date=span.find('time').text #On extrait la date de l'article qu'il faudra ensuite formater
-                                article_date=dateparser.parse(article_date).date()
+                                try:
+                                    wrapper=a.parent.parent
+                                    span=wrapper.find('span',{"class":"date-published"})
+                                    article_date=span.find('time').text #On extrait la date de l'article qu'il faudra ensuite formater
+                                    article_date=dateparser.parse(article_date).date()
+                                except:
+                                    article_date="undefined"
                                 article=""
                                 for paragraph in newsoup.find_all('p'):
                                     article+="\n"+paragraph.text
@@ -332,14 +338,14 @@ def ScrapeTechRP(company):
                                 found=True
                                 print("Information found on "+a.get('href'))
                 else: #Requête page suivante échoue, on sort de la boucle
-                    print("Request Failure: "+nextpageURL+" returned: "+nextpage)
+                    print("Request Failure: "+nextpageURL+" returned: "+str(nextpage))
                     break
             else: #Pas de page suivante, on sort de la boucle
                 break
         if(found==False):
             print("Could not scrape any information about "+ company+" on "+URL)
     else: #L'URL de base est invalide
-        print("Request Failure: "+URL+" returned: "+mainpage)
+        print("Request Failure: "+URL+" returned: "+str(mainpage))
  
 def ScrapeMcAfee(company):
     URL="https://www.mcafee.com/blogs/other-blogs/mcafee-labs/"
@@ -445,7 +451,7 @@ def ScrapeGraham(company): #Définition de headers nécessaire
                         nextpageURL=a['href']
             if(nextpageURL!=""):
                 page_counter=page_counter+1
-                nextpage=requests.get(nextpageURL)
+                nextpage=requests.get(nextpageURL, headers=headers)
                 if nextpage.ok:
                     soup=BeautifulSoup(nextpage.text, "lxml")
                     anchors=soup.find_all('a')
@@ -467,14 +473,14 @@ def ScrapeGraham(company): #Définition de headers nécessaire
                                 found=True
                                 print("Information found on "+a.get('href'))
                 else: #Requête page suivante échoue, on sort de la boucle
-                    print("Request Failure: "+nextpageURL+" returned: "+nextpage)
+                    print("Request Failure: "+nextpageURL+" returned: "+str(nextpage))
                     break
             else: #Pas de page suivante, on sort de la boucle
                 break
         if(found==False):
             print("Could not scrape any information about "+ company+" on "+URL)
     else: #L'URL de base est invalide
-        print("Request Failure: "+URL+" returned: "+mainpage)
+        print("Request Failure: "+URL+" returned: "+str(mainpage))
 
 def ScrapeITsecguru(company): #Scroll infini
     URL="https://www.itsecurityguru.org/news/"
@@ -538,12 +544,12 @@ def ScrapeCSO(company): #Reconstruciton d'URL nécessaire / Recherche de page su
                             found=True
                             print("Information found on "+anchor_link)
             else: #Requête page suivante échoue, on sort de la boucle
-                print("Request Failure: "+nextpageURL+" returned: "+nextpage)
+                print("Request Failure: "+nextpageURL+" returned: "+str(nextpage))
                 break
         if(found==False):
             print("Could not scrape any information about "+ company+" on "+URL)
     else: #L'URL de base est invalide
-        print("Request Failure: "+URL+" returned: "+mainpage)
+        print("Request Failure: "+URL+" returned: "+str(mainpage))
 
 def ScrapeInfosecmag(company):
     URL="https://www.infosecurity-magazine.com/news/"
@@ -601,14 +607,14 @@ def ScrapeInfosecmag(company):
                                 ta.RunAnalysis() 
                                 print("Information found on "+a.get('href'))
                 else: #Requête page suivante échoue, on sort de la boucle
-                    print("Request Failure: "+nextpageURL+" returned: "+nextpage)
+                    print("Request Failure: "+nextpageURL+" returned: "+str(nextpage))
                     break
             else: #Pas de page suivante, on sort de la boucle
                 break
         if(found==False):
             print("Could not scrape any information about "+ company+" on "+URL)
     else: #L'URL de base est invalide
-        print("Request Failure: "+URL+" returned: "+mainpage)
+        print("Request Failure: "+URL+" returned: "+str(mainpage))
 
 def ScrapeNakedsec(company):
     URL="https://nakedsecurity.sophos.com/"
@@ -666,14 +672,14 @@ def ScrapeNakedsec(company):
                                 found=True
                                 print("Information found on "+a.get('href'))
                 else: #Requête page suivante échoue, on sort de la boucle
-                    print("Request Failure: "+nextpageURL+" returned: "+nextpage)
+                    print("Request Failure: "+nextpageURL+" returned: "+str(nextpage))
                     break
             else: #Pas de page suivante, on sort de la boucle
                 break
         if(found==False):
             print("Could not scrape any information about "+ company+" on "+URL)
     else: #L'URL de base est invalide
-        print("Request Failure: "+URL+" returned: "+mainpage)
+        print("Request Failure: "+URL+" returned: "+str(mainpage))
 
 def ScrapeKebronsec(company):
     URL="https://krebsonsecurity.com/"
@@ -706,7 +712,7 @@ def ScrapeKebronsec(company):
                     print("Information found on "+a.get('href'))
         while(found==False and page_counter<2): #Tant que l'on a pas trouvé ou scrapé moins de 2 pages, on scrape la page suivante.
             nextpageURL=""
-            for a in anchors: #Recherche de la page suivante
+            for a in soup.find_all('a'): #Recherche de la page suivante
                 anchor=str(a)
                 if("Next >" in anchor):
                     if(a['href'].startswith("https://")):
@@ -737,14 +743,14 @@ def ScrapeKebronsec(company):
                                 found=True
                                 print("Information found on "+a.get('href'))
                 else: #Requête page suivante échoue, on sort de la boucle
-                    print("Request Failure: "+nextpageURL+" returned: "+nextpage)
+                    print("Request Failure: "+nextpageURL+" returned: "+str(nextpage))
                     break
             else: #Pas de page suivante, on sort de la boucle
                 break
         if(found==False):
             print("Could not scrape any information about "+ company+" on "+URL)
     else: #L'URL de base est invalide
-        print("Request Failure: "+URL+" returned: "+mainpage)
+        print("Request Failure: "+URL+" returned: "+str(mainpage))
 
 
 #-----------------------------------------------------------------------------Twitter-------------------------------------------------------------------------------------------
@@ -867,10 +873,10 @@ def ScrapeTwitter(company):
             Tweetlist.append(ta)
 
     if not Tweetlist:
-        print("No information found on twitter about company")
+        print("Could not find any information about "+company+" on Twitter.")
     else:
-        for ta in Tweetlist:
-            print(ta)
+        #for ta in Tweetlist:
+            #print(ta)
     #{'briankrebs': [<Tweet id=1481030224750026764 text=It's Patch Tuesday, Windows users! Today's batch includes fixes for something like 120 vulnerabilities, including a critical, "wormable" flaw in Windows 10/11 and later Server versions, and 3 Exchange bugs, 1 of which was reported to Microsoft by the NSA. https://t.co/zh1UdM3qZq>], 
     #'threatpost': [<Tweet id=1471484422469955585 text=@Prevailion’s PACT discovered a novel RAT, #DarkWatchman, w/ new #fileless malware techniques, sent in a Russian-language spear-phishing campaign, uniquely manipulating Windows Registry to evade most security detections. #cybersecurity https://t.co/I3HhSiNmSI>], 
     #'peterkruse': []}
@@ -879,18 +885,18 @@ def ScrapeTwitter(company):
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 def WebScraping(company): 
-    #ScrapeHackerNews(company)
-    #ScrapeDarkReading(company) 
-    #ScrapeZDnet(company)
+    ScrapeHackerNews(company)
+    ScrapeDarkReading(company) 
+    ScrapeZDnet(company)
     ScrapeTechRP(company)
-    #ScrapeMcAfee(company)
-    #ScrapeGraham(company)
+    ScrapeMcAfee(company)
+    ScrapeGraham(company)
     #ScrapeITsecguru(company) #Ne fonctionne pas encore
-    #ScrapeCSO(company)
-    #ScrapeInfosecmag(company)
-    #ScrapeNakedsec(company)
-    #ScrapeKebronsec(company)
-    #ScrapeTwitter(company) 
+    ScrapeCSO(company)
+    ScrapeInfosecmag(company)
+    ScrapeNakedsec(company)
+    ScrapeKebronsec(company)
+    ScrapeTwitter(company) 
 
 def main():
     WebScraping("Kaspersky")
