@@ -179,41 +179,72 @@ def TestLexicalField():
 
 
 #Pour déterminer le temps de la phrase (passé, présent ou futur). /!\ En anglais!
-def DetectTense(sentence):
-    tense=[]
+def DetectTenses(sentence):
+    tenses = []
     text = word_tokenize(sentence)
     #pos_tag renvoie une liste de tuples sous la forme [(mot1, tag1), (mot2, tag2), ... ]
     words = pos_tag(text)
     print(words)
     for i in range(len(words)):
-        #Si le verbe est au past tense 
-        if(words[i][1] == 'VBD'):
-            #S'il est suivi par un participe passé, 
-            if(words[i+1][1] == 'VBN'):
-                tense.append((str(words[i][0]) + str(words[i][0]), 'recent past'))
-                i += 1
-            #S'il y a un adverbe entre le modal et le participe passé
-            elif(words[i+2][1] == 'VBN'):
-                i += 2
+        #TEMPS DU PASSE
+        #Si le verbe est au preterit 
+        if words[i][1] == 'VBD': 
+            if words[i][0] == 'had':
+                #S'il est suivi par un participe passé,
+                if words[i+1][1] == 'VBN':
+                    tenses.append((str(words[i][0]) + ' ' + str(words[i+1][0]), 'pluperfect -> distant past'))
+                    i += 1
+                #S'il y a un adverbe entre le modal et le participe passé
+                elif words[i+2][1] == 'VBN':
+                    tenses.append((str(words[i][0]) + ' ' + str(words[i+2][0]), 'pluperfect -> distant past'))
+                    i += 2
             #Si c'est un verbe au preterit
             else:
-                tense.append((words[i][0], 'recent past'))
+                tenses.append((words[i][0], 'preterit'))
         
+        #TEMPS DU PRESENT
         #Si le verbe est au présent
-        elif(words[i][1] in ['VBP', 'VBZ']):
-            tense.append((words[i][0], 'present'))
-            #S'il est suivi par un participe présent, on évite la répétition
-            if (words[i+1][1] == 'VBG'):
+        elif words[i][1] in ['VBP', 'VBZ']:
+            if words[i][0] in ['has', 'have']:
+                #S'il est suivi d'un participe passé
+                if words[i+1][1] == 'VBN':
+                    tenses.append((str(words[i][0]) + ' ' + str(words[i+1][0]), 'present perfect'))
+                    i += 1
+                #S'il y a un adverbe entre le modal et le participe passé
+                elif words[i+2][1] == 'VBN':
+                    tenses.append((str(words[i][0]) + ' ' + str(words[i+2][0]), 'present perfect'))
+                    i += 2
+                else:
+                    tenses.append((words[i][0], 'present'))
+            #S'il est suivi par un verbe en -ing
+            elif(words[i+1][1] == 'VBG'):
+                tenses.append((str(words[i][0]) + ' ' + str(words[i+1][0]), 'present continuous'))
                 i += 1
+            elif(words[i+2][1] == 'VBG'):
+                tenses.append((str(words[i][0]) + ' ' + str(words[i+2][0]), 'present continuous'))
+                i += 2
+            else:
+                tenses.append((words[i][0], 'present'))
 
         #Si le verbe est un modal
         elif(words[i][1] == 'MD'):
-            tense.append((words[i][0], 'modal'))
-    return tense
+            #TEMPS DU FUTUR
+            if(words[i][0] == 'will'):
+                if(words[i+1][0] == 'have' and words[i+2][1] == 'VBN'):
+                    tenses.append((str(words[i][0]) + ' ' + str(words[i+1][0]) + ' ' + str(words[i+2][0]), 'futur antérieur'))
+                    i += 2
+                elif(words[i+2][0] == 'have' and words[i+3][1] == 'VBN'):
+                    tenses.append((str(words[i][0]) + ' ' + str(words[i+2][0]) + ' ' + str(words[i+3][0]), 'futur antérieur'))
+                    i += 3
+                else:
+                    tenses.append((str(words[i][0]) + ' ' + str(words[i+1][0]), 'future'))
+    return tenses
 
-def TestDetectTense():
-    sentence = 'Cisco is going to do it in an advisory published this week.'
-    print(DetectTense(sentence))
+def TestDetectTenses():
+    sentence = "Cisco will just have been making it in an advisory published this week."
+    tenses = DetectTenses(sentence)
+    print('\n------------------------------Verbes détectés------------------------------')
+    print(tenses)
 
 def main_function():
     #print(example_bloc)
@@ -222,7 +253,7 @@ def main_function():
     #TestIdentifierSujet()
     #TestIdentifyDateInText()
     #TestLexicalField()
-    TestDetectTense()
+    TestDetectTenses()
 
 if __name__=="__main__":
     main_function()
