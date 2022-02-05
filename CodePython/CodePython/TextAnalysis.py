@@ -9,8 +9,8 @@ from dateparser import parse
 from dateparser.search import search_dates
 import datetime
 from nltk import word_tokenize, pos_tag
-#python -m spacy download en_core_web_sm
-nlp = spacy.load('en_core_web_sm')
+#python -m spacy download en_core_web_md
+nlp = spacy.load('en_core_web_md')
 
 #Pour extraire un article depuis une page web qui servira ensuite d'exemple pour toutes nos fonctions de test.
 def extract_example(number): #bien mettre à jour le numéro
@@ -245,12 +245,11 @@ def main_function():
     #TestIdentifierSujet()
     #TestIdentifyDateInText()
     #TestLexicalField()
-    #TestDetectTenses()
-    extract_example()
+    TestDetectTenses()
+    #extract_example()
 
 if __name__=="__main__":
-    #main_function()
-    print("")
+    main_function()
 
 
 ##Tester la similarité de deux phrases
