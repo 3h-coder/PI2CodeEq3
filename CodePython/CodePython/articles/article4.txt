@@ -1,0 +1,77 @@
+New investors including Liberty Global have joined the fray.
+Charlie Osborne is a cybersecurity journalist and photographer who writes for ZDNet and CNET from London.
+Lacework has raised $1.3 billion in a new funding round to bolster its position in the cloud security market. 
+Announced on Thursday, the Series D funding round was led by existing investors Sutter Hill Ventures, Altimeter Capital, D1 Capital Partners, and Tiger Global Management. 
+New investors have joined, including Liberty Global, General Catalyst, Snowflake Ventures, and Morgan Stanley Investment Management.
+Founded in 2015, Lacework develops cloud security solutions for the cloud, containers, and DevOps teams. The Lacework Cloud Security Platform collects, analyzes, and compiles security and threat data for anomaly detection, event and alert visualization, and compliance.  
+The San Jose, Calif.-based company counts Cloudera, VMware, Nextdoor, and Snowflake among its customers.  
+Lacework says the cash injection will be used to expand go-to-market strategies in the cloud security sector and to fund product development and innovation.  
+In addition, the security firm says that some of the funding will be used to "pursue additional strategic acquisitions," building upon the recent purchase of Soluble.  
+Soluble, a cloud infrastructure management company, was acquired earlier this month. The purchase price was not disclosed.  
+Lacework previously closed a $525 million funding round. The company has now completed five separate funding rounds since 2015. 
+"Lacework's Cloud Security Platform was built in the cloud, for the cloud. It's a fundamentally different -- and better -- approach to security that is already dramatically reshaping the security market," commented Mike Speiser, Managing Director of Sutter Hill Ventures. "With an outstanding platform and an exceptional team, Lacework has repeatedly exceeded every goal over the last 18 months. We continue to believe this is one of our most promising portfolio companies." 
+Have a tip? Get in touch securely via WhatsApp | Signal at +447713 025 499, or over at Keybase: charlie0
+
+FCC approves $1.2 billion in rural broadband program funding -- with policy changes
+
+
+
+
+Cloud revenues power Microsoft's $51.7 billion Q2 in fiscal year 2022
+
+
+
+
+Best fitness deals available right now: $400 off Peloton, $40 off Apple Watch SE
+
+
+
+
+Most expensive gaming computers: $20,000 is a small price to pay for victory
+
+
+
+
+Best free tax software 2022: Free filing options
+
+
+
+
+Best gaming CPU 2022: Top Intel and AMD processors compared
+
+
+
+
+Best gaming laptop 2022: Top rigs for on-the-go gaming
+
+
+
+
+Best cheap gaming laptop 2022: Level up for less
+
+
+
+
+Best Google Chrome extension 2022: Don't miss out on these useful tools
+
+
+
+Please review our terms of service to complete your newsletter subscription.
+
+            You agree to receive updates, promotions, and alerts from ZDNet.com. You may unsubscribe at any time.
+            By joining ZDNet, you agree to our Terms of Use and Privacy Policy.
+        
+
+            You agree to receive updates, promotions, and alerts from ZDNet.com. You may unsubscribe at any time.
+                                        
+            By signing up, you agree to receive the selected newsletter(s) which you may unsubscribe from at any time. You also agree to the Terms of Use and acknowledge the data collection and usage practices outlined in our Privacy Policy.
+        
+© 2022 ZDNET, A RED VENTURES COMPANY. ALL RIGHTS RESERVED.
+                    Privacy Policy |
+                    Cookie Settings |
+                    Advertise |
+                    Terms of Use
+
+
+
+https://www.zdnet.com/article/cloud-security-firm-lacework-secures-1-3-billion-in-series-d-funding-round/

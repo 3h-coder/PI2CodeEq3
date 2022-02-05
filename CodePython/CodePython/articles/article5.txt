@@ -1,0 +1,15 @@
+Trustpilot said today that it is planning legal action against businesses involved in soliciting fraudulent reviews on its site.
+The Danish consumer reviews platform said it was forced to remove over two million fake reviews in 2020 alone, accounting for nearly 6% of those submitted to its site that year.
+Although the firm is investing in automated fraud, enforcement and anomaly detection technologies, it said this will now be matched by a step-up in litigation efforts.
+Repeat offenders will be hit with enforcement action. Trustpilot said it would seek to prevent them from soliciting fake reviews and try to recover any damages owed. If successful, these will be donated to organizations that protect consumers from online misinformation.
+Other tools at Trustpilot’s disposal are cease and desist notices, termination of business, and public banners on offending firms’ profile pages indicating fraud.
+“Consumers rely heavily on reviews to make more informed and confident purchasing decisions each and every day. Protecting and promoting trust is fundamental to Trustpilot’s mission,” said the digital firm’s chief trust officer, Carolyn Jameson.
+“Whilst the vast majority of businesses use reviews constructively to help get them closer to their customers, we’re prepared to do everything within our power to clamp down on the small minority who do not behave as they should, and instead  use fake and misleading reviews to take advantage of consumers – often those consumers who are particularly vulnerable.”
+Fake reviews are an increasing problem for platform providers, consumers and innocent vendors. A report out last year estimated that they could be responsible for as much as $152bn in purchases.
+Also, last year, a misconfigured cloud database exposed a significant scheme by vendors using the Amazon marketplace to buy fake reviews from consumers. Vendors send reviewers a list of products to choose from, and if they leave a five-star review, the individual will get to keep the item.
+At least 200,000 fake reviewers were implicated in this one scheme alone.
+The situation has deteriorated to the point that regulators are stepping in. Last June, the UK’s Competition and Markets Authority (CMA) announced the opening of a formal probe into Amazon and Google over concerns that they’re not doing enough to protect consumers from fake reviews. 
+
+
+
+https://www.infosecurity-magazine.com/news/trustpilot-sue-firms-fake-reviews/

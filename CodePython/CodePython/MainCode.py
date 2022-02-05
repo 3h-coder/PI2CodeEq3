@@ -875,8 +875,8 @@ def ScrapeTwitter(company):
     if not Tweetlist:
         print("Could not find any information about "+company+" on Twitter.")
     else:
-        #for ta in Tweetlist:
-            #print(ta)
+        for ta in Tweetlist:
+            print(ta)
     #{'briankrebs': [<Tweet id=1481030224750026764 text=It's Patch Tuesday, Windows users! Today's batch includes fixes for something like 120 vulnerabilities, including a critical, "wormable" flaw in Windows 10/11 and later Server versions, and 3 Exchange bugs, 1 of which was reported to Microsoft by the NSA. https://t.co/zh1UdM3qZq>], 
     #'threatpost': [<Tweet id=1471484422469955585 text=@Prevailion’s PACT discovered a novel RAT, #DarkWatchman, w/ new #fileless malware techniques, sent in a Russian-language spear-phishing campaign, uniquely manipulating Windows Registry to evade most security detections. #cybersecurity https://t.co/I3HhSiNmSI>], 
     #'peterkruse': []}
@@ -900,8 +900,6 @@ def WebScraping(company):
 
 def main():
     WebScraping("Kaspersky")
-    
-    
     
 
 main()
