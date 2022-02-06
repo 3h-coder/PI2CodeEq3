@@ -114,6 +114,7 @@ def DetectDateOfAttack (dateArticle,sentence):
     dateOfAttack=""
     for i in timeWords:
         if i in sentence:
+            lfjksfjsdmlkfjs
 
 
 
