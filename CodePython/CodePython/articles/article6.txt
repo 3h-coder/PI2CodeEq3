@@ -1,0 +1,26 @@
+Brits could be facing a snack shortage following a cyber-attack on 169-year-old food producer KP Snacks. 
+
+The German-owned maker of KP Nuts, Hula Hoops, Choc Dips, Nik Naks and Butterkist popcorn was targeted by threat actors on Friday. After gaining access to the company's network, hackers deployed ransomware and took the snack maker's data hostage.
+
+"As soon as we became aware of the incident, we enacted our cybersecurity response plan and engaged a leading forensic information technology firm and legal counsel to assist us in our investigation," said the British-based firm, which is known internationally for its potato chips sold under brands that include McCoy's, Tyrrell's and POM-BEAR.
+
+KP Snacks, which is owned by Intersnack, said that its internal IT teams are working with third-party experts to assess the situation.
+
+Shoppers seeking their favorite snacks may go home disappointed as the website Better Retailing, which first published news of the attack, reported that retailers had been warned by KP Snacks of delays to deliveries. 
+
+According to a letter sent out to shop owners and published by Better Retailing, KP Snacks “cannot safely process orders or dispatch goods” because of the cyber-attack.
+
+Disruptions including late deliveries and cancellations could plague the snack maker "until the end of March at the earliest". 
+
+“While this is causing some disruption to our manufacturing and shipping processes, we are already working on plans to keep our products stocked and on shelves,” said the company in a statement. 
+
+“We have been continuing to keep our employees, customers, and suppliers informed of any developments and apologize for any disruption this may have caused.”
+
+BBC News reported that cyber-criminals have published on the dark net what appear to be personal documents from KP Snacks staff, featuring the company letterhead. The post threatened to publish more data unless a ransom was paid.
+
+Keiron Holyome, vice president UK, Ireland, and Middle East, at BlackBerry, commented: “This attack on KP Snacks underscores that the global cyber risk equally applies to British institutions and their supply chains, with KP Snacks now predicting shortages after a ransomware attack.
+
+“It doesn’t matter whether it’s logistics, fuel or food–these supply chains present unique and complex challenges from a cybersecurity perspective.”
+
+
+https://www.infosecurity-magazine.com/news/kp-snacks-under-cyberattack/

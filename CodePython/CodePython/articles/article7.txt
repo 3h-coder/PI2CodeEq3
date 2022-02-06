@@ -1,0 +1,39 @@
+
+
+By Michael Hill
+
+
+						
+							UK Editor, 
+								
+									
+								
+
+
+
+
+
+
+
+
+
+
+
+
+CSO |
+
+
+
+Cybersecurity firm Cybereason and Google Cloud have unveiled a new joint solution to enhance the ability of defenders to predict, detect and respond to cyberattacks at scale. Cybereason XDR, powered by Google Chronicle, is designed to work at speed across the entire enterprise – including endpoints, networks, identities, cloud and workspaces. The partnership may be indicative of the modern threat detection and response market.
+In today’s environments, organizations typically face the challenge of managing a multi-connected attack surface with siloed solutions that hamper defense processes. With Cybereason XDR powered by Google Chronicle, defenders can leverage Cybereason AI-driven XDR to predict, understand, and end sophisticated attacks with what Cybereason claims is the only solution on the market that delivers planetary-scale protection, operation-centric detection and response, and attacker behavior prediction, according to the two companies.
+“Together Cybereason and Google Cloud are delivering the industry’s first true XDR platform,” stated Cybereason CEO and co-founder Lior Div in a press release. “Other vendors have simply done an endpoint extension and called it XDR. That’s not good enough. Our AI-driven XDR platform paints one unified story of an attack and it takes one coordinated set of actions to end attacks while predicting and preventing tomorrow’s threats.”
+Sunil Potti, general manager and vice president of cloud security at Google Cloud, added that, with this XDR solution, organizations can now reverse the adversary advantage and end malicious operations with confidence.
+Speaking to CSO, Forrester analyst Allie Mellen reflects what the platform indicates about the current state and future of endpoint protection and threat response. “Many EDR vendors have been partnering with SIEM vendors over the past year to deliver XDR – for example, Devo and EclecticIQ. This is one way EDR vendors can bring in additional log data from other sources without needing the expertise in log management in-house,” she says.
+These offerings are particularly beneficial for remote work because they give security teams visibility and insight into what is happening on endpoints, Mellen adds. “How much this new partnership will improve protection remains to be seen. However, with other XDR offerings in the space that have been available for over a year, we have seen end users get additional value. Particularly, end users rave about the detection quality with native XDR offerings,” Mellen concludes.
+More on network security:
+Michael Hill is the UK editor of CSO Online. He has spent the past five-plus years covering various aspects of the cybersecurity industry, with particular interest in the ever-evolving role of the human-related elements of information security.
+Copyright © 2021 IDG Communications, Inc.
+Copyright © 2022 IDG Communications, Inc.
+
+
+https://www.csoonline.com/article/3644422/cybereason-google-cloud-launch-xdr-solution-to-streamline-threat-detection-and-response.html
