@@ -105,7 +105,6 @@ def TestDetectSentences(text):
     sentences=DetectSentences(text, keywords)
     print(sentences)
 
-<<<<<<< HEAD
 #Pour déterminer le temps de la phrase (passé, présent ou futur). /!\ En anglais!
 def DetectTense(sentence):
     tense=""
@@ -152,10 +151,6 @@ def DetectDateOfAttack (date,sentence):
     
     return date
 
-
-
-=======
->>>>>>> 9662e4cafb3c2c3926e06e169308fa190d407114
 #Identifier une date dans une phrase et la retourne en un objet de type datetime
 #pip install dateparser
 

@@ -16,6 +16,7 @@ import pickle
 import dateparser
 import warnings
 from textAnalyzer import TextAnalyzer
+import TextAnalysis
 nlp = spacy.load('en_core_web_sm') #python -m spacy download en
 warnings.filterwarnings("ignore", message="The localize method is no longer necessary, as this time zone supports the fold attribute")
 
@@ -883,6 +884,15 @@ def ScrapeTwitter(company):
       
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+def textAnalyserTest():
+    text=TextAnalysis.LoadExampleText(6)
+    link="https://www.infosecurity-magazine.com/news/kp-snacks-under-cyberattack/"
+    article_date=dateparser.parse("3 Feb 2022").date()
+    test=TextAnalyzer("KP Snacks", text, link, article_date)
+    test.RunAnalysis()
+    print(test)
+    print(test.crit_sents)
+
 
 def WebScraping(company): 
     ScrapeHackerNews(company)
@@ -897,9 +907,11 @@ def WebScraping(company):
     ScrapeNakedsec(company)
     ScrapeKebronsec(company)
     ScrapeTwitter(company) 
+    
 
 def main():
-    WebScraping("Kaspersky")
+    #WebScraping("Kaspersky")
+    textAnalyserTest()
     
 
 main()
