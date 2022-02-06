@@ -17,7 +17,7 @@ class TextAnalyzer(object):
         self.text=text
         self.link=link
         self.text_date=text_date
-        self.status=0 #0 si RAS, 1 sinon
+        self.status=0 #0 si RAS, 1 sinon (peut-être faire un système d'échelle, 0=RAS -> 3=Attaque critique)
         self.result=""
         self.date=""
         self.crit_sents=[] #Phrase qui ont soulevé l'alerte. Si le statut est de 1, cette variable ne peut être vide. 
@@ -42,6 +42,7 @@ class TextAnalyzer(object):
 
     def RunAnalysis(self):  #Tout le traitement se fera ici, c'est un peu le main() de notre classe.
         self.date=datetime.now()
+        self.result="Nothing to report."
         compsentences=TextAnalysis.DetectSentences(self.text, [self.company]) #phrases où est mentionnée l'entreprise
         for sentence_index in compsentences:
             #print(str(compsentences[sentence_index]))
@@ -50,11 +51,10 @@ class TextAnalyzer(object):
             for kw in TextAnalysis.keywords:
                 if kw in str(compsentences[sentence_index]):
                     self.status=1
-                    self.result="Alert raised."
+                    self.result="/!\\ Alert raised. /!\\"
                     critical_sentence=str(compsentences[sentence_index])
                     self.crit_sents.append(critical_sentence)
-        if(self.status==1):
-            print("An alert has been raised.")
+        
 
     if __name__=="__main__":
         #Test()

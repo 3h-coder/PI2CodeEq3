@@ -3,6 +3,7 @@
 #installer les librairies nécessaires si non installées
 # pip install bs4       pip install google      pip install spacy      pip install tweepy      pip install pickle
 
+from bs4.element import SoupStrainer
 import requests, webbrowser
 from bs4 import BeautifulSoup
 from googlesearch import search
@@ -57,8 +58,10 @@ def introwebscraping():
 
 def SoupTest():
     URL="https://thehackernews.com/"
-    mainpage=requests.get(URL)
+    headers={"User-Agent" : "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.81 Safari/537.36"}
+    mainpage=requests.get(URL, headers=headers)
     soup=BeautifulSoup(mainpage.text, "lxml") #On scrape la première page
+    print(soup)
     anchors=soup.find_all('a', {"class": "story-link"})
     for a in anchors:
         titles=a.find_all('h2')
@@ -92,7 +95,7 @@ def ScrapeHackerNews(company):
                     ta=TextAnalyzer(company, article, link_found, article_date) #On crée notre objet analyseur de texte
                     ta.RunAnalysis() #On procède à l'analyse de l'article pour déterminer le statut de cybersécurité de l'entreprise
                     found=True
-                    print("Information found on "+a.get('href'))
+                    print("Information found on "+a.get('href')+"   "+ta.result)
         while(found==False and page_counter<2): #Tant que l'on a pas trouvé ou scrapé moins de 2 pages, on scrape la page suivante.
             nextpageURL=""
             for a in anchors: #Recherche de la page suivante
@@ -124,7 +127,7 @@ def ScrapeHackerNews(company):
                                 ta=TextAnalyzer(company, article, link_found, article_date) 
                                 ta.RunAnalysis()
                                 found=True
-                                print("Information found on "+a.get('href'))
+                                print("Information found on "+a.get('href')+"   "+ta.result)
                 else: #Requête page suivante échoue, on sort de la boucle
                     print("Request Failure: "+nextpageURL+" returned: "+str(nextpage))
                     break
@@ -161,7 +164,7 @@ def ScrapeDarkReading(company): #Site à scroll infini
                     ta=TextAnalyzer(company, article, link_found, article_date) #On crée notre objet analyseur de texte
                     ta.RunAnalysis() #On procède à l'analyse de l'article pour déterminer le statut de cybersécurité de l'entreprise
                     found=True
-                    print("Information found on "+a.get('href'))
+                    print("Information found on "+a.get('href')+"   "+ta.result)
         while(found==False and page_counter<6):#Tant que l'on a pas trouvé ou scrapé moins de 2 pages, on scrape la page suivante.
             nextpageURL="https://www.darkreading.com/attacks-breaches?page={}".format(page_counter)
             if(nextpageURL!=""):
@@ -186,7 +189,7 @@ def ScrapeDarkReading(company): #Site à scroll infini
                                 ta=TextAnalyzer(company, article, link_found, article_date) 
                                 ta.RunAnalysis() 
                                 found=True
-                                print("Information found on "+a.get('href'))
+                                print("Information found on "+a.get('href')+"   "+ta.result)
                 else: #Requête page suivante échoue, on sort de la boucle
                     print("Request Failure: "+nextpageURL+" returned: "+str(nextpage))
                     break
@@ -228,7 +231,7 @@ def ScrapeZDnet(company): #Reconstrucrtion d'URL nécessaire  --> stringObject[s
                     ta=TextAnalyzer(company, article, link_found, article_date) #On crée notre objet analyseur de texte
                     ta.RunAnalysis() #On procède à l'analyse de l'article pour déterminer le statut de cybersécurité de l'entreprise
                     found=True
-                    print("Information found on "+anchor_link)
+                    print("Information found on "+anchor_link+"   "+ta.result)
         while(found==False and page_counter<2): #Tant que l'on a pas trouvé ou scrapé moins de 2 pages, on scrape la page suivante.
             nextpageURL=""
             for a in anchors:
@@ -262,7 +265,7 @@ def ScrapeZDnet(company): #Reconstrucrtion d'URL nécessaire  --> stringObject[s
                                 ta=TextAnalyzer(company, article, link_found, article_date) 
                                 ta.RunAnalysis() 
                                 found=True
-                                print("Information found on "+anchor_link)
+                                print("Information found on "+anchor_link+"   "+ta.result)
                 else: #Requête page suivante échoue, on sort de la boucle
                     print("Request Failure: "+nextpageURL+" returned: "+str(nextpage))
                     break
@@ -303,7 +306,7 @@ def ScrapeTechRP(company):
                     ta=TextAnalyzer(company, article, link_found, article_date) #On crée notre objet analyseur de texte
                     ta.RunAnalysis() #On procède à l'analyse de l'article pour déterminer le statut de cybersécurité de l'entreprise
                     found=True
-                    print("Information found on "+a.get('href'))
+                    print("Information found on "+a.get('href')+"   "+ta.result)
         while(found==False and page_counter<2): #Tant que l'on a pas trouvé ou scrapé moins de 2 pages, on scrape la page suivante en répétant les mêmes étapes.
             nextpageURL=""
             for a in anchors: #Recherche de la page suivante
@@ -337,7 +340,7 @@ def ScrapeTechRP(company):
                                 ta=TextAnalyzer(company, article, link_found, article_date) 
                                 ta.RunAnalysis() 
                                 found=True
-                                print("Information found on "+a.get('href'))
+                                print("Information found on "+a.get('href')+"   "+ta.result)
                 else: #Requête page suivante échoue, on sort de la boucle
                     print("Request Failure: "+nextpageURL+" returned: "+str(nextpage))
                     break
@@ -374,7 +377,7 @@ def ScrapeMcAfee(company):
                     ta=TextAnalyzer(company, article, link_found, article_date) #On crée notre objet analyseur de texte
                     ta.RunAnalysis() #On procède à l'analyse de l'article pour déterminer le statut de cybersécurité de l'entreprise
                     found=True
-                    print("Information found on "+a.get('href'))
+                    print("Information found on "+a.get('href')+"   "+ta.result)
         while(found==False and page_counter<2): #Tant que l'on a pas trouvé ou scrapé moins de 2 pages, on scrape la page suivante.
             nextpageURL=""
             for a in anchors: #Recherche de la page suivante
@@ -404,7 +407,7 @@ def ScrapeMcAfee(company):
                                 ta=TextAnalyzer(company, article, link_found, article_date) 
                                 ta.RunAnalysis() 
                                 found=True
-                                print("Information found on "+a.get('href'))
+                                print("Information found on "+a.get('href')+"   "+ta.result)
                 else: #Requête page suivante échoue, on sort de la boucle
                     print("Request Failure: "+nextpageURL+" returned: "+nextpage)
                     break
@@ -442,7 +445,7 @@ def ScrapeGraham(company): #Définition de headers nécessaire
                     ta=TextAnalyzer(company, article, link_found, article_date) #On crée notre objet analyseur de texte
                     ta.RunAnalysis() #On procède à l'analyse de l'article pour déterminer le statut de cybersécurité de l'entreprise
                     found=True
-                    print("Information found on "+a.get('href'))
+                    print("Information found on "+a.get('href')+"   "+ta.result)
         while(found==False and page_counter<2): #Tant que l'on a pas trouvé ou scrapé moins de 2 pages, on scrape la page suivante.
             nextpageURL=""
             for a in anchors: #Recherche de la page suivante
@@ -472,7 +475,7 @@ def ScrapeGraham(company): #Définition de headers nécessaire
                                 ta=TextAnalyzer(company, article, link_found, article_date) 
                                 ta.RunAnalysis() 
                                 found=True
-                                print("Information found on "+a.get('href'))
+                                print("Information found on "+a.get('href')+"   "+ta.result)
                 else: #Requête page suivante échoue, on sort de la boucle
                     print("Request Failure: "+nextpageURL+" returned: "+str(nextpage))
                     break
@@ -516,7 +519,7 @@ def ScrapeCSO(company): #Reconstruciton d'URL nécessaire / Recherche de page su
                     ta=TextAnalyzer(company, article, link_found, article_date) #On crée notre objet analyseur de texte
                     ta.RunAnalysis() #On procède à l'analyse de l'article pour déterminer le statut de cybersécurité de l'entreprise
                     found=True
-                    print("Information found on "+anchor_link)
+                    print("Information found on "+anchor_link+"   "+ta.result)
         while(found==False and article_counter<20): #Tant que l'on a pas trouvé ou scrapé moins de 2 pages, on scrape la page suivante. (1 page correspond à 20 articles ici, la premiere page allant de 0 à 20).
             article_counter=article_counter+20
             nextpageURL=URL+"?start="+str(article_counter)
@@ -543,7 +546,7 @@ def ScrapeCSO(company): #Reconstruciton d'URL nécessaire / Recherche de page su
                             ta=TextAnalyzer(company, article, link_found, article_date) 
                             ta.RunAnalysis()
                             found=True
-                            print("Information found on "+anchor_link)
+                            print("Information found on "+anchor_link+"   "+ta.result)
             else: #Requête page suivante échoue, on sort de la boucle
                 print("Request Failure: "+nextpageURL+" returned: "+str(nextpage))
                 break
@@ -577,7 +580,7 @@ def ScrapeInfosecmag(company):
                     ta=TextAnalyzer(company, article, link_found, article_date) #On crée notre objet analyseur de texte
                     ta.RunAnalysis() #On procède à l'analyse de l'article pour déterminer le statut de cybersécurité de l'entreprise
                     found=True
-                    print("Information found on "+a.get('href'))
+                    print("Information found on "+a.get('href')+"   "+ta.result)
         while(found==False and page_counter<2): #Tant que l'on a pas trouvé ou scrapé moins de 2 pages, on scrape la page suivante.
             nextpageURL=""
             for a in anchors: #Recherche de la page suivante
@@ -606,7 +609,7 @@ def ScrapeInfosecmag(company):
                                 found=True
                                 ta=TextAnalyzer(company, article, link_found, article_date) 
                                 ta.RunAnalysis() 
-                                print("Information found on "+a.get('href'))
+                                print("Information found on "+a.get('href')+"   "+ta.result)
                 else: #Requête page suivante échoue, on sort de la boucle
                     print("Request Failure: "+nextpageURL+" returned: "+str(nextpage))
                     break
@@ -642,7 +645,7 @@ def ScrapeNakedsec(company):
                     ta=TextAnalyzer(company, article, link_found, article_date) #On crée notre objet analyseur de texte
                     ta.RunAnalysis() #On procède à l'analyse de l'article pour déterminer le statut de cybersécurité de l'entreprise
                     found=True
-                    print("Information found on "+a.get('href'))
+                    print("Information found on "+a.get('href')+"   "+ta.result)
         while(found==False and page_counter<2): #Tant que l'on a pas trouvé ou scrapé moins de 2 pages, on scrape la page suivante.
             nextpageURL=""
             for a in anchors: #Recherche de la page suivante
@@ -671,7 +674,7 @@ def ScrapeNakedsec(company):
                                 ta=TextAnalyzer(company, article, link_found, article_date) 
                                 ta.RunAnalysis() 
                                 found=True
-                                print("Information found on "+a.get('href'))
+                                print("Information found on "+a.get('href')+"   "+ta.result)
                 else: #Requête page suivante échoue, on sort de la boucle
                     print("Request Failure: "+nextpageURL+" returned: "+str(nextpage))
                     break
@@ -710,7 +713,7 @@ def ScrapeKebronsec(company):
                     ta.RunAnalysis() #On procède à l'analyse de l'article pour déterminer le statut de cybersécurité de l'entreprise
                     print(ta)
                     found=True
-                    print("Information found on "+a.get('href'))
+                    print("Information found on "+a.get('href')+"   "+ta.result)
         while(found==False and page_counter<2): #Tant que l'on a pas trouvé ou scrapé moins de 2 pages, on scrape la page suivante.
             nextpageURL=""
             for a in soup.find_all('a'): #Recherche de la page suivante
@@ -742,7 +745,7 @@ def ScrapeKebronsec(company):
                                 ta=TextAnalyzer(company, article, link_found, article_date) 
                                 ta.RunAnalysis() 
                                 found=True
-                                print("Information found on "+a.get('href'))
+                                print("Information found on "+a.get('href')+"   "+ta.result)
                 else: #Requête page suivante échoue, on sort de la boucle
                     print("Request Failure: "+nextpageURL+" returned: "+str(nextpage))
                     break
@@ -890,8 +893,8 @@ def textAnalyserTest():
     article_date=dateparser.parse("3 Feb 2022").date()
     test=TextAnalyzer("KP Snacks", text, link, article_date)
     test.RunAnalysis()
-    print(test)
-    print(test.crit_sents)
+    #print(test)
+    #print(test.crit_sents)
 
 
 def WebScraping(company): 
@@ -910,8 +913,9 @@ def WebScraping(company):
     
 
 def main():
-    #WebScraping("Kaspersky")
-    textAnalyserTest()
+    #WebScraping("KP Snacks")
+    #textAnalyserTest()
+    SoupTest()
     
 
 main()
