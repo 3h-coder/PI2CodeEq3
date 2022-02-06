@@ -8,6 +8,8 @@ from bs4 import BeautifulSoup
 from dateparser import parse 
 from dateparser.search import search_dates
 import datetime
+import time
+import re
 from nltk import word_tokenize, pos_tag
 #python -m spacy download en_core_web_md
 nlp = spacy.load('en_core_web_md')
@@ -109,12 +111,46 @@ def DetectTense(sentence):
     tense=""
     return tense
 
-def DetectDateOfAttack (dateArticle,sentence):
-    timeWords=["yesterday", "today"]
-    dateOfAttack=""
-    for i in timeWords:
-        if i in sentence:
-            lfjksfjsdmlkfjs
+def ConversionDateArticle(date):
+    day= date.apply(lambda x : datetime.strptime(x,'%d/%m/%Y').weekday())
+    month= date.apply(lambda x : datetime.strptime(x,'%d/%m/%Y').month)
+    year= date.apply(lambda x : datetime.strptime(x,'%d/%m/%Y').year)
+
+    tab=[day,month,year]
+    return tab
+
+
+def DetectDateOfAttack (date,sentence):
+    mois=[1,2,3,4,5,6,7,8,9,10,11,12]
+    timeWords={"yesterday":1, "today":0}
+    #date=ConversionDateArticle(dateArticle)
+    for cle,valeur in timeWords.items():
+        if cle in sentence:
+            date[0]=date[0]-valeur
+    
+    day=re.search("\d{1,3}.day.*ago",sentence)
+    if day :
+        day=re.search("\d{1,3}",day.group())
+        date[0]=date[0]-int(day.group())
+        
+    month=re.search("\d{1,3}.month.*ago",sentence)
+    if month :
+        month=re.search("\d{1,3}",month.group())
+        
+        for i in range(len(mois)):
+            if date[1]==mois[i]:
+                index=i-int(month.group())
+                date[1]=mois[index]
+                break
+        
+        #date[1]=date[1]-int(month.group())
+    
+    year=re.search("\d{1,5}.year.*ago",sentence)
+    if year :
+        year=re.search("\d{1,5}",year.group())
+        date[2]=date[2]-int(year.group())
+    
+    return date
 
 
 
