@@ -17,10 +17,10 @@ class TextAnalyzer(object):
         self.text=text
         self.link=link
         self.text_date=text_date
-        self.status=0 #0 si RAS, 1 sinon (peut-être faire un système d'échelle, 0=RAS -> 3=Attaque critique)
+        self.status=0 #0 si RAS, 1 sinon (peut-ï¿½tre faire un systï¿½me d'ï¿½chelle, 0=RAS -> 3=Attaque critique)
         self.result=""
         self.date=""
-        self.crit_sents=[] #Phrase qui ont soulevé l'alerte. Si le statut est de 1, cette variable ne peut être vide. 
+        self.crit_sents=[] #Phrase qui ont soulevï¿½ l'alerte. Si le statut est de 1, cette variable ne peut ï¿½tre vide. 
 
     #Instance Method
     def __str__(self):
@@ -43,7 +43,7 @@ class TextAnalyzer(object):
     def RunAnalysis(self):  #Tout le traitement se fera ici, c'est un peu le main() de notre classe.
         self.date=datetime.now()
         self.result="Nothing to report."
-        compsentences=TextAnalysis.DetectSentences(self.text, [self.company]) #phrases où est mentionnée l'entreprise
+        compsentences=TextAnalysis.DetectSentences(self.text, [self.company]) #phrases oï¿½ est mentionnï¿½e l'entreprise
         for sentence_index in compsentences:
             #print(str(compsentences[sentence_index]))
             subj=TextAnalysis.IdentifySubject(str(compsentences[sentence_index]))
@@ -54,7 +54,33 @@ class TextAnalyzer(object):
                     self.result="/!\\ Alert raised. /!\\"
                     critical_sentence=str(compsentences[sentence_index])
                     self.crit_sents.append(critical_sentence)
+
+    def RunAnalysis2(self, dicMots, dicPhrases):
+        tauxMax=0.9
+        tauxMoy=0.6
+        nbrTauxMoy=5
+        verifTauxMax=False
+        self.date=datetime.now()
+        self.result="Nothing to report."
+        similarityScores={}
+        compsentences=TextAnalysis.DetectSentences(self.text, dicMots) #phrases oï¿½ est mentionnï¿½e l'entreprise
+        for txt1 in compsentences:
+            similarityScores[txt1]=[]
+            for txt2 in dicPhrases:
+                score=TextAnalysis.CompareSimilarity(txt1,txt2)
+                similarityScores[txt1].append(score)
+        for cle,valeur in similarityScores:
+            countTauxMoy=0
+            for i in valeur:
+                if i>tauxMax:
+                    verifTauxMax=True
+                if i>tauxMoy and i<tauxMax:
+                    countTauxMoy+=1
+            if countTauxMoy>nbrTauxMoy or verifTauxMax==True:
+                self.crit_sents.append(cle)
+
         
+
 
     if __name__=="__main__":
         #Test()
