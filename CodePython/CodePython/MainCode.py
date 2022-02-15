@@ -1229,10 +1229,12 @@ def ScrapeTwitter(company):
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 def textAnalyserTest():
     text=TextAnalysis.LoadExampleText(6)
+    dicMots=["cyber-attack","ransomware","attack","threatened"]
+    dicPhrases=["An unsecured server has exposed sensitive data belonging to KP Snacks employees","Cyber-criminals have attacked KP Snacks with ransomware","KP Snacks is dealing with disruptions from a network security incident resulting from a ransomware attack","KP Snacks was Hit by Cyberattack","A cyberattack has struck company KP Snacks, compromising the emails of its employees"]
     link="https://www.infosecurity-magazine.com/news/kp-snacks-under-cyberattack/"
     article_date=dateparser.parse("3 Feb 2022").date()
     test=TextAnalyzer("KP Snacks", text, link, article_date)
-    test.RunAnalysis()
+    test.RunAnalysis(dicMots,dicPhrases)
     #print(test)
     #print(test.crit_sents)
 

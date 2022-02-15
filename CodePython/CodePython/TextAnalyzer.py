@@ -78,11 +78,10 @@ class TextAnalyzer(object):
                     countTauxMoy+=1
             if countTauxMoy>nbrTauxMoy or verifTauxMax==True:
                 self.crit_sents.append(cle)
-        #self.status=len(self.crit_sents)
+        print("nombre de phrases relevant d'une alerte :",len(self.crit_sents))
         
 
         
-
 
     if __name__=="__main__":
         #Test()
