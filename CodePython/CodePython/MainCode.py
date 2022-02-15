@@ -1234,7 +1234,7 @@ def textAnalyserTest():
     link="https://www.infosecurity-magazine.com/news/kp-snacks-under-cyberattack/"
     article_date=dateparser.parse("3 Feb 2022").date()
     test=TextAnalyzer("KP Snacks", text, link, article_date)
-    test.RunAnalysis(dicMots,dicPhrases)
+    test.RunAnalysis2(dicMots,dicPhrases)
     #print(test)
     #print(test.crit_sents)
 
