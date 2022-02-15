@@ -16,7 +16,7 @@ import pandas as pd
 import pickle
 import dateparser
 import warnings
-from textAnalyzer import TextAnalyzer
+from TextAnalyzer import TextAnalyzer
 import TextAnalysis
 import string
 nlp = spacy.load('en_core_web_sm') #python -m spacy download en
@@ -98,11 +98,11 @@ def ScrapeHackerNews(company):
                     ta.RunAnalysis() #On procède à l'analyse de l'article pour déterminer le statut de cybersécurité de l'entreprise
                     found=True
                     print("Information found on "+a.get('href')+"   "+ta.result)
-        while(found==False and page_counter<2): #Tant que l'on a pas trouvé ou scrapé moins de 2 pages, on scrape la page suivante.
+        while(page_counter<2): #Tant que l'on a scrapé moins de 2 pages, on scrape la page suivante.
             nextpageURL=""
-            a=soup.find('a', {"class":"blog-pager-older-link-mobile"})
-            if(a['href'].startswith("https://")):
-                        nextpageURL=a['href']
+            next_a=soup.find('a', {"class":"blog-pager-older-link-mobile"})
+            if(next_a!=None and next_a['href'].startswith("https://")):
+                        nextpageURL=next_a['href']
             if(nextpageURL!=""):
                 page_counter=page_counter+1
                 nextpage=requests.get(nextpageURL)
@@ -173,46 +173,44 @@ def ScrapeHackerNews2(company, date):
                     ta.RunAnalysis() #On procède à l'analyse de l'article pour déterminer le statut de cybersécurité de l'entreprise
                     found=True
                     print("Information found on "+a.get('href')+"   "+ta.result)
-        while(found==False and last_article_date > date):
+        while(last_article_date > date):
             nextpageURL=""
-            for a in anchors: #Recherche de la page suivante
-                anchor=str(a)
-                a=soup.find('a', {"class":"blog-pager-older-link-mobile"})
-                if(a['href'].startswith("https://")):
-                            nextpageURL=a['href']
-                if(nextpageURL!=""):
-                    nextpage=requests.get(nextpageURL)
-                    if(nextpage.ok):
-                        soup=BeautifulSoup(nextpage.text, "lxml")
-                        anchors=soup.find_all('a',{"class": "story-link"})
-                        for a in anchors:
-                            if(a.get('href') != None and a.get('href')!=link_found):
-                                article_date=a.find('i', {"class": "icon-font icon-calendar"}).next_sibling 
-                                article_date=dateparser.parse(article_date).date()
-                                last_article_date=article_date
-                                if(article_date < date):
-                                    if(found==False):
-                                        print("Could not find any information about "+company+" on "+URL)
-                                        return
-                                    else:
-                                        return
-                                title=a.find('h2')
-                                if (company in a.get('href')) or (company in a.text) or (company.lower() in a.get('href')) \
-                                    or (company.capitalize() in a.get('href')) or (company.capitalize() in a.text) \
-                                    or (company.lower() in a.text) or (company in title.text) or (company.lower() in title.text) or (company.capitalize() in title.text):
-                                    link_found=a.get('href')
-                                    newpage=requests.get(a.get('href'))
-                                    newsoup=BeautifulSoup(newpage.text, "lxml")
-                                    article=""
-                                    for paragraph in newsoup.find_all('p'):
-                                        article+="\n"+paragraph.text
-                                    ta=TextAnalyzer(company, article, link_found, article_date) 
-                                    ta.RunAnalysis()
-                                    found=True
-                                    print("Information found on "+a.get('href')+"   "+ta.result)
-                    else:
-                        print("Request Failure: "+nextpageURL+" returned: "+str(nextpage))
-                        break
+            next_a=soup.find('a', {"class":"blog-pager-older-link-mobile"})
+            if(next_a!=None and next_a['href'].startswith("https://")):
+                        nextpageURL=next_a['href']
+            if(nextpageURL!=""):
+                nextpage=requests.get(nextpageURL)
+                if(nextpage.ok):
+                    soup=BeautifulSoup(nextpage.text, "lxml")
+                    anchors=soup.find_all('a',{"class": "story-link"})
+                    for a in anchors:
+                        if(a.get('href') != None and a.get('href')!=link_found):
+                            article_date=a.find('i', {"class": "icon-font icon-calendar"}).next_sibling 
+                            article_date=dateparser.parse(article_date).date()
+                            last_article_date=article_date
+                            if(article_date < date):
+                                if(found==False):
+                                    print("Could not find any information about "+company+" on "+URL)
+                                    return
+                                else:
+                                    return
+                            title=a.find('h2')
+                            if (company in a.get('href')) or (company in a.text) or (company.lower() in a.get('href')) \
+                                or (company.capitalize() in a.get('href')) or (company.capitalize() in a.text) \
+                                or (company.lower() in a.text) or (company in title.text) or (company.lower() in title.text) or (company.capitalize() in title.text):
+                                link_found=a.get('href')
+                                newpage=requests.get(a.get('href'))
+                                newsoup=BeautifulSoup(newpage.text, "lxml")
+                                article=""
+                                for paragraph in newsoup.find_all('p'):
+                                    article+="\n"+paragraph.text
+                                ta=TextAnalyzer(company, article, link_found, article_date) 
+                                ta.RunAnalysis()
+                                found=True
+                                print("Information found on "+a.get('href')+"   "+ta.result)
+                else:
+                    print("Request Failure: "+nextpageURL+" returned: "+str(nextpage))
+                    break
         if(found==False):
                 print("Could not scrape any information about "+ company+" on "+URL)
     else:
@@ -246,7 +244,7 @@ def ScrapeDarkReading(company): #Site à scroll infini
                     ta.RunAnalysis() #On procède à l'analyse de l'article pour déterminer le statut de cybersécurité de l'entreprise
                     found=True
                     print("Information found on "+a.get('href')+"   "+ta.result)
-        while(found==False and page_counter<6):#Tant que l'on a pas trouvé ou scrapé moins de 2 pages, on scrape la page suivante.
+        while(page_counter<6):#Tant que l'on a scrapé moins de 2 pages, on scrape la page suivante.
             nextpageURL="https://www.darkreading.com/attacks-breaches?page={}".format(page_counter)
             if(nextpageURL!=""):
                 page_counter=page_counter+1
@@ -317,7 +315,7 @@ def ScrapeDarkReading2(company, date):
                     ta.RunAnalysis() #On procède à l'analyse de l'article pour déterminer le statut de cybersécurité de l'entreprise
                     found=True
                     print("Information found on "+a.get('href')+"   "+ta.result)
-        while(found==False and last_article_date > date):#Tant que l'on a pas trouvé ou scrapé moins de 2 pages, on scrape la page suivante.
+        while(last_article_date > date):#Tant que l'on a pas trouvé ou scrapé moins de 2 pages, on scrape la page suivante.
             nextpageURL="https://www.darkreading.com/attacks-breaches?page={}".format(page_counter)
             if(nextpageURL!=""):
                 page_counter=page_counter+1
@@ -391,11 +389,11 @@ def ScrapeZDnet(company): #Reconstrucrtion d'URL nécessaire  --> stringObject[s
                     ta.RunAnalysis() #On procède à l'analyse de l'article pour déterminer le statut de cybersécurité de l'entreprise
                     found=True
                     print("Information found on "+anchor_link+"   "+ta.result)
-        while(found==False and page_counter<2): #Tant que l'on a pas trouvé ou scrapé moins de 2 pages, on scrape la page suivante.
+        while(page_counter<2): #Tant que l'on a pas trouvé ou scrapé moins de 2 pages, on scrape la page suivante.
             nextpageURL=""
-            a=soup.find('a', {"class":"next"})
-            if a!=None and (a['href'].startswith("https://")):
-                nextpageURL=a['href']
+            next_a=soup.find('a', {"class":"next"})
+            if next_a!=None and (next_a['href'].startswith("https://")):
+                nextpageURL=next_a['href']
             if(nextpageURL!=""):
                 print(nextpageURL)
                 page_counter=page_counter+1
@@ -473,17 +471,17 @@ def ScrapeZDnet2(company, date):
                     ta.RunAnalysis() #On procède à l'analyse de l'article pour déterminer le statut de cybersécurité de l'entreprise
                     found=True
                     print("Information found on "+anchor_link+"   "+ta.result)
-        while(found==False and last_article_date > date): #Tant que l'on a pas trouvé ou scrapé moins de 2 pages, on scrape la page suivante.
+        while(last_article_date > date): #Tant que l'on a pas trouvé ou scrapé moins de 2 pages, on scrape la page suivante.
             nextpageURL=""
-            a=soup.find('a', {"class":"next"})
-            if a!=None and (a['href'].startswith("https://")):
-                nextpageURL=a['href']
+            next_a=soup.find('a', {"class":"next"})
+            if next_a!=None and (next_a['href'].startswith("https://")):
+                nextpageURL=next_a['href']
             if(nextpageURL!=""):
                 nextpage=requests.get(nextpageURL)
                 if nextpage.ok:
                     soup=BeautifulSoup(nextpage.text, "lxml")
                     anchors=soup.find_all('a', {"class":"thumb"})
-                    for a in anchors:
+                    for a in anchors[:15]:
                         anchor_link=a.get('href')
                         if(anchor_link != None and a.get('href')!=link_found):
                             if(anchor_link.startswith("/")): #On le reconsitue encore si besoin
@@ -553,11 +551,11 @@ def ScrapeTechRP(company):
                     ta.RunAnalysis() #On procède à l'analyse de l'article pour déterminer le statut de cybersécurité de l'entreprise
                     found=True
                     print("Information found on "+a.get('href')+"   "+ta.result)
-        while(found==False and page_counter<2): #Tant que l'on a pas trouvé ou scrapé moins de 2 pages, on scrape la page suivante en répétant les mêmes étapes.
+        while(page_counter<2): #Tant que l'on a pas trouvé ou scrapé moins de 2 pages, on scrape la page suivante en répétant les mêmes étapes.
             nextpageURL=""
-            a=soup.find('a', {"class":"next page-numbers"})
-            if(a!=None and a.get('href').startswith("https://")):
-                nextpageURL=a['href']
+            next_a=soup.find('a', {"class":"next page-numbers"})
+            if(next_a!=None and next_a.get('href').startswith("https://")):
+                nextpageURL=next_a['href']
             if(nextpageURL!=""):
                 page_counter=page_counter+1
                 nextpage=requests.get(nextpageURL)
@@ -632,19 +630,17 @@ def ScrapeTechRP2(company, date):
                             found=True
                             print("Information found on "+a.get('href')+"   "+ta.result)
                     except:
-                        print(a)
-        while(found==False and last_article_date > date): #Tant que l'on a pas trouvé ou scrapé moins de 2 pages, on scrape la page suivante en répétant les mêmes étapes.
+                       pass
+        while(last_article_date > date): #Tant que l'on a pas trouvé ou scrapé moins de 2 pages, on scrape la page suivante en répétant les mêmes étapes.
             nextpageURL=""
-            a=soup.find('a', {"class":"next page-numbers"})
-            if(a!=None and a.get('href').startswith("https://")):
-                nextpageURL=a['href']
+            next_a=soup.find('a', {"class":"next page-numbers"})
+            if(next_a!=None and next_a.get('href').startswith("https://")):
+                nextpageURL=next_a['href']
             if(nextpageURL!=""):
-                print(nextpageURL)
                 nextpage=requests.get(nextpageURL)
                 if nextpage.ok:
                     soup=BeautifulSoup(nextpage.text, "lxml")
                     articles=soup.find_all('article')
-                    anchors=articles.find_all('a')
                     for article in articles:
                         anchors=article.find_all('a')
                         for a in anchors:
@@ -655,26 +651,26 @@ def ScrapeTechRP2(company, date):
                                     article_date=span.find('time').text #On extrait la date de l'article qu'il faudra ensuite formater
                                     article_date=dateparser.parse(article_date).date()
                                     last_article_date=article_date
+                                    if(article_date < date): #On vérifie que la date de l'article ne dépasse pas notre date en entrée, si oui on termine la recherche
+                                        if(found==False):
+                                            print("Could not find any information about "+company+" on "+URL)
+                                            return
+                                        else:
+                                            return
+                                    if (company in a.get('href')) or (company in a.text) or (company.lower() in a.get('href')) or (company.lower() in a.text) \
+                                    or (company.capitalize() in a.get('href')) or (company.capitalize() in a.text):
+                                        link_found=a.get('href')
+                                        newpage=requests.get(a.get('href'))
+                                        newsoup=BeautifulSoup(newpage.text, "lxml")
+                                        article=""
+                                        for paragraph in newsoup.find_all('p'):
+                                            article+="\n"+paragraph.text
+                                        ta=TextAnalyzer(company, article, link_found, article_date) 
+                                        ta.RunAnalysis() 
+                                        found=True
+                                        print("Information found on "+a.get('href')+"   "+ta.result)
                                 except:
                                     pass
-                                if(article_date < date): #On vérifie que la date de l'article ne dépasse pas notre date en entrée, si oui on termine la recherche
-                                    if(found==False):
-                                        print("Could not find any information about "+company+" on "+URL)
-                                        return
-                                    else:
-                                        return
-                                if (company in a.get('href')) or (company in a.text) or (company.lower() in a.get('href')) or (company.lower() in a.text) \
-                                or (company.capitalize() in a.get('href')) or (company.capitalize() in a.text):
-                                    link_found=a.get('href')
-                                    newpage=requests.get(a.get('href'))
-                                    newsoup=BeautifulSoup(newpage.text, "lxml")
-                                    article=""
-                                    for paragraph in newsoup.find_all('p'):
-                                        article+="\n"+paragraph.text
-                                    ta=TextAnalyzer(company, article, link_found, article_date) 
-                                    ta.RunAnalysis() 
-                                    found=True
-                                    print("Information found on "+a.get('href')+"   "+ta.result)
                 else: #Requête page suivante échoue, on sort de la boucle
                     print("Request Failure: "+nextpageURL+" returned: "+str(nextpage))
                     break
@@ -713,13 +709,11 @@ def ScrapeMcAfee(company):
                     ta.RunAnalysis() #On procède à l'analyse de l'article pour déterminer le statut de cybersécurité de l'entreprise
                     found=True
                     print("Information found on "+a.get('href')+"   "+ta.result)
-        while(found==False and page_counter<2): #Tant que l'on a pas trouvé ou scrapé moins de 2 pages, on scrape la page suivante.
+        while(page_counter<2): #Tant que l'on a pas trouvé ou scrapé moins de 2 pages, on scrape la page suivante.
             nextpageURL=""
-            for a in anchors: #Recherche de la page suivante
-                anchor=str(a)
-                if("class=\"next page-numbers\"" in anchor):
-                    if(a['href'].startswith("https://")):
-                        nextpageURL=a['href']
+            next_a=soup.find('a', {"class":"next page-numbers"})
+            if(next_a!=None and next_a.get('href').startswith("https://")):
+                nextpageURL=next_a['href']
             if(nextpageURL!=""):
                 page_counter=page_counter+1
                 nextpage=requests.get(nextpageURL)
@@ -743,6 +737,96 @@ def ScrapeMcAfee(company):
                                 ta.RunAnalysis() 
                                 found=True
                                 print("Information found on "+a.get('href')+"   "+ta.result)
+                else: #Requête page suivante échoue, on sort de la boucle
+                    print("Request Failure: "+nextpageURL+" returned: "+nextpage)
+                    break
+            else: #Pas de page suivante, on sort de la boucle
+                break
+        if(found==False):
+            print("Could not scrape any information about "+ company+" on "+URL)
+    else: #L'URL de base est invalide
+        print("Request Failure: "+URL+" returned: "+mainpage)
+
+def ScrapeMcAfee2(company, date):
+    string.capwords(company)
+    URL="https://www.mcafee.com/blogs/other-blogs/mcafee-labs/"
+    found=False
+
+    mainpage=requests.get(URL)
+    if(mainpage.ok): 
+        soup=BeautifulSoup(mainpage.text, "lxml") #On scrape la première page
+        divs=soup.find_all('div', {"class":"card"})
+        link_found=""
+        last_article_date=""
+        for div in divs:
+            try:
+                article_date=div.find('small', {"class":"text-muted"}).text
+                article_date=dateparser.parse(article_date).date()
+                last_article_date=article_date
+                if(article_date < date): #On vérifie que la date de l'article ne dépasse pas notre date en entrée, si oui on termine la recherche
+                    if(found==False):
+                        print("Could not find any information about "+company+" on "+URL)
+                        return
+                    else:
+                        return
+                anchors=div.find_all('a')
+                for a in anchors:
+                    if(a.get('href') != None and a.get('href')!=link_found): #On vérifie que le href n'est pas nul et que l'on ne retombe pas sur le même lien
+                        if (company in a.get('href')) or (company in a.text) or (company.lower() in a.get('href')) or (company.lower() in a.text) \
+                        or (company.capitalize() in a.get('href')) or (company.capitalize() in a.text):
+                            link_found=a.get('href')
+                            newpage=requests.get(a.get('href'))
+                            newsoup=BeautifulSoup(newpage.text, "lxml")
+                            article=""
+                            for paragraph in newsoup.find_all('p'):
+                                article+="\n"+paragraph.text
+                            ta=TextAnalyzer(company, article, link_found, article_date) #On crée notre objet analyseur de texte
+                            ta.RunAnalysis() #On procède à l'analyse de l'article pour déterminer le statut de cybersécurité de l'entreprise
+                            found=True
+                            print("Information found on "+a.get('href')+"   "+ta.result)
+            except:
+                pass
+        while(last_article_date > date): #Tant que l'on a pas trouvé ou scrapé moins de 2 pages, on scrape la page suivante.
+            nextpageURL=""
+            next_a=soup.find('a', {"class":"next page-numbers"})
+            if(next_a!=None and next_a.get('href').startswith("https://")):
+                nextpageURL=next_a['href']
+            if(nextpageURL!=""):
+                nextpage=requests.get(nextpageURL)
+                if nextpage.ok:
+                    soup=BeautifulSoup(nextpage.text, "lxml")
+                    divs=soup.find_all('div',{"class":"card"})
+                    for div in divs:
+                        try:
+                            article_date=div.find('small', {"class":"text-muted"}).text
+                            article_date=dateparser.parse(article_date).date()
+                            last_article_date=article_date
+                            if(article_date < date): #On vérifie que la date de l'article ne dépasse pas notre date en entrée, si oui on termine la recherche
+                                if(found==False):
+                                    print("Could not find any information about "+company+" on "+URL)
+                                    return
+                                else:
+                                    return
+                            anchors=div.find_all('a')
+                            for a in anchors:
+                                if(a.get('href') != None and a.get('href')!=link_found):
+                                    if (company in a.get('href')) or (company in a.text) or (company.lower() in a.get('href')) or (company.lower() in a.text) \
+                                    or (company.capitalize() in a.get('href')) or (company.capitalize() in a.text):
+                                        link_found=a.get('href')
+                                        wrapper=a.find_parent('div', {"class":"card"})
+                                        article_date=wrapper.find('small', {"class":"text-muted"}).text
+                                        article_date=dateparser.parse(article_date).date()
+                                        newpage=requests.get(a.get('href'))
+                                        newsoup=BeautifulSoup(newpage.text, "lxml")
+                                        article=""
+                                        for paragraph in newsoup.find_all('p'):
+                                            article+="\n"+paragraph.text
+                                        ta=TextAnalyzer(company, article, link_found, article_date) 
+                                        ta.RunAnalysis() 
+                                        found=True
+                                        print("Information found on "+a.get('href')+"   "+ta.result)
+                        except:
+                            pass
                 else: #Requête page suivante échoue, on sort de la boucle
                     print("Request Failure: "+nextpageURL+" returned: "+nextpage)
                     break
@@ -782,13 +866,11 @@ def ScrapeGraham(company): #Définition de headers nécessaire
                     ta.RunAnalysis() #On procède à l'analyse de l'article pour déterminer le statut de cybersécurité de l'entreprise
                     found=True
                     print("Information found on "+a.get('href')+"   "+ta.result)
-        while(found==False and page_counter<2): #Tant que l'on a pas trouvé ou scrapé moins de 2 pages, on scrape la page suivante.
+        while(page_counter<2): #Tant que l'on a pas trouvé ou scrapé moins de 2 pages, on scrape la page suivante.
             nextpageURL=""
-            for a in anchors: #Recherche de la page suivante
-                anchor=str(a)
-                if("class=\"nextpostslink\"" in anchor):
-                    if(a['href'].startswith("https://")):
-                        nextpageURL=a['href']
+            next_a=soup.find('a', {"class":"nextpostslink"})
+            if(next_a!=None and next_a.get('href').startswith("https://")):
+                nextpageURL=next_a['href']
             if(nextpageURL!=""):
                 page_counter=page_counter+1
                 nextpage=requests.get(nextpageURL, headers=headers)
@@ -796,7 +878,7 @@ def ScrapeGraham(company): #Définition de headers nécessaire
                     soup=BeautifulSoup(nextpage.text, "lxml")
                     anchors=soup.find_all('a')
                     for a in anchors:
-                        if(a.get('href') != None):
+                        if(a.get('href') != None and a.get('href')!=link_found):
                             if (company in a.get('href')) or (company in a.text) or (company.lower() in a.get('href')) or (company.lower() in a.text) \
                             or (company.capitalize() in a.get('href')) or (company.capitalize() in a.text):
                                 link_found=a.get('href')
@@ -821,6 +903,90 @@ def ScrapeGraham(company): #Définition de headers nécessaire
             print("Could not scrape any information about "+ company+" on "+URL)
     else: #L'URL de base est invalide
         print("Request Failure: "+URL+" returned: "+str(mainpage))
+
+def ScrapeGraham2(company, date):
+    string.capwords(company)
+    URL="https://grahamcluley.com/"
+    found=False
+    headers={"User-Agent" : "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36"}
+
+    mainpage=requests.get(URL, headers=headers)
+    if(mainpage.ok): 
+        soup=BeautifulSoup(mainpage.text, "lxml") #On scrape la première page
+        articles=soup.find_all('article')
+        link_found=""
+        last_article_date=""
+        for article in articles:
+            article_date=article.find('span', {"class":"post-date"}).text #On extrait la date de l'article qu'il faudra ensuite formatter
+            article_date=dateparser.parse(article_date).date()
+            last_article_date=article_date
+            if(article_date < date): #On vérifie que la date de l'article ne dépasse pas notre date en entrée, si oui on termine la recherche
+                    if(found==False):
+                        print("Could not find any information about "+company+" on "+URL)
+                        return
+                    else:
+                        return
+            anchors=article.find_all('a')
+            for a in anchors:
+                if(a.get('href') != None and a.get('href')!=link_found): #On vérifie que le href n'est pas nul et que l'on ne retombe pas sur le même lien
+                    if (company in a.get('href')) or (company in a.text) or (company.lower() in a.get('href')) or (company.lower() in a.text) \
+                    or (company.capitalize() in a.get('href')) or (company.capitalize() in a.text):
+                        link_found=a.get('href')
+                        newpage=requests.get(a.get('href'), headers=headers)
+                        newsoup=BeautifulSoup(newpage.text, "lxml")              
+                        article=""
+                        for paragraph in newsoup.find_all('p'):
+                            article+="\n"+paragraph.text
+                        ta=TextAnalyzer(company, article, link_found, article_date) #On crée notre objet analyseur de texte
+                        ta.RunAnalysis() #On procède à l'analyse de l'article pour déterminer le statut de cybersécurité de l'entreprise
+                        found=True
+                        print("Information found on "+a.get('href')+"   "+ta.result)
+        while(last_article_date > date): #Tant que l'on a pas trouvé ou scrapé moins de 2 pages, on scrape la page suivante.
+            nextpageURL=""
+            next_a=soup.find('a', {"class":"nextpostslink"})
+            if(next_a!=None and next_a.get('href').startswith("https://")):
+                nextpageURL=next_a['href']
+            if(nextpageURL!=""):
+                nextpage=requests.get(nextpageURL, headers=headers)
+                if nextpage.ok:
+                    soup=BeautifulSoup(nextpage.text, "lxml")
+                    articles=soup.find_all('article')
+                    for article in articles:
+                        article_date=article.find('span', {"class":"post-date"}).text #On extrait la date de l'article qu'il faudra ensuite formatter
+                        article_date=dateparser.parse(article_date).date()
+                        last_article_date=article_date
+                        if(article_date < date): 
+                            if(found==False):
+                                print("Could not find any information about "+company+" on "+URL)
+                                return
+                            else:
+                                return
+                        anchors=soup.find_all('a')
+                        for a in anchors:
+                            if(a.get('href') != None and a.get('href')!=link_found):
+                                if (company in a.get('href')) or (company in a.text) or (company.lower() in a.get('href')) or (company.lower() in a.text) \
+                                or (company.capitalize() in a.get('href')) or (company.capitalize() in a.text):
+                                    link_found=a.get('href')
+                                    newpage=requests.get(a.get('href'), headers=headers)
+                                    newsoup=BeautifulSoup(newpage.text, "lxml")
+                                    article=""
+                                    for paragraph in newsoup.find_all('p'):
+                                        article+="\n"+paragraph.text
+                                    ta=TextAnalyzer(company, article, link_found, article_date) 
+                                    ta.RunAnalysis() 
+                                    found=True
+                                    print("Information found on "+a.get('href')+"   "+ta.result)
+                else: #Requête page suivante échoue, on sort de la boucle
+                    print("Request Failure: "+nextpageURL+" returned: "+str(nextpage))
+                    break
+            else: #Pas de page suivante, on sort de la boucle
+                break
+        if(found==False):
+            print("Could not scrape any information about "+ company+" on "+URL)
+    else: #L'URL de base est invalide
+        print("Request Failure: "+URL+" returned: "+str(mainpage))
+
+
 
 def ScrapeITsecguru(company): #Scroll infini
     URL="https://www.itsecurityguru.org/news/"
@@ -857,7 +1023,7 @@ def ScrapeCSO(company): #Reconstruciton d'URL nécessaire / Recherche de page su
                     ta.RunAnalysis() #On procède à l'analyse de l'article pour déterminer le statut de cybersécurité de l'entreprise
                     found=True
                     print("Information found on "+anchor_link+"   "+ta.result)
-        while(found==False and article_counter<20): #Tant que l'on a pas trouvé ou scrapé moins de 2 pages, on scrape la page suivante. (1 page correspond à 20 articles ici, la premiere page allant de 0 à 20).
+        while(article_counter<20): #Tant que l'on a pas trouvé ou scrapé moins de 2 pages, on scrape la page suivante. (1 page correspond à 20 articles ici, la premiere page allant de 0 à 20).
             article_counter=article_counter+20
             nextpageURL=URL+"?start="+str(article_counter)
             nextpage=requests.get(nextpageURL)
@@ -919,7 +1085,7 @@ def ScrapeInfosecmag(company):
                     ta.RunAnalysis() #On procède à l'analyse de l'article pour déterminer le statut de cybersécurité de l'entreprise
                     found=True
                     print("Information found on "+a.get('href')+"   "+ta.result)
-        while(found==False and page_counter<2): #Tant que l'on a pas trouvé ou scrapé moins de 2 pages, on scrape la page suivante.
+        while(page_counter<2): #Tant que l'on a pas trouvé ou scrapé moins de 2 pages, on scrape la page suivante.
             nextpageURL=""
             for a in anchors: #Recherche de la page suivante
                 anchor=str(a)
@@ -985,7 +1151,7 @@ def ScrapeNakedsec(company):
                     ta.RunAnalysis() #On procède à l'analyse de l'article pour déterminer le statut de cybersécurité de l'entreprise
                     found=True
                     print("Information found on "+a.get('href')+"   "+ta.result)
-        while(found==False and page_counter<2): #Tant que l'on a pas trouvé ou scrapé moins de 2 pages, on scrape la page suivante.
+        while(page_counter<2): #Tant que l'on a pas trouvé ou scrapé moins de 2 pages, on scrape la page suivante.
             nextpageURL=""
             for a in anchors: #Recherche de la page suivante
                 anchor=str(a)
@@ -1054,7 +1220,7 @@ def ScrapeKebronsec(company):
                     print(ta)
                     found=True
                     print("Information found on "+a.get('href')+"   "+ta.result)
-        while(found==False and page_counter<2): #Tant que l'on a pas trouvé ou scrapé moins de 2 pages, on scrape la page suivante.
+        while(page_counter<2): #Tant que l'on a pas trouvé ou scrapé moins de 2 pages, on scrape la page suivante.
             nextpageURL=""
             for a in soup.find_all('a'): #Recherche de la page suivante
                 anchor=str(a)
@@ -1255,10 +1421,10 @@ def WebScraping(company, date):
     #ScrapeHackerNews2(company, date)
     #ScrapeDarkReading2(company, date)
     #ScrapeZDnet2(company, date)
-    #ScrapeTechRP(company)
-    ScrapeTechRP2(company, date)
-    #ScrapeMcAfee(company)
+    #ScrapeTechRP2(company, date)
+    #ScrapeMcAfee2(company, date)
     #ScrapeGraham(company)
+    ScrapeGraham2(company, date)
     #ScrapeITsecguru(company) #Ne fonctionne pas encore
     #ScrapeCSO(company)
     #ScrapeInfosecmag(company)
@@ -1268,7 +1434,7 @@ def WebScraping(company, date):
     
 
 def main():
-    WebScraping("Chrome", "3 Feb 2022")
+    WebScraping("Panasonic", "Jan 2 2022")
     #textAnalyserTest()
     #SoupTest()
 
