@@ -78,6 +78,8 @@ class TextAnalyzer(object):
                     countTauxMoy+=1
             if countTauxMoy>nbrTauxMoy or verifTauxMax==True:
                 self.crit_sents.append(cle)
+        #self.status=len(self.crit_sents)
+        
 
         
 
