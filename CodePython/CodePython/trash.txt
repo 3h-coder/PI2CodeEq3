@@ -8,3 +8,52 @@ mainpage=requests.get("https://twitter.com/"+username)
                 break
             else:
                 print("Nothing for now.")
+
+
+
+
+#Recherche sur twitter des mots clés et renvoie un tableau des tweets les plus récents (au max 15 tweets)
+def RechercheTweetsRecents(query):
+    client = getClient()
+    searchResults = client.search_recent_tweets(query=query, max_results = 15)
+
+    tweets = searchResults.data
+
+    results=[]
+
+    if tweets is not None and len(tweets) != 0:
+        for tweet in tweets:
+            temp = {}
+            temp['id'] = tweet.id
+            temp['text'] = tweet.text
+            results.append(temp) #results est un tableau de dictionnaires
+    
+    return results
+
+#Test de la fonction RechercheTweetsRecents
+#tweets = RechercheTweetsRecents("cyberattaque")
+#for tweet in tweets:
+#    print(tweet)
+
+
+#Recherche parmi les 10 derniers tweets de l'utilisateur s'il a mentionné l'entreprise recherchée
+def SearchTweetsUser2(username, company):
+    id = getUserId(username)
+    mention = False #Si l'on a trouvé un tweet à propos de l'entreprise
+
+    url = 'https://api.twitter.com/2/users/{}/tweets'.format(id)
+    #le bearer_token permet de se connecter à l'API de twitter
+    with open("keys.txt", "r") as secretfile:
+        bearer_token=secretfile.readline().rstrip()
+    secretfile.close()
+    headers = {'Authorization': 'Bearer {}'.format(bearer_token)}
+    ListAlarmingTweets = []
+    response = requests.request('GET', url, headers = headers) #mettre new_url
+    tweetsData = response.json()
+    for tweetData in tweetsData['data']:
+        if(company in tweetData['text']):
+            ListAlarmingTweets.append(tweetData)
+            mention = True
+            #print(tweetData)
+                
+    return mention, ListAlarmingTweets #On retourne ici un tuple

@@ -212,10 +212,10 @@ def TestLexicalField():
     print(keywords)
 
 #A faire la première fois que vous lancez le code:
-import nltk
-nltk.download('punkt')
-nltk.download('averaged_perceptron_tagger')
-nltk.download('universal_tagset')
+#import nltk
+#nltk.download('punkt')
+#nltk.download('averaged_perceptron_tagger')
+#nltk.download('universal_tagset')
 
 def CompareSimilarity(text1, text2):
     doc1 = nlp(text1)
