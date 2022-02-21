@@ -1934,6 +1934,8 @@ def SearchTweetsUser2(username, company, date):
     string.capwords(company)
     Client=getClient()
     user_id = getUserId(username)
+    date=datetime.datetime.combine(date, datetime.datetime.min.time())
+    date=date.isoformat()+"Z"
 
     result=Client.get_users_tweets(user_id, exclude=['replies'],max_results=5, tweet_fields=['created_at','id','text'], start_time=date)
     tweets=result.data
@@ -2079,7 +2081,7 @@ def WebScraping2(company, date):
     
 
 def main():
-    WebScraping2("IRS", "17 Jan 2022")
+    WebScraping2("Microsoft", "1 Jan 2022")
     #textAnalyserTest()
     #SoupTest()
   
