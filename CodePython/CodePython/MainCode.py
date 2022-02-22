@@ -1880,8 +1880,8 @@ def getUserId(username):
 # A tweet link looks like: https://twitter.com/<username>/status/<tweet_id>
 def SearchTweetsUser(username, company, max_tweets):
     """
-    Searches for information about the company we want to scrape information about through a specific user's tweets.
-    Returns a list of TextAnalyzer objects after running the analysis for each of them as well as printing the analysis result.
+    Searches for information regarding the company we want to scrape information about through a specific user's tweets.
+    Returns a list of TextAnalyzer objects after running the analysis for each of them.
     If no information could be found, the function will not return anything.
 
     Parameters:
@@ -1917,7 +1917,7 @@ def SearchTweetsUser(username, company, max_tweets):
 def SearchTweetsUser2(username, company, date):
     """
     Searches for information about the company we want to scrape information about through a specific user's tweets.
-    Returns a list of TextAnalyzer objects after running the analysis for each of them as well as printing the analysis result.
+    Returns a list of TextAnalyzer objects after running the analysis for each of them.
     If no information could be found, the function will not return anything.
 
     Parameters:
@@ -1958,7 +1958,7 @@ def ScrapeTwitter(company, max_tweets=10):
     company: str
         The company name we are trying to scrape information about.
 
-    max_tweets: int
+    max_tweets (optional): int
         the amount of latest tweets we will browse from each user, 10 by default.
     """
     usernames=["briankrebs", "threatpost", "peterkruse"] #This is the username list we will browse.
@@ -2011,13 +2011,14 @@ def ScrapeTwitter2(company, date):
 def textAnalyserTest():
     text=TextAnalysis.LoadExampleText(6)
     dicMots=["cyber-attack","ransomware","attack","threatened"]
-    dicPhrases=["An unsecured server has exposed sensitive data belonging to KP Snacks employees","Cyber-criminals have attacked KP Snacks with ransomware","KP Snacks is dealing with disruptions from a network security incident resulting from a ransomware attack","KP Snacks was Hit by Cyberattack","A cyberattack has struck company KP Snacks, compromising the emails of its employees"]
+    dicPhrases=["An unsecured server has exposed sensitive data belonging to KP Snacks employees.","Cyber-criminals have attacked KP Snacks with ransomware.", 
+                "KP Snacks is dealing with disruptions from a network security incident resulting from a ransomware attack.","KP Snacks was Hit by a cyberattack.", 
+                "A cyberattack has struck company KP Snacks, compromising the emails of its employees."]
     link="https://www.infosecurity-magazine.com/news/kp-snacks-under-cyberattack/"
     article_date=dateparser.parse("3 Feb 2022").date()
     test=TextAnalyzer("KP Snacks", text, link, article_date)
-    test.RunAnalysis2(dicMots,dicPhrases)
-    #print(test)
-    #print(test.crit_sents)
+    test.RunAnalysis(dicMots,dicPhrases)
+    print(test)
 
 def WebScraping(company, page_limit=2):
     """
@@ -2081,8 +2082,8 @@ def WebScraping2(company, date):
     
 
 def main():
-    WebScraping2("Microsoft", "1 Jan 2022")
-    #textAnalyserTest()
+    #WebScraping2("Microsoft", "1 Jan 2022")
+    textAnalyserTest()
     #SoupTest()
   
 main()

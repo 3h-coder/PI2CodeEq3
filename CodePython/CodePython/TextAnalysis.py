@@ -88,14 +88,14 @@ def TestIdentifySubject(text):
 #Pour identifier les phrases contenant une liste de mots spécifiés
 def DetectSentences(text, keywords):
     doc=nlp(text)
-    keysentences={}
+    keysentences=[]
     count=0
 
     for sentence in list(doc.sents):
         for keyword in keywords:
             if keyword in str(sentence):
                 count+=1
-                keysentences[count]=sentence
+                keysentences.append(sentence)
                 break #Pour ne pas prendre plusieurs fois la même phrase si elle contient plusieurs des mots présents dans la liste
 
     return keysentences

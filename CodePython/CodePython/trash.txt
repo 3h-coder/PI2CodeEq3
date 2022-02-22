@@ -103,3 +103,22 @@ def SoupTest():
         titles=a.find_all('h2')
         for title in titles:
             print(title.text)
+
+
+    def RunAnalysis(self):
+        """
+        Analyzes the text variable to update the status, result, date and crit_sents variables.
+        """
+        self.date=datetime.now()
+        self.result="Nothing to report."
+        compsentences=TextAnalysis.DetectSentences(self.text, [self.company]) 
+        for sentence_index in compsentences:
+            #print(str(compsentences[sentence_index]))
+            subj=TextAnalysis.IdentifySubject(str(compsentences[sentence_index]))
+            #print("Subject: "+str(subj))
+            for kw in TextAnalysis.keywords:
+                if kw in str(compsentences[sentence_index]):
+                    self.status=1
+                    self.result="/!\\ Alert raised. /!\\"
+                    critical_sentence=str(compsentences[sentence_index])
+                    self.crit_sents.append(critical_sentence)
