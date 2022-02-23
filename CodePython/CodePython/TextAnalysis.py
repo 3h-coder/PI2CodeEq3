@@ -130,11 +130,6 @@ def TestDetectSentences(text):
     sentences=DetectSentences(text, keywords)
     print(sentences)
 
-#Pour déterminer le temps de la phrase (passé, présent ou futur). /!\ En anglais!
-def DetectTense(sentence):
-    tense=""
-    return tense
-
 def ConversionDateArticle(date):
     """
     Converts an object datetime in a list [day, month, year]
