@@ -91,7 +91,29 @@ class TextAnalyzer(object):
         #print sentences
         return sentences
 
-    def RunAnalysis(self, wordDic, sentDic):
+    def LoadSentenceDic(filepath, company):
+        """
+        Loads the dictionnary of sentences that we will use to compare the text sentences to.
+        Returns a list of sentences (strings).
+
+        Parameters
+        -------------
+        filepath: str
+            Absolute or relative path to the file containing all the sentences we will use for comparison.
+            (One line corresponds to one sentence)
+
+        company: str
+            The company name of which we are trying to check the security status.
+        """
+        SentDic=[]
+        with open (filepath,"r") as file:
+            for line in file:
+                if "CompName" in line:
+                    line=line.replace("CompName", company)
+                SentDic.append(line.rstrip())
+        return SentDic
+
+    def RunAnalysis(self, wordDic=[], sentDic=[]):
         """
         Analyzes the text variable to update the status, result, date and crit_sents variables.
 
@@ -105,6 +127,10 @@ class TextAnalyzer(object):
             List of sentences we will use to compare the text sentences and raise an alert based on the similarity.
             (The sentences in this variable are typically the ones that would make us raise a level 3 alert.)
         """
+        if wordDic==[]:
+            wordDic=TextAnalyzer.wordDic
+        if sentDic==[]:
+            sentDic=LoadSentenceDic("analyzer_tools/Sentence_dictionnary", self.company)
         max_rate=0.9 #If this similarity score is reached or exceeded, a level 3 alert is raised.
         med_rate=0.6
         lvl2_rate_nb=7 #If 7 scores are located between the med_rate and max_rate, a level 2 alert is raised.
@@ -163,30 +189,7 @@ class TextAnalyzer(object):
                 self.crit_sents.append(key)
         #print("Number of critical sentences :"+str(len(self.crit_sents)))
         
-       
-    def LoadSentenceDic(filepath, company):
-        """
-        Loads the dictionnary of sentences that we will use to compare the text sentences to.
-        Returns a list of sentences (strings).
-
-        Parameters
-        -------------
-        filepath: str
-            Absolute or relative path to the file containing all the sentences we will use for comparison.
-            (One line corresponds to one sentence)
-
-        company: str
-            The company name of which we are trying to check the security status.
-        """
-        SentDic=[]
-        with open (filepath,"r") as file:
-            for line in file:
-                if "CompName" in line:
-                    line=line.replace("CompName", company)
-                SentDic.append(line.rstrip())
-        return SentDic
-
-        
+           
 
     if __name__=="__main__":
         #Test()
