@@ -43,8 +43,17 @@ example_bloc=LoadExampleText(1)
 keywords=["vulnerability", "attack", "threat", "breach"]
 
 
-#Retourne le nombre de fois qu'un mot clé est apparu dans le texte
 def CountOccurences(keywords, text):
+    """
+    Counts how many times the text mentions a keyword in the given list
+
+    Parameters:
+    -------------
+    keywords: list
+        keywords to count
+    text: str
+        analyzed text
+    """
     occurence = 0
 
     doc = nlp(text) #On crée un objet spacy appelé doc qui contient le texte passé en paramètre
@@ -70,8 +79,15 @@ def TestCountOccurences(text):
     occ = CountOccurences(keywords, text)
     print(occ)
 
-#Retourne un string qui est le sujet de la phrase passée en paramètre
 def IdentifySubject(sentence):
+    """
+    Returns the subject of a sentence
+
+    Parameters:
+    -------------
+    sentence: str
+        analyzed sentence
+    """
     doc = nlp(sentence)
     for token in doc:
         if token.dep_ == 'nsubj':
@@ -85,8 +101,17 @@ def TestIdentifySubject(text):
     subject = IdentifySubject(first_sentence)
     print("Subject : " + subject)
 
-#Pour identifier les phrases contenant une liste de mots spécifiés
 def DetectSentences(text, keywords):
+    """
+    Returns the sentences that contain at least one keyword
+
+    Parameters:
+    -------------
+    keywords: list
+        list of keywords we want to detect
+    text: str
+        analyzed text
+    """
     doc=nlp(text)
     keysentences=[]
     count=0
@@ -111,6 +136,14 @@ def DetectTense(sentence):
     return tense
 
 def ConversionDateArticle(date):
+    """
+    Converts an object datetime in a list [day, month, year]
+
+    Parameters:
+    -------------
+    date: date
+        date to convert
+    """
     day= date.apply(lambda x : datetime.strptime(x,'%d/%m/%Y').weekday())
     month= date.apply(lambda x : datetime.strptime(x,'%d/%m/%Y').month)
     year= date.apply(lambda x : datetime.strptime(x,'%d/%m/%Y').year)
@@ -159,9 +192,16 @@ import warnings
 warnings.filterwarnings("ignore", message="The localize method is no longer necessary, as this time zone supports the fold attribute")
 
 def IdentifyDateSentence(sentence, relativeDate):
+    """
+    Identifies one of multiple dates in a sentence and returns it in a list of datetime objects
 
-    #La méthode search_dates renvoie une liste de tuples
-    #Chaque tuple correspond à (date ou expression temporelle repérée dans un string, objet datetime correspondant)
+    Parameters:
+    -------------
+    sentence: str
+        analyzed sentence
+    relativeDate: datetime
+        date of the article
+    """
     extractedDates = search_dates(sentence, languages = ['en'], settings={'RELATIVE_BASE' : relativeDate}) #Tableau contenant les dates repérées dans la phrase passée ne paramètre
     tableauDates = [] #Tableau des dates extraites sous forme d'objet datetime
     if extractedDates is not None:
@@ -170,6 +210,16 @@ def IdentifyDateSentence(sentence, relativeDate):
     return tableauDates
 
 def IdentifyDateInText(text, relativeDate):
+    """
+    Identifies one of multiple dates in a text and prints it
+
+    Parameters:
+    -------------
+    text: str
+        analyzed text
+    relativeDate: datetime
+        date of the article
+    """
     doc = nlp(text)
     for sentence in list(doc.sents):
         if(sentence is not None):
@@ -192,10 +242,14 @@ def TestIdentifyDateInText():
     IdentifyDateInText(text, relativeDate)
 
 
-
-
-#Pour trouver les mots similaires au mot cyberattack et les placer dans la liste keywords
 def LexicalField(keyword):
+    """
+    List words of the lexical field of a keyword
+
+    Parameters:
+    -------------
+    keyword: str
+    """
     #Cette fonction spacy trouve les mots les plus similaires et les place dans un array appelé ici ms
     ms = nlp.vocab.vectors.most_similar(np.asarray([nlp.vocab.vectors[nlp.vocab.strings[keyword]]]), n=10)
     for word in ms[0][0]:
@@ -220,13 +274,29 @@ def TestLexicalField():
 #nltk.download('universal_tagset')
 
 def CompareSimilarity(text1, text2):
+    """
+    Compares the similarity between 2 texts and returns a similarity coefficient between 0 to 1 (0 being no similarity and 1 being identical)
+
+    Parameters:
+    -------------
+    text1: str
+        First text to be compared
+    text2: str
+        Second text to be compared
+    """
     doc1 = nlp(text1)
     doc2 = nlp(text2)
     sim=doc1.similarity(doc2)
     return sim
 
-#Pour déterminer le temps de la phrase (passé, présent ou futur). /!\ En anglais!
 def DetectTenses(sentence):
+    """
+    Detects tenses of the verbs in a sentence and returns it in a dictionary
+
+    Parameters:
+    -------------
+    sentence: str
+    """
     tenses = []
     text = word_tokenize(sentence)
     #pos_tag renvoie une liste de tuples sous la forme [(mot1, tag1), (mot2, tag2), ... ]
