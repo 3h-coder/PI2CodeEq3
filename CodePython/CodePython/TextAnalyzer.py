@@ -1,5 +1,6 @@
 import TextAnalysis
 from datetime import datetime
+from datetime import timedelta
 
 class TextAnalyzer(object):
     """
@@ -31,9 +32,26 @@ class TextAnalyzer(object):
     Id: int
         The indentifier of the created TextAnalyzer object.
     """
+    #Class Methods
+    def LoadWordDic(filepath):
+        """
+        Loads the dictionnary of keywords that we will use to extract the sentences to compare.
+        Returns a list of words (strings).
+
+        Parameter
+        -------------
+        filepath: str
+            Absolute or relative path to the file containing all the keywords we will use for extraction.
+        """
+        WordDic=[]
+        with open (filepath,"r") as file:
+            for line in file:
+                WordDic.append(line.rstrip())
+        return WordDic
 
     #Class attributes
     Id=0
+    wordDic=LoadWordDic("analyzer_tools/Keyword_dictionnary.txt")
 
     #Constructor
     def __init__(self, company, text, link, text_date):
@@ -48,7 +66,9 @@ class TextAnalyzer(object):
         self.status=-1 
         self.result=""  
         self.date="" 
-        self.crit_sents=[] 
+        self.crit_sents=[]
+
+
 
     #Instance Method
     def __str__(self):
@@ -96,10 +116,26 @@ class TextAnalyzer(object):
         similarityScores={}
         keysentences=TextAnalysis.DetectSentences(self.text, wordDic) #First, we start by extracting the sentences that contain our keywords.
         for text_sentence in keysentences: #Then, we compare each of these sentences with the example phrases from our sentDic variable.
+            DetectedDates=TextAnalysis.IdentifyDateSentence(str(text_sentence), datetime.combine(self.text_date, datetime.min.time())) #We now want to make sure that the sentence doesn't mention 
+            #an event that is too old and thus irrelevant. (We want to avoid false positives by doing that)
+            for date in DetectedDates:
+                if date < self.text_date-timedelta(days=7): #If the occurence happened more than a week before the article/tweet post date, it is considered as too old.
+                    keysentences.remove(text_sentence) #We remove the sentence from our list.
             similarityScores[text_sentence]=[]
             for example_sentence in sentDic:
                 score=TextAnalysis.CompareSimilarity(str(text_sentence),str(example_sentence)) #We evaluate the similarity between the extracted sentence and the example sentence.
+                if score > 0.9:
+                    print("There is a very high similarity between our text sentence:\""+str(text_sentence)+"\" and our example sentence:\"" \
+                        +str(example_sentence)+"\" (score of:"+str(score)+")")
+                elif score > 0.6:
+                    print("There is medium similarity between our text sentence:\""+str(text_sentence)+"\" and our example sentence:\"" \
+                        +str(example_sentence)+"\" (score of:"+str(score)+")")
+                else:
+                    print("There is a low similarity between our text sentence:\""+str(text_sentence)+"\" and our example sentence:\"" \
+                        +str(example_sentence)+"\" (score of:"+str(score)+")")    
                 similarityScores[text_sentence].append(score) #And save the score
+                print("----------------------------------next example sentence----------------------------------")
+            print("----------------------------------||next text sentence||----------------------------------")
         for key in similarityScores: #We then browse for each extracted sentence the corresponding scores. Key is the extracted sentence, value is the list of scores after comparison.
             scores=similarityScores[key]
             count_med_rate=0
@@ -108,7 +144,6 @@ class TextAnalyzer(object):
                     verif_max_rate=True 
                     self.status=3
                     self.result="/!\\ A level 3 alert has been raised /!\\"
-                    print("This sentence is very critical: "+str(key))
                     break #We move on to the next phrase as it will never be higher.
                 if score>med_rate and score<max_rate:
                     count_med_rate+=1
@@ -128,6 +163,28 @@ class TextAnalyzer(object):
                 self.crit_sents.append(key)
         #print("Number of critical sentences :"+str(len(self.crit_sents)))
         
+       
+    def LoadSentenceDic(filepath, company):
+        """
+        Loads the dictionnary of sentences that we will use to compare the text sentences to.
+        Returns a list of sentences (strings).
+
+        Parameters
+        -------------
+        filepath: str
+            Absolute or relative path to the file containing all the sentences we will use for comparison.
+            (One line corresponds to one sentence)
+
+        company: str
+            The company name of which we are trying to check the security status.
+        """
+        SentDic=[]
+        with open (filepath,"r") as file:
+            for line in file:
+                if "CompName" in line:
+                    line=line.replace("CompName", company)
+                SentDic.append(line.rstrip())
+        return SentDic
 
         
 

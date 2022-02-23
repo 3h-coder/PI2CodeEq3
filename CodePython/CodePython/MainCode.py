@@ -2008,12 +2008,12 @@ def ScrapeTwitter2(company, date):
     #return Tweetlist
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-def textAnalyserTest():
+def textAnalyzerTest():
     text=TextAnalysis.LoadExampleText(6)
     dicMots=["cyber-attack","ransomware","attack","threatened"]
     dicPhrases=["An unsecured server has exposed sensitive data belonging to KP Snacks employees.","Cyber-criminals have attacked KP Snacks with ransomware.", 
                 "KP Snacks is dealing with disruptions from a network security incident resulting from a ransomware attack.","KP Snacks was Hit by a cyberattack.", 
-                "A cyberattack has struck company KP Snacks, compromising the emails of its employees."]
+                "A cyberattack has struck company KP Snacks, compromising the emails of its employees.","After gaining access to the company's network, hackers deployed ransomware and took the snack maker's data hostage."]
     link="https://www.infosecurity-magazine.com/news/kp-snacks-under-cyberattack/"
     article_date=dateparser.parse("3 Feb 2022").date()
     test=TextAnalyzer("KP Snacks", text, link, article_date)
@@ -2083,8 +2083,8 @@ def WebScraping2(company, date):
 
 def main():
     #WebScraping2("Microsoft", "1 Jan 2022")
-    textAnalyserTest()
-    #SoupTest()
+    textAnalyzerTest()
+    #print(TextAnalyzer.wordDic)
   
 main()
 

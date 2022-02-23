@@ -166,7 +166,7 @@ def IdentifyDateSentence(sentence, relativeDate):
     tableauDates = [] #Tableau des dates extraites sous forme d'objet datetime
     if extractedDates is not None:
         for i in range(len(extractedDates)):
-            tableauDates.append(extractedDates[i][1])
+            tableauDates.append(extractedDates[i][1].date())
     return tableauDates
 
 def IdentifyDateInText(text, relativeDate):
@@ -190,6 +190,8 @@ def TestIdentifyDateInText():
     #text = LoadExampleText()
     relativeDate = datetime.datetime(2021, 1, 2)
     IdentifyDateInText(text, relativeDate)
+
+
 
 
 #Pour trouver les mots similaires au mot cyberattack et les placer dans la liste keywords
