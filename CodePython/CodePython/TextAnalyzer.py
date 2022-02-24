@@ -130,12 +130,11 @@ class TextAnalyzer(object):
         if wordDic==[]:
             wordDic=TextAnalyzer.wordDic
         if sentDic==[]:
-            sentDic=LoadSentenceDic("analyzer_tools/Sentence_dictionnary", self.company)
+            sentDic=TextAnalyzer.LoadSentenceDic("analyzer_tools/Sentence_dictionnary", self.company)
         max_rate=0.9 #If this similarity score is reached or exceeded, a level 3 alert is raised.
-        med_rate=0.6
+        med_rate=0.8
         lvl2_rate_nb=7 #If 7 scores are located between the med_rate and max_rate, a level 2 alert is raised.
         lvl1_rate_nb=3 #If 3 scores are located between the med_rate and max_rate, a level 1 alert is raised.
-        verif_max_rate=False
         self.date=datetime.now()
         self.status=0 #Default status
         self.result="Nothing to report." #Default result
@@ -153,7 +152,7 @@ class TextAnalyzer(object):
                 if score > 0.9:
                     print("There is a very high similarity between our text sentence:\""+str(text_sentence)+"\" and our example sentence:\"" \
                         +str(example_sentence)+"\" (score of:"+str(score)+")")
-                elif score > 0.6:
+                elif score > 0.8:
                     print("There is medium similarity between our text sentence:\""+str(text_sentence)+"\" and our example sentence:\"" \
                         +str(example_sentence)+"\" (score of:"+str(score)+")")
                 else:
@@ -162,12 +161,11 @@ class TextAnalyzer(object):
                 similarityScores[text_sentence].append(score) #And save the score
                 print("----------------------------------next example sentence----------------------------------")
             print("----------------------------------||next text sentence||----------------------------------")
-        for key in similarityScores: #We then browse for each extracted sentence the corresponding scores. Key is the extracted sentence, value is the list of scores after comparison.
+        for key in similarityScores: #We then browse for each extracted sentence the corresponding scores. Key is the extracted sentence, value is the list of scores after comparison (len(value)==len(sentDic)).
             scores=similarityScores[key]
             count_med_rate=0
             for score in scores: #We browse the score list for a given sentence.
-                if score>=max_rate:  #We verify whether the maximum score is reached or exceeded, if so we raise a level 3 alert.
-                    verif_max_rate=True 
+                if score>=max_rate:  #We verify whether the maximum score is reached or exceeded, if so we raise a level 3 alert. 
                     self.status=3
                     self.result="/!\\ A level 3 alert has been raised /!\\"
                     break #We move on to the next phrase as it will never be higher.
