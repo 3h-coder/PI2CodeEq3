@@ -1,0 +1,31 @@
+malware source code discovered on CompName puts millions of iot devices at risk. 
+malware strikes CompName systems in targeted attacks.
+a campaign that uses public cloud service providers to spread malware has been discovered.
+a vulnerability has been identified in locally installed versions of CompName.
+a CompName plugin has been found to contain a critical vulnerability.
+new high severity security vulnerabilities have been disclosed in different implementations of CompName firmware.
+cisa has warned of critical vulnerabilities in CompName.
+CompName servers and services were affected by the attack.
+cisa warns of ongoing attacks targeting CompName vulnerabilities.
+CompName server flaws now exploited for attacks.
+CompName vulnerability exploited in first stage of clop ransomware attacks.
+hackers deployed ransomware and took the CompName data hostage.
+CompName uncovers dependency confusion attacks.
+cybercriminals ramp up attacks on CompName.
+a CompName app feature is being abused in a new phishing campaign.
+cyberattack disrupts CompName services.
+CompName was hit by cyberattack.
+over a million CompName sites breached.
+CompName has become the latest online firm to suffer a serious breach of customer data after hackers published the information for free on the dark web.
+CompName has revealed a major data breach that compromised the personal details of "highly vulnerable" victims.
+phishing operators took advantage of the issue to redirect victims to malicious websites.
+an unsecured server has exposed sensitive data belonging to CompName employees.
+a new botnet variant discovered by cyber threat intelligence provider employs a unique method to steal cryptocurrency from its victims.
+CompName said that it found a new variant of the botnet.
+critical CompName security flaw lets hackers compromise vulnerable servers.
+the open database exposed highly sensitive financial and business documents related to CompName.
+critical security flaws reported in CompName network management software
+critical CompName 0-Day vulnerability under active exploitation.
+trojan hijacks CompName with malicious extensions. 
+the flaws could be exploited to bypass authentication and authorization protections.
+successful exploitation of the three vulnerabilities could result in the execution of malicious code to achieve a complete site takeover.           

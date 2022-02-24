@@ -130,17 +130,18 @@ class TextAnalyzer(object):
         if wordDic==[]:
             wordDic=TextAnalyzer.wordDic
         if sentDic==[]:
-            sentDic=TextAnalyzer.LoadSentenceDic("analyzer_tools/Sentence_dictionnary", self.company)
+            sentDic=TextAnalyzer.LoadSentenceDic("analyzer_tools/Sentence_dictionnary.txt", self.company)
         max_rate=0.9 #If this similarity score is reached or exceeded, a level 3 alert is raised.
         med_rate=0.8
-        lvl2_rate_nb=7 #If 7 scores are located between the med_rate and max_rate, a level 2 alert is raised.
-        lvl1_rate_nb=3 #If 3 scores are located between the med_rate and max_rate, a level 1 alert is raised.
+        lvl2_rate_nb=10 #If 10 scores are located between the med_rate and max_rate, a level 2 alert is raised.
+        lvl1_rate_nb=5 #If 5 scores are located between the med_rate and max_rate, a level 1 alert is raised.
         self.date=datetime.now()
         self.status=0 #Default status
         self.result="Nothing to report." #Default result
         similarityScores={}
         keysentences=TextAnalysis.DetectSentences(self.text, wordDic) #First, we start by extracting the sentences that contain our keywords.
         for text_sentence in keysentences: #Then, we compare each of these sentences with the example phrases from our sentDic variable.
+            text_sentence_copy=str(text_sentence).lower() #To simplify the comparison process, all compared sentences will be in lowercase.
             DetectedDates=TextAnalysis.IdentifyDateSentence(str(text_sentence), datetime.combine(self.text_date, datetime.min.time())) #We now want to make sure that the sentence doesn't mention 
             #an event that is too old and thus irrelevant. (We want to avoid false positives by doing that)
             for date in DetectedDates:
@@ -148,7 +149,7 @@ class TextAnalyzer(object):
                     keysentences.remove(text_sentence) #We remove the sentence from our list.
             similarityScores[text_sentence]=[]
             for example_sentence in sentDic:
-                score=TextAnalysis.CompareSimilarity(str(text_sentence),str(example_sentence)) #We evaluate the similarity between the extracted sentence and the example sentence.
+                score=TextAnalysis.CompareSimilarity(text_sentence_copy,str(example_sentence)) #We evaluate the similarity between the extracted sentence and the example sentence lowercased.
                 if score > 0.9:
                     print("There is a very high similarity between our text sentence:\""+str(text_sentence)+"\" and our example sentence:\"" \
                         +str(example_sentence)+"\" (score of:"+str(score)+")")

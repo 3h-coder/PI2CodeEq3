@@ -2018,7 +2018,7 @@ def textAnalyzerTest():
     link="https://www.infosecurity-magazine.com/news/kp-snacks-under-cyberattack/"
     article_date=dateparser.parse("3 Feb 2022").date()
     test=TextAnalyzer("KP Snacks", text, link, article_date)
-    test.RunAnalysis(dicMots,dicPhrases)
+    test.RunAnalysis()
     print(test)
 
 def WebScraping(company, page_limit=2):
@@ -2085,7 +2085,7 @@ def WebScraping2(company, date):
 def main():
     #WebScraping2("Microsoft", "1 Jan 2022")
     textAnalyzerTest()
-    #print(TextAnalyzer.wordDic)
+    #print(TextAnalyzer.LoadSentenceDic("analyzer_tools/Sentence_dictionnary.txt", "microsoft"))
   
 main()
 

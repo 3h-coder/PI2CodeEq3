@@ -368,7 +368,7 @@ def DetectTenses(sentence):
 def TestDetectTenses():
     sentence = "Cisco will just have been making it in an advisory published this week."
     tenses = DetectTenses(sentence)
-    print('\n------------------------------Verbes détectés------------------------------')
+    print('\n------------------------------Detected verbs------------------------------')
     print(tenses)
 
 def main_function():
