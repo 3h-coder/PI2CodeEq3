@@ -127,14 +127,14 @@ class TextAnalyzer(object):
             List of sentences we will use to compare the text sentences and raise an alert based on the similarity.
             (The sentences in this variable are typically the ones that would make us raise a level 3 alert.)
         """
-        if wordDic==[]:
+        if wordDic==[]: 
             wordDic=TextAnalyzer.wordDic
         if sentDic==[]:
             sentDic=TextAnalyzer.LoadSentenceDic("analyzer_tools/Sentence_dictionnary.txt", self.company)
-        max_rate=0.9 #If this similarity score is reached or exceeded, a level 3 alert is raised.
+        max_rate=0.92 #If this similarity score is reached or exceeded, a level 3 alert is raised.
         med_rate=0.8
-        lvl2_rate_nb=10 #If 10 scores are located between the med_rate and max_rate, a level 2 alert is raised.
-        lvl1_rate_nb=5 #If 5 scores are located between the med_rate and max_rate, a level 1 alert is raised.
+        lvl2_rate_nb=20 #If 10 scores are located between the med_rate and max_rate, a level 2 alert is raised.
+        lvl1_rate_nb=15 #If 5 scores are located between the med_rate and max_rate, a level 1 alert is raised.
         self.date=datetime.now()
         self.status=0 #Default status
         self.result="Nothing to report." #Default result
@@ -146,22 +146,25 @@ class TextAnalyzer(object):
             #an event that is too old and thus irrelevant. (We want to avoid false positives by doing that)
             for date in DetectedDates:
                 if date < self.text_date-timedelta(days=7): #If the occurence happened more than a week before the article/tweet post date, it is considered as too old.
-                    keysentences.remove(text_sentence) #We remove the sentence from our list.
+                    try:
+                        keysentences.remove(text_sentence) #We remove the sentence from our list.
+                    except:
+                        pass
             similarityScores[text_sentence]=[]
             for example_sentence in sentDic:
                 score=TextAnalysis.CompareSimilarity(text_sentence_copy,str(example_sentence)) #We evaluate the similarity between the extracted sentence and the example sentence lowercased.
-                if score > 0.9:
-                    print("There is a very high similarity between our text sentence:\""+str(text_sentence)+"\" and our example sentence:\"" \
-                        +str(example_sentence)+"\" (score of:"+str(score)+")")
-                elif score > 0.8:
-                    print("There is medium similarity between our text sentence:\""+str(text_sentence)+"\" and our example sentence:\"" \
-                        +str(example_sentence)+"\" (score of:"+str(score)+")")
-                else:
-                    print("There is a low similarity between our text sentence:\""+str(text_sentence)+"\" and our example sentence:\"" \
-                        +str(example_sentence)+"\" (score of:"+str(score)+")")    
+                #if score > 0.9:
+                    #print("There is a very high similarity between our text sentence:\""+str(text_sentence)+"\" and our example sentence:\"" \
+                        #+str(example_sentence)+"\" (score of:"+str(score)+")")
+                #elif score > 0.8:
+                    #print("There is medium similarity between our text sentence:\""+str(text_sentence)+"\" and our example sentence:\"" \
+                        #+str(example_sentence)+"\" (score of:"+str(score)+")")
+                #else:
+                    #print("There is a low similarity between our text sentence:\""+str(text_sentence)+"\" and our example sentence:\"" \
+                        #+str(example_sentence)+"\" (score of:"+str(score)+")")    
                 similarityScores[text_sentence].append(score) #And save the score
-                print("----------------------------------next example sentence----------------------------------")
-            print("----------------------------------||next text sentence||----------------------------------")
+                #print("----------------------------------next example sentence----------------------------------")
+            #print("----------------------------------||next text sentence||----------------------------------")
         for key in similarityScores: #We then browse for each extracted sentence the corresponding scores. Key is the extracted sentence, value is the list of scores after comparison (len(value)==len(sentDic)).
             scores=similarityScores[key]
             count_med_rate=0
