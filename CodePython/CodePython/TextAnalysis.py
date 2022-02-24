@@ -13,9 +13,19 @@ import re
 from nltk import word_tokenize, pos_tag
 #python -m spacy download en_core_web_md
 nlp = spacy.load('en_core_web_md')
+import warnings
+warnings.filterwarnings("ignore", message="The localize method is no longer necessary, as this time zone supports the fold attribute")
 
-#Pour extraire un article depuis une page web qui servira ensuite d'exemple pour toutes nos fonctions de test.
-def extract_example(number): #bien mettre à jour le numéro
+
+def extract_example(number): #Don't forget to update the number
+    """
+    Extracts an article from a webpage and saves it to a txt file.
+
+    Parameter
+    -------------
+    number: int
+        The article number in our folder containing all the txt files.
+    """
     URL="https://krebsonsecurity.com/2022/01/500m-avira-antivirus-users-introduced-to-cryptomining/" #changer l'url
     page=requests.get(URL)
     soup=BeautifulSoup(page.text, "lxml")
@@ -30,16 +40,21 @@ def extract_example(number): #bien mettre à jour le numéro
     file.close()
 
 def LoadExampleText(number):
+    """
+    Reads a txt article file to return the corresponding str object.
+
+    Parameter
+    -------------
+    number: int
+        The article number in our folder containing all the txt files.
+    """
     with open("articles/article{}.txt".format(str(number)), "r") as file: #changer le numéro de l'article
         text=file.read()
     file.close()
     return text
 
-#Pour effectuer des tests, nous utiliserons un paragraphe à titre d'exemple.
-#extract_example(1)
+#For testing purposes
 example_bloc=LoadExampleText(1)
-
-#Les mots clés que l'on utilisera pour trouver/cibler certaines phrases de notre texte, 
 keywords=["vulnerability", "attack", "threat", "breach"]
 
 
@@ -56,16 +71,16 @@ def CountOccurences(keywords, text):
     """
     occurence = 0
 
-    doc = nlp(text) #On crée un objet spacy appelé doc qui contient le texte passé en paramètre
+    doc = nlp(text) #We create a spacy nlp object
 
-    for token in doc: #Boucle sur chaque token (un token est un mot ou une ponctuation)
+    for token in doc: #We loop through each token (a toekn is either a word or ponctuation)
         if keywords and len(keywords) != 0:
             for k in keywords:
                 if(token.text == k):
                     occurence += 1
     return occurence
 
-#Test de la fonction Compte Occurences KeyWord
+#For testing purposes
 def TestCountOccurences():
     keywords = ['breach']
     with open('article.txt', 'r') as f:
@@ -73,7 +88,7 @@ def TestCountOccurences():
     occ = CountOccurences(keywords, text)
     print(occ)
 
-#Test de la fonction CountOccurences
+#For testing purposes
 def TestCountOccurences(text):
     keywords = ['security']
     occ = CountOccurences(keywords, text)
@@ -93,7 +108,7 @@ def IdentifySubject(sentence):
         if token.dep_ == 'nsubj':
             return token.text
 
-#Test de la fonction IdentifySubject
+#For testing purposes
 def TestIdentifySubject(text):
     doc = nlp(text)
     first_sentence = list(doc.sents)[0].text
@@ -125,7 +140,7 @@ def DetectSentences(text, keywords):
 
     return keysentences
 
-#Test de la fonction DetectSentences 
+#For testing purposes
 def TestDetectSentences(text):
     sentences=DetectSentences(text, keywords)
     print(sentences)
@@ -145,7 +160,6 @@ def ConversionDateArticle(date):
 
     tab=[day,month,year]
     return tab
-
 
 def DetectDateOfAttack (date,sentence):
     mois=[1,2,3,4,5,6,7,8,9,10,11,12]
@@ -183,8 +197,7 @@ def DetectDateOfAttack (date,sentence):
 #pip install dateparser
 
 #Pour supprimer les warnings du package dateparser
-import warnings
-warnings.filterwarnings("ignore", message="The localize method is no longer necessary, as this time zone supports the fold attribute")
+
 
 def IdentifyDateSentence(sentence, relativeDate):
     """
@@ -197,8 +210,8 @@ def IdentifyDateSentence(sentence, relativeDate):
     relativeDate: datetime
         date of the article
     """
-    extractedDates = search_dates(sentence, languages = ['en'], settings={'RELATIVE_BASE' : relativeDate}) #Tableau contenant les dates repérées dans la phrase passée ne paramètre
-    tableauDates = [] #Tableau des dates extraites sous forme d'objet datetime
+    extractedDates = search_dates(sentence, languages = ['en'], settings={'RELATIVE_BASE' : relativeDate}) #array containing the dates extracted from the given sentence
+    tableauDates = [] #array containing these dates as datetime objects
     if extractedDates is not None:
         for i in range(len(extractedDates)):
             tableauDates.append(extractedDates[i][1].date())
@@ -245,24 +258,24 @@ def LexicalField(keyword):
     -------------
     keyword: str
     """
-    #Cette fonction spacy trouve les mots les plus similaires et les place dans un array appelé ici ms
+    #This function finds the most similar words and places them in an array (called ms here).
     ms = nlp.vocab.vectors.most_similar(np.asarray([nlp.vocab.vectors[nlp.vocab.strings[keyword]]]), n=10)
     for word in ms[0][0]:
         keyword = nlp.vocab.strings[word]
         print(keyword)
-        #On demande à l'admin s'il veut rajouter ce mot à la liste de mots clés
+        #We ask the admin whether they want to add this word in our keyword list or not.
         add = input("Add '" + keyword + "' to the list of keyword ? (y/n) : ") 
         while(add != 'y' and add != 'n'):
             add = input("Incorrect entry. \nAdd '" + keyword + "' to the list of keyword ? (y/n) : ") 
         if(add == 'y'):
-            keywords.append(keyword) #On ajoute le mot clé validé par l'admin
+            keywords.append(keyword) #We add the word approved by the admin.
 
 def TestLexicalField():
     keyword = 'cyberattack'
     LexicalField(keyword)
     print(keywords)
 
-#A faire la première fois que vous lancez le code:
+#To do the first time you run the code:
 #import nltk
 #nltk.download('punkt')
 #nltk.download('averaged_perceptron_tagger')
@@ -294,41 +307,41 @@ def DetectTenses(sentence):
     """
     tenses = []
     text = word_tokenize(sentence)
-    #pos_tag renvoie une liste de tuples sous la forme [(mot1, tag1), (mot2, tag2), ... ]
+    #pos_tag reurns a list of tuples under the form [(mot1, tag1), (mot2, tag2), ... ]
     words = pos_tag(text)
     print(words)
     for i in range(len(words)):
-        #TEMPS DU PASSE
-        #Si le verbe est au preterit 
+        #PAST TENSE
+        #If the verb is in preterite
         if words[i][1] == 'VBD': 
             if words[i][0] == 'had':
-                #S'il est suivi par un participe passé,
+                #If it is followed by a past participle,
                 if words[i+1][1] == 'VBN':
                     tenses.append((str(words[i][0]) + ' ' + str(words[i+1][0]), 'pluperfect -> distant past'))
                     i += 1
-                #S'il y a un adverbe entre le modal et le participe passé
+                #If there is an adverb between the modal and the past participle
                 elif words[i+2][1] == 'VBN':
                     tenses.append((str(words[i][0]) + ' ' + str(words[i+2][0]), 'pluperfect -> distant past'))
                     i += 2
-            #Si c'est un verbe au preterit
+            #If it is a preterite verb
             else:
                 tenses.append((words[i][0], 'preterit'))
         
-        #TEMPS DU PRESENT
-        #Si le verbe est au présent
+        #PRESENT TENSE
+        #If the verb is in the present tense
         elif words[i][1] in ['VBP', 'VBZ']:
             if words[i][0] in ['has', 'have']:
-                #S'il est suivi d'un participe passé
+                #If it is followed by a past participle
                 if words[i+1][1] == 'VBN':
                     tenses.append((str(words[i][0]) + ' ' + str(words[i+1][0]), 'present perfect'))
                     i += 1
-                #S'il y a un adverbe entre le modal et le participe passé
+                #If there is an adverb between the modal and the past participle
                 elif words[i+2][1] == 'VBN':
                     tenses.append((str(words[i][0]) + ' ' + str(words[i+2][0]), 'present perfect'))
                     i += 2
                 else:
                     tenses.append((words[i][0], 'present'))
-            #S'il est suivi par un verbe en -ing
+            #If followed by a verb in -ing
             elif(words[i+1][1] == 'VBG'):
                 tenses.append((str(words[i][0]) + ' ' + str(words[i+1][0]), 'present continuous'))
                 i += 1
@@ -338,9 +351,9 @@ def DetectTenses(sentence):
             else:
                 tenses.append((words[i][0], 'present'))
 
-        #Si le verbe est un modal
+        #If the verb is a modal
         elif(words[i][1] == 'MD'):
-            #TEMPS DU FUTUR
+            #FUTUR TENSE
             if(words[i][0] == 'will'):
                 if(words[i+1][0] == 'have' and words[i+2][1] == 'VBN'):
                     tenses.append((str(words[i][0]) + ' ' + str(words[i+1][0]) + ' ' + str(words[i+2][0]), 'futur antérieur'))
@@ -372,10 +385,3 @@ if __name__=="__main__":
     main_function()
 
 
-##Tester la similarité de deux phrases
-#doc1 = nlp("PNB customers' data exposed for seven months du to server vulnerability")
-#doc2 = nlp("Polish T-Mobile unit faces cyber attack, systems not compromised ")
-#print(doc1, '<->', doc2, doc1.similarity(doc2))
-#doc3 = nlp("5 Simple steps to protect your practice from cyberattacks")
-#print(doc2, '<->', doc3, doc2.similarity(doc3))
-##Résultats : 0.7528227008873364 et 0.7557642629789989, il montre les similarités dans le vocabulaire mais ne différencie pas le contexte
