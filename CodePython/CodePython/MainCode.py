@@ -62,7 +62,7 @@ def ScrapeHackerNews(company, page_limit=2):
                     ta.RunAnalysis() #We then proceed to run the analysis to determine whether or not an alert needs to be raised.
                     found=True
                     print("Information found on "+a.get('href')+"   "+ta.result)
-                    #yield ta
+                    ta.Save()
         while(page_counter<page_limit): #We keep scraping the next page until the page limit.
             nextpageURL=""
             next_a=soup.find('a', {"class":"blog-pager-older-link-mobile"}) #Here we search for the next page link.
@@ -92,7 +92,7 @@ def ScrapeHackerNews(company, page_limit=2):
                                 ta.RunAnalysis()
                                 found=True
                                 print("Information found on "+a.get('href')+"   "+ta.result)
-                                #yield ta
+                                ta.Save()
                 else: #We could not access the next page.
                     print("Request Failure: "+nextpageURL+" returned: "+str(nextpage))
                     break
@@ -151,6 +151,7 @@ def ScrapeHackerNews2(company, date):
                     ta.RunAnalysis() #We then proceed to run the analysis to determine whether or not an alert needs to be raised.
                     found=True
                     print("Information found on "+a.get('href')+"   "+ta.result)
+                    ta.Save()
         while(last_article_date > date): #We keep scraping the next page until we reach our date.
             nextpageURL=""
             next_a=soup.find('a', {"class":"blog-pager-older-link-mobile"}) #Here we search for the next page link.
@@ -186,6 +187,7 @@ def ScrapeHackerNews2(company, date):
                                 ta.RunAnalysis()
                                 found=True
                                 print("Information found on "+a.get('href')+"   "+ta.result)
+                                ta.Save()
                 else: #We could not access the next page.
                     print("Request Failure: "+nextpageURL+" returned: "+str(nextpage))
                     break
@@ -237,7 +239,7 @@ def ScrapeDarkReading(company, page_limit=2): #Infinite scroll website
                     ta.RunAnalysis() 
                     found=True
                     print("Information found on "+a.get('href')+"   "+ta.result)
-                    #yield ta
+                    ta.Save()
         while(page_counter<2):
             page_counter=page_counter+1
             nextpageURL="https://www.darkreading.com/attacks-breaches?page={}".format(page_counter)
@@ -263,7 +265,7 @@ def ScrapeDarkReading(company, page_limit=2): #Infinite scroll website
                                 ta.RunAnalysis() 
                                 found=True
                                 print("Information found on "+a.get('href')+"   "+ta.result)
-                                #yield ta
+                                ta.Save()
                 else: 
                     print("Request Failure: "+nextpageURL+" returned: "+str(nextpage))
                     break
@@ -322,6 +324,7 @@ def ScrapeDarkReading2(company, date):
                     ta.RunAnalysis() 
                     found=True
                     print("Information found on "+a.get('href')+"   "+ta.result)
+                    ta.Save()
         while(last_article_date > date):
             page_counter=page_counter+1
             nextpageURL="https://www.darkreading.com/attacks-breaches?page={}".format(page_counter)
@@ -354,6 +357,7 @@ def ScrapeDarkReading2(company, date):
                                 ta.RunAnalysis() 
                                 found=True
                                 print("Information found on "+a.get('href')+"   "+ta.result)
+                                ta.Save()
                 else: 
                     print("Request Failure: "+nextpageURL+" returned: "+str(nextpage))
                     break
@@ -409,7 +413,7 @@ def ScrapeZDnet(company, page_limit=2): #URL rebuilding necessary  --> stringObj
                     ta.RunAnalysis() 
                     found=True
                     print("Information found on "+anchor_link+"   "+ta.result)
-                    #yield ta
+                    ta.Save()
         while(page_counter<page_limit): 
             nextpageURL=""
             next_a=soup.find('a', {"class":"next"})
@@ -443,7 +447,7 @@ def ScrapeZDnet(company, page_limit=2): #URL rebuilding necessary  --> stringObj
                                 ta.RunAnalysis() 
                                 found=True
                                 print("Information found on "+anchor_link+"   "+ta.result)
-                                #yield ta
+                                ta.Save()
                 else: 
                     print("Request Failure: "+nextpageURL+" returned: "+str(nextpage))
                     break
@@ -505,7 +509,7 @@ def ScrapeZDnet2(company, date):
                     ta.RunAnalysis() 
                     found=True
                     print("Information found on "+anchor_link+"   "+ta.result)
-                    #yield ta
+                    ta.Save()
         while(last_article_date > date): 
             nextpageURL=""
             next_a=soup.find('a', {"class":"next"})
@@ -547,7 +551,7 @@ def ScrapeZDnet2(company, date):
                                 ta.RunAnalysis() 
                                 found=True
                                 print("Information found on "+anchor_link+"   "+ta.result)
-                                #yield ta
+                                ta.Save()
                 else: 
                     print("Request Failure: "+nextpageURL+" returned: "+str(nextpage))
                     break
@@ -583,7 +587,7 @@ def ScrapeTechRP(company, page_limit=2):
         anchors=soup.find_all('a')
         link_found="" 
         for a in anchors:
-            if(a.get('href') != None and a.get('href')!=link_found): 
+            if(a.get('href') != None and a.get('href')!=link_found and not a.get('href').startswith("https://www.techrepublic.com/resource-library")): 
                 if (company in a.get('href')) or (company in a.text) or (company.lower() in a.get('href')) or (company.lower() in a.text) \
                 or (company.capitalize() in a.get('href')) or (company.capitalize() in a.text):
                     link_found=a.get('href')
@@ -600,7 +604,7 @@ def ScrapeTechRP(company, page_limit=2):
                     ta.RunAnalysis() 
                     found=True
                     print("Information found on "+a.get('href')+"   "+ta.result)
-                    #yield ta
+                    ta.Save()
         while(page_counter<page_limit): 
             nextpageURL=""
             next_a=soup.find('a', {"class":"next page-numbers"})
@@ -613,7 +617,7 @@ def ScrapeTechRP(company, page_limit=2):
                     soup=BeautifulSoup(nextpage.text, "lxml")
                     anchors=soup.find_all('a')
                     for a in anchors:
-                        if(a.get('href') != None and a.get('href')!=link_found):
+                        if(a.get('href') != None and a.get('href')!=link_found and not a.get('href').startswith("https://www.techrepublic.com/resource-library")):
                             if (company in a.get('href')) or (company in a.text) or (company.lower() in a.get('href')) or (company.lower() in a.text) \
                             or (company.capitalize() in a.get('href')) or (company.capitalize() in a.text):
                                 link_found=a.get('href')
@@ -630,7 +634,7 @@ def ScrapeTechRP(company, page_limit=2):
                                 ta.RunAnalysis() 
                                 found=True
                                 print("Information found on "+a.get('href')+"   "+ta.result)
-                                #yield ta
+                                ta.Save()
                 else: 
                     print("Request Failure: "+nextpageURL+" returned: "+str(nextpage))
                     break
@@ -667,7 +671,7 @@ def ScrapeTechRP2(company, date):
         for article in articles:
             anchors=article.find_all('a')
             for a in anchors:
-                if(a.get('href') != None and a.get('href')!=link_found): 
+                if(a.get('href') != None and a.get('href')!=link_found and not a.get('href').startswith("https://www.techrepublic.com/resource-library")): 
                     wrapper=a.find_parent('article')
                     try:
                         span=wrapper.find('span',{"class":"date-published"})
@@ -692,7 +696,7 @@ def ScrapeTechRP2(company, date):
                             ta.RunAnalysis() 
                             found=True
                             print("Information found on "+a.get('href')+"   "+ta.result)
-                            #yield ta
+                            ta.Save()
                     except:
                        pass
         while(last_article_date > date): 
@@ -708,7 +712,7 @@ def ScrapeTechRP2(company, date):
                     for article in articles:
                         anchors=article.find_all('a')
                         for a in anchors:
-                            if(a.get('href') != None and a.get('href')!=link_found):
+                            if(a.get('href') != None and a.get('href')!=link_found and not a.get('href').startswith("https://www.techrepublic.com/resource-library")):
                                 wrapper=a.find_parent('article')
                                 try:
                                     span=wrapper.find('span',{"class":"date-published"})
@@ -733,7 +737,7 @@ def ScrapeTechRP2(company, date):
                                         ta.RunAnalysis() 
                                         found=True
                                         print("Information found on "+a.get('href')+"   "+ta.result)
-                                        #yield ta
+                                        ta.Save()
                                 except:
                                     pass
                 else: 
@@ -787,7 +791,7 @@ def ScrapeMcAfee(company, page_limit=2):
                     ta.RunAnalysis() 
                     found=True
                     print("Information found on "+a.get('href')+"   "+ta.result)
-                    #yield ta
+                    ta.Save()
         while(page_counter<page_limit): 
             nextpageURL=""
             next_a=soup.find('a', {"class":"next page-numbers"})
@@ -816,7 +820,7 @@ def ScrapeMcAfee(company, page_limit=2):
                                 ta.RunAnalysis() 
                                 found=True
                                 print("Information found on "+a.get('href')+"   "+ta.result)
-                                #yield ta
+                                ta.Save()
                 else: 
                     print("Request Failure: "+nextpageURL+" returned: "+nextpage)
                     break
@@ -876,7 +880,7 @@ def ScrapeMcAfee2(company, date):
                             ta.RunAnalysis() 
                             found=True
                             print("Information found on "+a.get('href')+"   "+ta.result)
-                            #yield ta
+                            ta.Save()
             except:
                 pass
         while(last_article_date > date): 
@@ -918,7 +922,7 @@ def ScrapeMcAfee2(company, date):
                                         ta.RunAnalysis() 
                                         found=True
                                         print("Information found on "+a.get('href')+"   "+ta.result)
-                                        #yield ta
+                                        ta.Save()
                         except:
                             pass
                 else: 
@@ -973,7 +977,7 @@ def ScrapeGraham(company, page_limit=2): #Necessary headers assignment, otherwis
                     ta.RunAnalysis() 
                     found=True
                     print("Information found on "+a.get('href')+"   "+ta.result)
-                    #yield ta
+                    ta.Save()
         while(page_counter<page_limit): 
             nextpageURL=""
             next_a=soup.find('a', {"class":"nextpostslink"})
@@ -1002,7 +1006,7 @@ def ScrapeGraham(company, page_limit=2): #Necessary headers assignment, otherwis
                                 ta.RunAnalysis() 
                                 found=True
                                 print("Information found on "+a.get('href')+"   "+ta.result)
-                                #yield ta
+                                ta.Save()
                 else: 
                     print("Request Failure: "+nextpageURL+" returned: "+str(nextpage))
                     break
@@ -1062,7 +1066,7 @@ def ScrapeGraham2(company, date):
                         ta.RunAnalysis() 
                         found=True
                         print("Information found on "+a.get('href')+"   "+ta.result)
-                        #yield ta
+                        ta.Save()
         while(last_article_date > date): 
             nextpageURL=""
             next_a=soup.find('a', {"class":"nextpostslink"})
@@ -1098,7 +1102,7 @@ def ScrapeGraham2(company, date):
                                     ta.RunAnalysis() 
                                     found=True
                                     print("Information found on "+a.get('href')+"   "+ta.result)
-                                    #yield ta
+                                    ta.Save()
                 else: 
                     print("Request Failure: "+nextpageURL+" returned: "+str(nextpage))
                     break
@@ -1158,7 +1162,7 @@ def ScrapeCSO(company, page_limit=2): #Necessary URL rebuilding
                     ta.RunAnalysis() 
                     found=True
                     print("Information found on "+anchor_link+"   "+ta.result)
-                    #yield ta
+                    ta.Save()
         while(article_counter<article_limit): 
             article_counter=article_counter+20
             nextpageURL=URL+"?start="+str(article_counter)
@@ -1186,7 +1190,7 @@ def ScrapeCSO(company, page_limit=2): #Necessary URL rebuilding
                             ta.RunAnalysis()
                             found=True
                             print("Information found on "+anchor_link+"   "+ta.result)
-                            #yield ta
+                            ta.Save()
             else: 
                 print("Request Failure: "+nextpageURL+" returned: "+str(nextpage))
                 break
@@ -1247,7 +1251,7 @@ def ScrapeCSO2(company, date):
                     ta.RunAnalysis() 
                     found=True
                     print("Information found on "+anchor_link+"   "+ta.result)
-                    #yield ta
+                    ta.Save()
         while(last_article_date > date): 
             article_counter=article_counter+20
             nextpageURL=URL+"?start="+str(article_counter)
@@ -1283,7 +1287,7 @@ def ScrapeCSO2(company, date):
                             ta.RunAnalysis()
                             found=True
                             print("Information found on "+anchor_link+"   "+ta.result)
-                            #yield ta
+                            ta.Save()
             else: 
                 print("Request Failure: "+nextpageURL+" returned: "+str(nextpage))
                 break
@@ -1333,7 +1337,7 @@ def ScrapeInfosecmag(company, page_limit=2):
                     ta.RunAnalysis() 
                     found=True
                     print("Information found on "+a.get('href')+"   "+ta.result)
-                    #yield ta
+                    ta.Save()
         while(page_counter<page_limit): 
             nextpageURL=""
             for a in soup.find_all('a'): 
@@ -1364,14 +1368,14 @@ def ScrapeInfosecmag(company, page_limit=2):
                                 ta=TextAnalyzer(company, article, link_found, article_date) 
                                 ta.RunAnalysis() 
                                 print("Information found on "+a.get('href')+"   "+ta.result)
-                                #yield ta
+                                ta.Save()
                 else: 
                     print("Request Failure: "+nextpageURL+" returned: "+str(nextpage))
                     break
             else: 
                 break
         if(found==False):
-            print("Could not scrape any information about "+ company+" on "+URL)
+            print("Could not find any information about "+ company+" on "+URL)
     else: 
         print("Request Failure: "+URL+" returned: "+str(mainpage))
 
@@ -1422,7 +1426,7 @@ def ScrapeInfosecmag2(company, date):
                     ta.RunAnalysis() 
                     found=True
                     print("Information found on "+a.get('href')+"   "+ta.result)
-                    #yield ta
+                    ta.Save()
         while(last_article_date > date): 
             nextpageURL=""
             for a in soup.find_all('a'): 
@@ -1459,14 +1463,14 @@ def ScrapeInfosecmag2(company, date):
                                 ta=TextAnalyzer(company, article, link_found, article_date) 
                                 ta.RunAnalysis() 
                                 print("Information found on "+a.get('href')+"   "+ta.result)
-                                #yield ta
+                                ta.Save()
                 else: 
                     print("Request Failure: "+nextpageURL+" returned: "+str(nextpage))
                     break
             else: 
                 break
         if(found==False):
-            print("Could not scrape any information about "+ company+" on "+URL)
+            print("Could not find any information about "+ company+" on "+URL)
     else: 
         print("Request Failure: "+URL+" returned: "+str(mainpage))
 
@@ -1510,7 +1514,7 @@ def ScrapeNakedsec(company, page_limit=2):
                     ta.RunAnalysis() 
                     found=True
                     print("Information found on "+a.get('href')+"   "+ta.result)
-                    #yield ta
+                    ta.Save()
         while(page_counter<page_limit): 
             nextpageURL=""
             next_a=soup.find('section', {"class":"load-more"}).find('a', {"class":"button"})
@@ -1538,7 +1542,7 @@ def ScrapeNakedsec(company, page_limit=2):
                                 ta.RunAnalysis() 
                                 found=True
                                 print("Information found on "+a.get('href')+"   "+ta.result)
-                                #yield ta
+                                ta.Save()
                 else: 
                     print("Request Failure: "+nextpageURL+" returned: "+str(nextpage))
                     break
@@ -1596,7 +1600,7 @@ def ScrapeNakedsec2(company, date):
                         ta.RunAnalysis() 
                         found=True
                         print("Information found on "+a.get('href')+"   "+ta.result)
-                        #yield ta
+                        ta.Save()
                 except:
                     pass
         while(last_article_date > date): 
@@ -1633,7 +1637,7 @@ def ScrapeNakedsec2(company, date):
                                     ta.RunAnalysis() 
                                     found=True
                                     print("Information found on "+a.get('href')+"   "+ta.result)
-                                    #yield ta
+                                    ta.Save()
                             except:
                                 pass
                 else: 
@@ -1688,6 +1692,7 @@ def ScrapeKebronsec(company, page_limit=2):
                     ta.RunAnalysis()
                     found=True
                     print("Information found on "+a.get('href')+"   "+ta.result)
+                    ta.Save()
         while(page_counter<page_limit): 
             page_counter=page_counter+1
             nextpageURL="https://krebsonsecurity.com/page/{}/".format(page_counter)
@@ -1714,6 +1719,7 @@ def ScrapeKebronsec(company, page_limit=2):
                                 ta.RunAnalysis() 
                                 found=True
                                 print("Information found on "+a.get('href')+"   "+ta.result)
+                                ta.Save()
                 else: 
                     print("Request Failure: "+nextpageURL+" returned: "+str(nextpage))
                     break
@@ -1973,6 +1979,7 @@ def ScrapeTwitter(company, max_tweets=10):
     else:
         for ta in Tweetlist:
             print("information found on "+ta.link+"   "+ta.result)
+            ta.Save()
     #return Tweetlist
 
     #{'briankrebs': [<Tweet id=1481030224750026764 text=It's Patch Tuesday, Windows users! Today's batch includes fixes for something like 120 vulnerabilities, including a critical, "wormable" flaw in Windows 10/11 and later Server versions, and 3 Exchange bugs, 1 of which was reported to Microsoft by the NSA. https://t.co/zh1UdM3qZq>], 
@@ -2005,6 +2012,7 @@ def ScrapeTwitter2(company, date):
     else:
         for ta in Tweetlist:
             print("information found on "+ta.link+"   "+ta.result)
+            ta.Save()
     #return Tweetlist
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -2019,7 +2027,7 @@ def textAnalyzerTest():
     article_date=dateparser.parse("3 Feb 2022").date()
     test=TextAnalyzer("KP Snacks", text, link, article_date)
     test.RunAnalysis()
-    print(test)
+    test.Save()
 
 def WebScraping(company, page_limit=2):
     """
@@ -2057,6 +2065,45 @@ def WebScraping2(company, date):
     date: date
         The date until which we scrape information. We do not search any information that is anterior to it.
     """
+    ScrapeHackerNews2(company, date)
+    ScrapeDarkReading2(company, date)
+    ScrapeZDnet2(company, date)
+    ScrapeTechRP2(company, date)
+    ScrapeMcAfee2(company, date)
+    ScrapeGraham2(company, date)
+    ScrapeCSO2(company, date)
+    ScrapeInfosecmag2(company, date)
+    ScrapeNakedsec2(company, date)
+    ScrapeKebronsec2(company, date)
+    ScrapeTwitter2(company, date)
+    
+def RunProgram(companies, page_limit=2):
+    """
+    Searches information over a few certified sources on the internet to raise an alert whenever a company is in a state of danger or attack.
+
+    Parameters
+    -------------
+    companies: list[str]
+        The company names we are trying to scrape information about.
+
+    page_limit (optional): int
+        The maximum number of pages the program will browse, the default value is 2.
+    """
+    for company in companies:
+        WebScraping(company, page_limit)
+
+def RunProgram2(companies, date):
+    """
+    Searches information over a few certified sources on the internet to raise an alert whenever a company is in a state of danger or attack.
+
+    Parameters
+    -------------
+    companies: list[str]
+        The company names we are trying to scrape information about.
+
+    date: date
+        The date until which we scrape information. We do not search any information that is anterior to it.
+    """
     try:
         date=dateparser.parse(date).date()
         limit_date=datetime.datetime(2020, 1, 1).date()
@@ -2069,21 +2116,11 @@ def WebScraping2(company, date):
     except:
         print("The date input is not valid, by default the program will search information that is up to 1 week old.")
         date=(datetime.datetime.now()-datetime.timedelta(days=7)).date()
-    ScrapeHackerNews2(company, date)
-    #ScrapeDarkReading2(company, date)
-    #ScrapeZDnet2(company, date)
-    #ScrapeTechRP2(company, date)
-    #ScrapeMcAfee2(company, date)
-    #ScrapeGraham2(company, date)
-    #ScrapeCSO2(company, date)
-    #ScrapeInfosecmag2(company, date)
-    #ScrapeNakedsec2(company, date)
-    #ScrapeKebronsec2(company, date)
-    #ScrapeTwitter2(company, date)
-    
+    for company in companies:
+        WebScraping2(company, date)
 
 def main():
-    WebScraping2("Microsoft", "1 Jan 2022")
+    RunProgram2(["microsoft", "apple"], "20 Feb 2022")
     #textAnalyzerTest()
     #print(TextAnalyzer.LoadSentenceDic("analyzer_tools/Sentence_dictionnary.txt", "microsoft"))
   

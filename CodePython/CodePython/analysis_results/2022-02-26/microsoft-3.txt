@@ -1,0 +1,79 @@
+Id: 3
+Company: microsoft
+Text: 
+Register for your free TechRepublic membership or if you are already a member, sign in using your preferred method below.
+
+      We recently updated our 
+        Terms and Conditions for TechRepublic Premium.
+      By clicking continue, you agree to these updated terms.
+    
+Invalid email/username and password combination supplied.
+An email has been sent to you with instructions on how to reset your password.
+By registering, you agree to the Terms of Use and acknowledge the data practices outlined in the Privacy Policy.
+You will also receive a complimentary subscription to TechRepublic's News and Special Offers newsletter and the Top Story of the Day newsletter. You may unsubscribe from these newsletters at any time.
+Username must be unique. Password must be a minimum of 6 characters and have any 3 of the 4 items: a number (0 through 9), a special character (such as !, $, #, %), an uppercase character (A through Z) or a lowercase (a through z) character (no spaces).
+Microsoft, Apple and Google top the list of the most spoofed brands in 2021
+Your email has been sent
+
+    IBM’s 2022 X-Force Threat Intelligence Index also revealed that ransomware was again the top attack type last year and that manufacturing supply chains were most vulnerable to exploitation.  
+Microsoft, Apple and Google were the top three brands criminals attempted to mimic in 2021, according to IBM’s newly released X-Force Threat Intelligence Index. The industry-leading brands were used repeatedly in phishing kits, with attackers likely seeking to capitalize on their popularity and consumers’ trust, the Index said.
+Cybercriminals used the brands as a disguise to steal consumers’ information or infect their devices with malware. Of the phishing kits that X-Force analyzed, an overwhelming number targeted email/ID/password combination, while scammers and cybercriminals attempted to gain access to credit card data in the majority of instances, the Index said.
+SEE: Google Chrome: Security and UI tips you need to know (TechRepublic Premium)
+The other brands that made the list were BMO Harris Bank, Chase, Amazon, Dropbox, DHL, CNN, Hotmail and Facebook, IBM said.
+While ransomware was the number one attack observed by X-Force last year, attacks declined slightly to 21% from 23% the previous year. REvil ransomware actors were responsible for 37% of all attacks, the report said.
+Another finding was that ransomware gangs had an average lifespan of 17 months before rebranding or disbanding. REvil, one of the most successful gangs, shut down in October 2021 after 31 months, the Index said.
+Meanwhile, 41% of attacks were the result of phishing for initial access, which emerged as the top pathway to compromise in 2021, the Index said.
+Other key highlights from the 2022 Index include:
+The fact that manufacturing has replaced financial services/insurance as the most targeted industry for attacks was a notable finding, said Charles DeBeck, senior cyber threat intelligence analyst at IBM Security X-Force.
+“It’s only now at a time when the manufacturing industry is at a tipping point that cybercriminals predominantly shifted their sights to this sector, seeking to push it over the edge,’’ DeBeck said. “That tells us that attackers are wagering on the real-world repercussions an attack on these organizations would have–not only are they betting on the victim’s fear of financial/business loss … but they bet on supply chains’ reliance on these organizations, adding even more pressure on victims to pay.”
+He added that a manufacturer loses money every second its operations are down, making the industry “a particularly juicy target for ransomware actors.”
+One takeaway is that successful brands will continue to find themselves in the spotlight, and that will inevitably draw cybercriminals’ attention, DeBeck said. “We saw some of the most trusted tech brands amongst the companies scammers most commonly impersonated,’’ because they’re betting on the familiarity and positive experience that consumers have with them. That leads consumers to let their guards down and be more likely to click on a malicious URL.
+“Consumers need to scrutinize links more and be more skeptical about emails and texts they receive, because the person or brand on the other end may not be who they think it is,’’ he advised.
+Today’s digital acceleration combined with the adversarial trends Security X-Force is seeing become more common, makes it clear that where businesses keep their data matters, DeBeck added.
+“Businesses need to become more intentional about what data remains on-premises and which migrates to cloud environments,’’ he said. “Because with modernization, when the right data is placed in the right environment, the business can have better control, oversight and security over its workloads, including who has access to it and why.”
+Strengthen your organization's IT security defenses by keeping abreast of the latest cybersecurity news, solutions, and best practices.
+Microsoft, Apple and Google top the list of the most spoofed brands in 2021
+Your email has been sent
+Your message has been sent
+
+    In his final TechRepublic video, Bill Detwiler reflects on his more than 20 years of working on the brand and interviews Tamara Scott about what excites her about being Managing Editor of TR.  
+
+    In these training courses, you'll learn basic Linux system administration; then, you'll get familiar with the Linux command line and understand the foundations of how Linux works.  
+
+    Replacing a desktop or laptop computer with an iPad, whether the system is a Windows machine or a Mac, is no longer a stretch. These 10 steps will make the iPad Pro migration go smoothly.  
+
+    PDF Converter Pro is an all-in-one tool that allows you create or convert PDF documents into a variety of formats or from a variety of formats with ease.  
+
+    Tired of Gmail and you'd rather not touch Outlook? If so, what services and/or clients can you use for email communication? Jack Wallen offers up his five favorites.
+  
+
+    If you're looking for an alternative office suite, there are several choices to be found. Jack Wallen offers his five favorites that aren't Office 365 or Google Workspace.  
+
+    It’s critical to plan Microsoft 365 apps and services deployments on Macs properly to avoid end-user frustrations. There are so many elements to consider that forward-thinking IT professionals should consider employing a checklist. With proper administration, IT departments can ensure important tasks aren’t overlooked, and users don’t need to return systems to the help desk ...  
+
+    When computer systems fail, business grinds to a halt, and that can cost your enterprise a considerable amount of money. With the help of TechRepublic Premium’s Systems Downtime Expense Calculator, you can estimate just how much each system failure is going to cost you. When to use this tool Even if the entire business does ...  
+
+    Results from the latest TechRepublic Premium survey suggest that businesses continue to deploy multicloud solutions, but the IT pros who support them are uncertain how they’ll change in the future. From the introduction: Heading into the third year of the COVID-19 global pandemic, industries, businesses, consumers and the information technology professionals who support them are ...  
+
+    This TechRepublic Premium download includes a checklist for PC and Mac migrations to minimize frustrations and improve productivity. Regardless of the process, there are several elements to track when replacing an existing computer with a new system. Whether your organization begins by imaging drives or manually configures new systems, many questions must be addressed, including: ...  
+
+Found on:https://www.techrepublic.com/article/microsoft-apple-and-google-top-the-list-of-the-most-spoofed-brands-in-2021/
+Arctile date: 2022-02-23
+Analysis date: 2022-02-26 08:08:16.674183
+Status: 3
+Analysis result: /!\ A level 3 alert has been raised /!\
+Critical sentences:
+[
+Microsoft, Apple and Google top the list of the most spoofed brands in 2021
+Your email has been sent
+
+    IBM’s 2022 X-Force Threat Intelligence Index also revealed that ransomware was again the top attack type last year and that manufacturing supply chains were most vulnerable to exploitation., 
+Cybercriminals used the brands as a disguise to steal consumers’ information or infect their devices with malware., Of the phishing kits that X-Force analyzed, an overwhelming number targeted email/ID/password combination, while scammers and cybercriminals attempted to gain access to credit card data in the majority of instances, the Index said., 
+While ransomware was the number one attack observed by X-Force last year, attacks declined slightly to 21% from 23% the previous year., REvil ransomware actors were responsible for 37% of all attacks, the report said., 
+Another finding was that ransomware gangs had an average lifespan of 17 months before rebranding or disbanding., 
+Other key highlights from the 2022 Index include:
+The fact that manufacturing has replaced financial services/insurance as the most targeted industry for attacks was a notable finding, said Charles DeBeck, senior cyber threat intelligence analyst at IBM Security X-Force., 
+“It’s only now at a time when the manufacturing industry is at a tipping point that cybercriminals predominantly shifted their sights to this sector, seeking to push it over the edge,’’ DeBeck said., “That tells us that attackers are wagering on the real-world repercussions an attack on these organizations would have–not only are they betting on the victim’s fear of financial/business loss … but they bet on supply chains’ reliance on these organizations, adding even more pressure on victims to pay.”, 
+He added that a manufacturer loses money every second its operations are down, making the industry “a particularly juicy target for ransomware actors.”, 
+One takeaway is that successful brands will continue to find themselves in the spotlight, and that will inevitably draw cybercriminals’ attention, DeBeck said., That leads consumers to let their guards down and be more likely to click on a malicious URL., “Because with modernization, when the right data is placed in the right environment, the business can have better control, oversight and security over its workloads, including who has access to it and why.”, 
+Strengthen your organization's IT security defenses by keeping abreast of the latest cybersecurity news, solutions, and best practices., It’s critical to plan Microsoft 365 apps and services deployments on Macs properly to avoid end-user frustrations.]

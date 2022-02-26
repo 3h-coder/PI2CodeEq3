@@ -1,6 +1,8 @@
 import TextAnalysis
 from datetime import datetime
 from datetime import timedelta
+from datetime import date
+import os
 
 class TextAnalyzer(object):
     """
@@ -49,6 +51,28 @@ class TextAnalyzer(object):
                 WordDic.append(line.rstrip())
         return WordDic
 
+    def LoadSentenceDic(filepath, company):
+        """
+        Loads the dictionnary of sentences that we will use to compare the text sentences to.
+        Returns a list of sentences (strings).
+
+        Parameters
+        -------------
+        filepath: str
+            Absolute or relative path to the file containing all the sentences we will use for comparison.
+            (One line corresponds to one sentence)
+
+        company: str
+            The company name of which we are trying to check the security status.
+        """
+        SentDic=[]
+        with open (filepath,"r") as file:
+            for line in file:
+                if "CompName" in line:
+                    line=line.replace("CompName", company)
+                SentDic.append(line.rstrip())
+        return SentDic
+
     #Class attributes
     Id=0
     wordDic=LoadWordDic("analyzer_tools/Keyword_dictionnary.txt")
@@ -74,10 +98,10 @@ class TextAnalyzer(object):
     def __str__(self):
         if((self.link).startswith("https://twitter.com")):
             return "Id: "+str(self.id)+"\nCompany: "+self.company+"\nText: "+self.text+"\n\nFound on:"+self.link+"\nTweet date: "+str(self.text_date)+"\nAnalysis date: "+str(self.date)+ \
-            "\nStatus: "+str(self.status)+"\nAnalysis result: "+self.result+"\nCritical sentences:\n "+str(self.crit_sents)
+            "\nStatus: "+str(self.status)+"\nAnalysis result: "+self.result+"\nCritical sentences:\n"+str(self.crit_sents)
         else:
             return "Id: "+str(self.id)+"\nCompany: "+self.company+"\nText: "+self.text+"\n\nFound on:"+self.link+"\nArctile date: "+str(self.text_date)+"\nAnalysis date: "+str(self.date)+ \
-            "\nStatus: "+str(self.status)+"\nAnalysis result: "+self.result+"\nCritical sentences:\n "+str(self.crit_sents)
+            "\nStatus: "+str(self.status)+"\nAnalysis result: "+self.result+"\nCritical sentences:\n"+str(self.crit_sents)
 
     def toString(self):
         return "Company: "+self.company+" Analysis result: "+self.result
@@ -90,28 +114,6 @@ class TextAnalyzer(object):
         sentences=TextAnalysis.DetectSentences(self.text, [self.company])
         #print sentences
         return sentences
-
-    def LoadSentenceDic(filepath, company):
-        """
-        Loads the dictionnary of sentences that we will use to compare the text sentences to.
-        Returns a list of sentences (strings).
-
-        Parameters
-        -------------
-        filepath: str
-            Absolute or relative path to the file containing all the sentences we will use for comparison.
-            (One line corresponds to one sentence)
-
-        company: str
-            The company name of which we are trying to check the security status.
-        """
-        SentDic=[]
-        with open (filepath,"r") as file:
-            for line in file:
-                if "CompName" in line:
-                    line=line.replace("CompName", company)
-                SentDic.append(line.rstrip())
-        return SentDic
 
     def RunAnalysis(self, wordDic=[], sentDic=[]):
         """
@@ -191,7 +193,12 @@ class TextAnalyzer(object):
                 self.crit_sents.append(key)
         #print("Number of critical sentences :"+str(len(self.crit_sents)))
         
-           
+    def Save(self):
+        path="analysis_results/{}".format(date.today())
+        if not os.path.exists(path):
+            os.mkdir(path)
+        with open (path+"/{}".format(self.company+"-"+str(self.status)+".txt"), "w") as file:
+            file.write(self.__str__())
 
     if __name__=="__main__":
         #Test()
