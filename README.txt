@@ -21,7 +21,7 @@ LONG DESCRIPTION:
 The idea is for the program to run permanently in the background of its user's machine. The user specifies a list
 of companies to watch over, while the program continuously searches information about each company in the list.
 In order to do that, the program loops through 11 different websites (more might be added as development progresses) 
-considered to be secured sources. For instance, https://thehackernews.com/ is one them. Once a targeted company is
+considered to be viable sources. For instance, https://thehackernews.com/ is one them. Once a targeted company is
 mentionned in an article (or tweet), the program then performs analysis to determine whether or not the article/tweet
 content is worth raising an alert, and saves all analysis data into a specific object called TextAnalyzer.
 Currently, there are 3 levels of alert. Level 1 being a possibility of attack/breachwhereas level 3 suggests that an 
