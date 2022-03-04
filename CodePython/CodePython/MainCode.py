@@ -2051,7 +2051,11 @@ def WebScraping(company, page_limit=2):
     ScrapeInfosecmag(company, page_limit)
     ScrapeNakedsec(company, page_limit)
     ScrapeKebronsec(company, page_limit)
-    ScrapeTwitter(company)
+    try:
+        ScrapeTwitter(company)
+    except:
+        print("It looks like you do not have twitter API keys, have reached your tweet limit or do not have valid API keys. \
+        \nAborted scraping twitter.")
 
 def WebScraping2(company, date):
     """
@@ -2075,7 +2079,11 @@ def WebScraping2(company, date):
     ScrapeInfosecmag2(company, date)
     ScrapeNakedsec2(company, date)
     ScrapeKebronsec2(company, date)
-    ScrapeTwitter2(company, date)
+    try:
+        ScrapeTwitter2(company, date)
+    except:
+        print("It looks like you do not have twitter API keys, have reached your tweet limit or do not have valid API keys. \
+        \nAborted scraping twitter.")
     
 def RunProgram(companies, page_limit=2):
     """
