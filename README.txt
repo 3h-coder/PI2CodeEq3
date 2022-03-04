@@ -36,4 +36,4 @@ It is important to note that the program only searches for English information.
 Development details:
 -The analysis function is currently flawed as it returns too many false positives, fixing this issue is our main priority.
 -Currently the project is meant to be used by people with a minimum of knowledge around python development, we are 
-considering making it open to a wider variety of users and thus increasing it's accessibility through a UI or GUI application.
+considering making it open to a wider variety of users and thus increasing its accessibility through a UI or GUI application.
