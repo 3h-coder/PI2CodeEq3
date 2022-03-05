@@ -21,7 +21,7 @@ LONG DESCRIPTION:
 The idea is for the program to run permanently in the background of its user's machine. The user specifies a list
 of companies to watch over, while the program continuously searches information about each company in the list.
 In order to do that, the program loops through 11 different websites (more might be added as development progresses) 
-considered to be viable sources. For instance, https://thehackernews.com/ is one them. Once a targeted company is
+considered to be viable sources. For instance, https://thehackernews.com/ is of one them. Once a targeted company is
 mentionned in an article (or tweet), the program then performs analysis to determine whether or not the article/tweet
 content is worth raising an alert, and saves all analysis data into a specific object called TextAnalyzer.
 Currently, there are 3 levels of alert. Level 1 being a possibility of attack/breachwhereas level 3 suggests that an 
@@ -37,3 +37,4 @@ Development details:
 -The analysis function is currently flawed as it returns too many false positives, fixing this issue is our main priority.
 -Currently the project is meant to be used by people with a minimum of knowledge around python development, we are 
 considering making it open to a wider variety of users and thus increasing its accessibility through a UI or GUI application.
+-This project is being developed on the Visual Studio Community IDE hence the .sln file and double CodePython folder.

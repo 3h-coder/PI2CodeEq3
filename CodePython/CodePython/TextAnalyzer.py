@@ -197,7 +197,8 @@ class TextAnalyzer(object):
         path="analysis_results/{}".format(date.today())
         if not os.path.exists(path):
             os.mkdir(path)
-        with open (path+"/{}".format(self.company+"-"+str(self.status)+".txt"), "w") as file:
+
+        with open (path+"/{}".format(self.company+"-"+str(self.Id)+"-"+str(self.status)+".txt"), "w", encoding="utf-8") as file: 
             file.write(self.__str__())
 
     if __name__=="__main__":

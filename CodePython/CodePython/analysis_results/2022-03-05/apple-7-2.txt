@@ -1,0 +1,26 @@
+Id: 7
+Company: apple
+Text: 
+Apple and Google have taken further steps to limit their operations in Russia and restrict the flow of Kremlin-backed propaganda across Europe, as the war in Ukraine intensifies.
+Google president of global affairs, Kent Walker, explained in a blog post the various steps the search giant is taking to help Ukrainians and limit the damage Russia is trying to inflict in cyberspace.
+On the latter, it has increased Google account security protections, including more frequent authentication challenges, for users, to help mitigate the threat from Russian state attackers.
+It also followed Meta in taking steps to limit Russian dis- and misinformation efforts, especially from state-backed media groups.
+“Beginning today, we’re blocking YouTube channels connected to RT and Sputnik across Europe. This builds on our indefinite pause of monetization of Russian state-funded media across our platforms, meaning media outlets such as RT are not allowed to monetize their content or advertise on our platforms,” Walker explained.
+“We have also significantly limited recommendations globally for a number of Russian state-funded media outlets across our platforms. In the past few days, YouTube has removed hundreds of channels and thousands of videos for violating its community guidelines, including a number of channels engaging in coordinated deceptive practices.”
+Google Maps updates on traffic and how busy places are has also been temporarily disabled in order to protect local citizens, while users searching for refugee and evacuation information will be pointed to official UN resources, he added.
+Google and its employees are also donating $15m to aid relief efforts in Ukraine.
+Meanwhile, Apple said it has halted all product sales in Russia, and limited Apple Pay and other unnamed services in the country. RT News and Sputnik have been removed from the App Store outside of the country.
+Like Google, it has removed traffic and live incidents in its Apple Maps app.
+“We are deeply concerned about the Russian invasion of Ukraine and stand with all of the people who are suffering as a result of the violence,” a statement noted. “We are supporting humanitarian efforts, providing aid for the unfolding refugee crisis, and doing all we can to support our teams in the region.”
+On Monday, Meta announced it is demoting content from Russian state media accounts and any posts linking to them, as well as labeling such content to increase transparency.
+
+Found on:https://www.infosecurity-magazine.com/news/apple-and-google-turn-off-map-help/
+Arctile date: 2022-03-02
+Analysis date: 2022-03-05 09:45:31.354148
+Status: 2
+Analysis result: /!\ A level 2 alert has been raised /!\
+Critical sentences:
+[
+Google president of global affairs, Kent Walker, explained in a blog post the various steps the search giant is taking to help Ukrainians and limit the damage Russia is trying to inflict in cyberspace., 
+On the latter, it has increased Google account security protections, including more frequent authentication challenges, for users, to help mitigate the threat from Russian state attackers., 
+Like Google, it has removed traffic and live incidents in its Apple Maps app.]

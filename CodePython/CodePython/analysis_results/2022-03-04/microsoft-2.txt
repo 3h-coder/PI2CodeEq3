@@ -1,0 +1,33 @@
+Id: 2
+Company: microsoft
+Text: 
+A new malware capable of controlling social media accounts is being distributed through Microsoft's official app store in the form of trojanized gaming apps, infecting more than 5,000 Windows machines in Sweden, Bulgaria, Russia, Bermuda, and Spain.
+Israeli cybersecurity company Check Point dubbed the malware "Electron Bot," in reference to a command-and-control (C2) domain used in recent campaigns. The identity of the attackers is not known, but evidence suggests that they could be based out of Bulgaria.
+"Electron Bot is a modular SEO poisoning malware, which is used for social media promotion and click fraud," Check Point's Moshe Marelus said in a report published this week. "It is mainly distributed via the Microsoft store platform and dropped from dozens of infected applications, mostly games, which are constantly uploaded by the attackers."
+The first sign of malicious activity commenced as an ad clicker campaign that was discovered in October 2018, with the malware hiding in plain sight in the form of a Google Photos app, as disclosed by Bleeping Computer.
+In the years since, the malware is said to have undergone numerous iterations that equip the malware with new features and evasive capabilities. In addition to using the cross-platform Electron framework, the bot is designed to load payloads fetched from the C2 server at run time, making it difficult to detect.
+"This enables the attackers to modify the malware's payload and change the bots' behavior at any given time," Marelus explained.
+Electron Bot's core functionality is to open a hidden browser window in order to carry out SEO poisoning, generate clicks for ads, direct traffic to content hosted on YouTube and SoundCloud, and promote specific products to generate profits with ad clicking or increase store rating for higher sales.
+On top of that, it also comes with functions that can control social media accounts on Facebook, Google and Sound Cloud, including registering new accounts, signing in, as well as commenting and liking other posts to increase views.
+The attack sequence gets triggered when users download one of the infected applications (e.g., Temple Endless Runner 2) from the Microsoft store that, when launched, loads the game but also stealthily drops and installs the next stage dropper via JavaScript.
+Along the way, there are steps to identify potential threat detection software from companies such as Kaspersky Lab, ESET, Norton Security, Webroot, Sophos, and F-Secure before the dropper proceeds to fetch the actual bot malware.
+The list of game publishers that pushed the malware-laced apps is as follows –
+"As the bot's payload is loaded dynamically at every run time, the attackers can modify the code and change the bot's behavior to high risk," Marelus noted. "For example, they can initialize another second stage and drop a new malware such as ransomware or a RAT. All of this can happen without the victim's knowledge."
+Sign up for cybersecurity newsletter and get latest news updates delivered straight to your inbox daily.
+
+Found on:https://thehackernews.com/2022/02/social-media-hijacking-malware.html
+Arctile date: 2022-02-26
+Analysis date: 2022-03-04 21:20:40.018214
+Status: 2
+Analysis result: /!\ A level 2 alert has been raised /!\
+Critical sentences:
+[
+A new malware capable of controlling social media accounts is being distributed through Microsoft's official app store in the form of trojanized gaming apps, infecting more than 5,000 Windows machines in Sweden, Bulgaria, Russia, Bermuda, and Spain., 
+Israeli cybersecurity company Check Point dubbed the malware "Electron Bot," in reference to a command-and-control (C2) domain used in recent campaigns., The identity of the attackers is not known, but evidence suggests that they could be based out of Bulgaria., 
+"Electron Bot is a modular SEO poisoning malware, which is used for social media promotion and click fraud," Check Point's Moshe Marelus said in a report published this week., "It is mainly distributed via the Microsoft store platform and dropped from dozens of infected applications, mostly games, which are constantly uploaded by the attackers., "
+The first sign of malicious activity commenced as an ad clicker campaign that was discovered in October 2018, with the malware hiding in plain sight in the form of a Google Photos app, as disclosed by Bleeping Computer., 
+"This enables the attackers to modify the malware's payload and change the bots' behavior at any given time," Marelus explained., 
+The attack sequence gets triggered when users download one of the infected applications (e.g., Temple Endless Runner 2) from the Microsoft store that, when launched, loads the game but also stealthily drops and installs the next stage dropper via JavaScript., 
+Along the way, there are steps to identify potential threat detection software from companies such as Kaspersky Lab, ESET, Norton Security, Webroot, Sophos, and F-Secure before the dropper proceeds to fetch the actual bot malware., The list of game publishers that pushed the malware-laced apps is as follows –
+"As the bot's payload is loaded dynamically at every run time, the attackers can modify the code and change the bot's behavior to high risk," Marelus noted., "For example, they can initialize another second stage and drop a new malware such as ransomware or a RAT., "
+Sign up for cybersecurity newsletter and get latest news updates delivered straight to your inbox daily.]

@@ -1,0 +1,94 @@
+Id: 8
+Company: apple
+Text: 
+Sophos Home protects every Mac and PC in your home 
+When the Apple AirTag hit the market in 2021, it immediately attracted the attention of hackers and reverse engineers.
+Could AirTags be jailbroken? Could AirTags be simulated? Could the AirTag ecosystem be used for purposes beyond Apple’s own imagination (or at least beyond its intentions)?
+We soon found ourselves writing up the answer to the “jailbreak” question, given that a researcher with the intriguing handle of LimitedResults figured out a way to subvert the chip used in the AirTag (an nRF52832 microcontroller, if you want to look it up) into booting up with debugging enabled:
+Using this trick, another researcher going by @ghidraninja was able not only to dump the AirTag firmware, but also to modify and reupload the firmware data, thus creating an unofficially modified but otherwise functional AirTag.
+To prove the point, @ghidraninja altered just one text string inside an AirTag, modifying the URL found.apple.com so it pointed not at Apple’s lost device reporting portal, but at a YouTube video (you know what’s coming) of Rick Astley singing Never Gonna Give You Up.
+Anyone finding @ghidraninja’s AirTag and trying to report it lost…
+…would get rickrolled instead.
+Apple AirTag jailbroken already – hacked in rickroll attack
+
+
+A few days after the rickroll business, we were writing up another AirTag hack that documented how to create Bluetooth messages that could hitch a ride on Apple’s AirTag network.
+Researcher Fabian Bräunlein, from Berlin, Germany, figured out a way to use almost any low-power Bluetooth system-on-a-chip, such as the well-known and inexpensive ESP32, as a message generator to send free (but very low bandwith) messages via iPhones that just happen to be nearby.
+Every two seconds, regular AirTags broadcast an identifier via low-energy Bluetooth; any passing iPhones in the vicinity that are AirTag-enabled and happen to pick up these broadcast messages will co-operatively relay them to Apple’s AirTag backend, where they’re saved for later lookup.
+To protect your privacy, the pseudorandom sequence is keyed, or “seeded”, using a shared secret that is known only to the AirTag and the owner who originally paired their Apple device with it, and the identifier that’s broadcast isn’t the actual data generated in the sequence, but a hash of it. 
+This means that only the AirTag’s owner can check whether their AirTag called home to Apple, because only the owner knows what magic identification code would have been generated, and therefore only the owner can calculate the hash to look up in Apple’s database, which is essentially an anonymous, crowd-sourced record of AirTag broadcasts.
+Additionally, the identifier used by any AirTag is updated every 15 minutes, following a pseudorandom sequence that only the AirTag and its owner can construct (or reconstruct later), so that AirTag sightings can’t be matched up throughout Apple’s database simply by looking for repeated broadcast hashes.
+Bräunlein figured out how to use an ESP32 device to create correctly-anonymised broadcast messages that Apple’s network would relay and store.
+Each of his “not-actually-an-AirTag” messages was encoded so that it included:
+Because he could precompute the hashes of all possible messages for any sequence, he could see which identifiers actually turned up in each sequence (he sent each message several times to increase the chance of it getting picked up and anonymously rebroadcast to Apple).
+If he only ever spotted identifiers where bitval(D,X) came out as zero, he’d know that his special-purpose ESP32 device was signalling that the Xth bit of D was zero; if he saw only identifiers with bitval(D,X) == 1, he’d know that the Xth bit of D was one.
+If neither sort of message showed up, that would mean the Xth bit of the hidden message had been lost, but thanks to the sequence numbers, the rest of the message could nevertheless be recovered. If any evens turned up, then there could never be any corresonding odds; if any odds arrrived, there could never be any correponding evens, so the presence of one value and the absence of the other reliably signalled the intended setting for each bit in the hidden message.
+As you can imagine, the bandwith of this “network”, which he humorously dubbed Send My, was poor: about 20 bits per second in throughput, with a waiting time for collected messages to wend their way to Apple’s servers of up to an hour.
+Nevertheless, it did represent an essentially undetectable covert channel for tiny devices with tiny batteries to piggy-back onto Apple’s Find My network in an entirely innocent-looking way – no “giveaway” connections to Wi-Fi or the mobile phone network were needed.
+Apple AirTag hacked again – free internet with no mobile data plan!
+
+
+Well, Bräunlein is back in the AirTag news with a similar sort of “bogus but apparently innocent AirTag message” trick, this time designed not to sneak arbitrary data back via Apple’s network, but instead to deliver covert location information while preventing Apple’s network from generating its expected privacy warnings.
+This one is cheekily dubbed Find You, and its primary purpose is to demonstrate the limits of Apple’s own “anti-find-you” programming, known as Tracker Detect, that’s now built into the AirTag network.
+Apple’s system aims to provide basic protection against other people’s AirTags being hidden on your person, in your luggage, or on your car, and then used to keep tabs on you.
+But this anonymous, privacy-perserving system that’s supposed to ensure that only you can track your own AirTags if they’re lost of stolen…
+…can be turned against you when it’s someone else privately tracking their tags that were neither lost nor stolen, but instead deliberately hidden on or near you to so as to accompany you everywhere.
+Two main protections exist:
+Clearly, the first mitigation is far from perfect: you’re unlikely to hear an AirTag that’s attached to your car, for example; and, sadly, there’s a creepy online market for second-hand AirTags in which the speaker is broken. (By “broken”, we mean “deliberately and deviously disconnected or damaged to allow silent operation”.)
+The second mitigation, of course, not only relies on you regularly looking out for stalker alerts, but also relies on Apple’s software reliably deciding that a suspicious device is “standing out from the crowd” to a degree that’s worth alerting about.
+Indeed, the entire crowd-sourced nature of the Find My network relies on participants listening out for, detecting, and anonymously reporting on AirTags that pass by, so that the genuine owner really can try to track them down (without knowing who submitted the report, of course) via Apple’s Find My portal.
+In other words, turning every nearby appearance of every unknown AirTag into a “suspicious event” instead of simply quietly and anonymously calling home with it would not only drive you nuts with false alarms, but also stop the Find My system from working as intended.
+Instead, as Apple puts it, Tracker Detect is more subtle than that:
+If any AirTag, AirPods, or other Find My network accessory separated from its owner is seen moving with you over time, you’ll be notified.
+You can probably guess where this is going.
+Bräunlein already figurde out how to create non-Apple-generated Find My messages that Apple’s network nevetheless accepts, as part of his Send My covert messaging system.
+This time, he simply created a plentiful and varied supply of non-Apple-generated Find My messages, and broadcast them to trick Apple’s “moving with you over time” detector into ignoring devices that were, in fact, right there alongside you.
+Simply put, Bräunlein shrouded his location reports in what resembled “crowd noise”, thus disguising the usually-repetitive nature of AirTags being abused for stalking purposes.
+Over a five-day period, Bräunlein had a volunteer carry one of his ESP32 “bogus message” generators, seeding his device with identification sequences for 2000 different simulated AirTags that broadcast every 30 seconds at random.
+Because Bräunlein could identify any and all of these pseudo-Airtags in the system, given that he knew all their identification seeds, he could reliably track his volunteer…
+…but he didn’t need to to buy 2000 different AirTags and try to hide them all where they wouldn’t get discovered (or heard).
+At no time during those five days of testing did Apple’s Tracker Detect system warn the volunteer of suspicious, repeated appearances of any of the psuedo-tags.
+With each pseudo-tag broadcasting only every 30 seconds (not every 2 seconds as a regular one would); with 2000 pseudo-tags to choose from; and with tag identifiers changing by design every 15 minutes, we’re guessing that there wasn’t enough repetition or any obvious pattern for Apple’s stalker detection software to latch onto.
+Unfortunately, there’s not much you can do to detect this sort of trickery at the moment, though we don’t doubt that Apple will revise its threat-detection modelling and its stalker detection code in the light of Bräunlein’s report.
+Bräunlein does mention a free app from the Technical University of Darmstadt, called AirGuard, that can give you a bit more insight into fake trackers of this sort, by revealing a full list of AirTags or pseudo-AirTags seen near you.
+Even though they all look different, the broadcasts generated by Bräunlein’s “2000-tags-in-1” device nevertheless show up somewhat suspiciously – enough, perhaps, to encourage you to search for unexpected electronic gizmos (and their batteries) hidden in your vicinity.
+However, the AirGuard app is only available for Android, so if you’re using Apple AirTags with Apple phones and laptops, this won’t work for you.
+Follow @NakedSecurity on Twitter for the latest computer security news.
+Follow @NakedSecurity on Instagram for exclusive pics, gifs, vids and LOLs!
+Interesting article. I think it would benefit though, from an up front summary section that just describes the “hacks” and a 1 sentence summary of what they do. Keep up the good work guys!
+Well, the previous two “hacks” are summarised reasonably briefly; then there’s a background section relevent to the Tracker Detect system; and then a summary of how the new “hack” works. And there are visually obvious one-sentence “link boxes” for the first two items…
+Articles like this are meant to be more like “Serious Security” style pieces. Our goal on Naked Security is to provide articles that aren’t enormously long (this one is about 1500 words), yet don’t dissolve into the brief, staccato, incomplete style of many Twitter threads.
+In other words, the underlying goal of this articles this is not simply to break “some news abour AirTags” – we are not journalists on Naked Security – but to draw people into thinking broadly about how to solve problems in cybersecurity, and to remind them that the threats they might end up fighting against might not follow the “threat model” they first expected. P
+So, poviding a TL;DR summary wouldn’t really work because the purpose of the article is to exist for people who figure IWTUTWSSIRIA. (I wanted to understand the whole story so I read it anyway :-)
+Having said that, the TL;DR is: “AirTags jailborked with modified firmware in 2021. AirTags subverted for covert comms in 2021. AirTag stalking protection sneakily sidestepped in 2022. Same bloke behind hacks 2 and 3. Fascinating story. Intriguing lessons to be learned. Now read it!”
+HtH.
+Can you write up a Part 2 – How to detect abused AirTags. Do BT detectors pick them all up? can a phone be configured to detect while blocking the signal?
+Thanks
+Ooooh, good excuse to get a new iPhone (my current one, now secondary to an Android, doesn’t support AirTags) and a few tags :-)
+Comment * 
+Name 
+Email 
+Website 
+ 
+
+
+
+Δ
+
+Found on:https://nakedsecurity.sophos.com/2022/02/23/apple-airtag-anti-stalking-protection-bypassed-by-researchers/
+Arctile date: 2022-02-23
+Analysis date: 2022-03-05 09:45:41.222828
+Status: 3
+Analysis result: /!\ A level 3 alert has been raised /!\
+Critical sentences:
+[
+Sophos Home protects every Mac and PC in your home 
+When the Apple AirTag hit the market in 2021, it immediately attracted the attention of hackers and reverse engineers., 
+Apple AirTag jailbroken already – hacked in rickroll attack
+
+
+A few days after the rickroll business, we were writing up another AirTag hack that documented how to create Bluetooth messages that could hitch a ride on Apple’s AirTag network., 
+Apple AirTag hacked again – free internet with no mobile data plan!, 
+The second mitigation, of course, not only relies on you regularly looking out for stalker alerts, but also relies on Apple’s software reliably deciding that a suspicious device is “standing out from the crowd” to a degree that’s worth alerting about., 
+Simply put, Bräunlein shrouded his location reports in what resembled “crowd noise”, thus disguising the usually-repetitive nature of AirTags being abused for stalking purposes., Unfortunately, there’s not much you can do to detect this sort of trickery at the moment, though we don’t doubt that Apple will revise its threat-detection modelling and its stalker detection code in the light of Bräunlein’s report., 
+Follow @NakedSecurity on Twitter for the latest computer security news., I think it would benefit though, from an up front summary section that just describes the “hacks” and a 1 sentence summary of what they do., In other words, the underlying goal of this articles this is not simply to break “some news abour AirTags” – we are not journalists on Naked Security – but to draw people into thinking broadly about how to solve problems in cybersecurity, and to remind them that the threats they might end up fighting against might not follow the “threat model” they first expected., Same bloke behind hacks 2 and 3.]
