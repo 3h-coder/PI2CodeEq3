@@ -4,6 +4,7 @@ RCE
 abuse
 alert
 attack
+backdoor
 botnet
 bug
 bypass
@@ -38,13 +39,14 @@ ransomware
 ransomwares
 risk
 rootkit
-security
 sensitive
 smurf
 spy
 spyware
 spywares
 steal
+target
+targeted
 teardrop
 threat
 trojan
@@ -53,7 +55,9 @@ unauthorized
 unsecure
 virus
 viruses
+vulnerable
 vulnerability
+vulnerabilities
 whaling
 worm
 worms

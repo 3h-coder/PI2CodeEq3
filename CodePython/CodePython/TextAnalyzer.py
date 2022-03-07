@@ -1,3 +1,4 @@
+from numpy import False_, True_
 import TextAnalysis
 from datetime import datetime
 from datetime import timedelta
@@ -192,7 +193,40 @@ class TextAnalyzer(object):
             if self.status>0: #If the sentence raised an alert, we save it in our crit_sents variable.
                 self.crit_sents.append(key)
         #print("Number of critical sentences :"+str(len(self.crit_sents)))
-        
+
+    def RunAnalysis(self, wordDic=[]):
+        if wordDic==[]: 
+            wordDic=TextAnalyzer.wordDic
+        count=0 #The number of critical sentences
+        self.date=datetime.now()
+        self.status=0 #Default status
+        self.result="Nothing to report." #Default result
+        compsentences=TextAnalysis.DetectSentences(self.text, [self.company])
+        for sentence in compsentences:
+            date_too_old=False
+            DetectedDates=TextAnalysis.IdentifyDateSentence(str(sentence), datetime.combine(self.text_date, datetime.min.time())) #We now want to make sure that the sentence doesn't mention 
+            #an event that is too old and thus irrelevant. (We want to avoid false positives by doing that)
+            for date in DetectedDates:
+                if date < self.text_date-timedelta(days=7): #If the occurence happened more than a week before the article/tweet post date, it is considered as too old.
+                    date_too_old=True
+            if not date_too_old:
+                sentence_copy=str(sentence).lower()
+                for word in wordDic:
+                    if word in sentence_copy:
+                        count+=1
+                        self.crit_sents.append(sentence)
+                        break
+        if count >= 5:
+            self.status=3
+            self.result="/!\\ A level 3 alert has been raised /!\\"
+        elif count >=3:
+            self.status=2
+            self.result="/!\\ A level 2 alert has been raised /!\\"
+        elif count >=1:
+            self.status=1
+            self.result="/!\\ A level 1 alert has been raised /!\\"
+
+
     def Save(self):
         path="analysis_results/{}".format(date.today())
         if not os.path.exists(path):

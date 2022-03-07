@@ -133,7 +133,7 @@ def DetectSentences(text, keywords):
 
     for sentence in list(doc.sents):
         for keyword in keywords:
-            if keyword in str(sentence):
+            if keyword in str(sentence) or keyword.capitalize() in str(sentence):
                 count+=1
                 keysentences.append(sentence)
                 break #Pour ne pas prendre plusieurs fois la même phrase si elle contient plusieurs des mots présents dans la liste

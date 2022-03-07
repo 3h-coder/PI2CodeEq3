@@ -2128,7 +2128,7 @@ def RunProgram2(companies, date):
         WebScraping2(company, date)
 
 def main():
-    RunProgram2(["microsoft", "apple"], "20 Feb 2022")
+    RunProgram2(["mozilla"], "25 Feb 2022")
     #textAnalyzerTest()
     #print(TextAnalyzer.LoadSentenceDic("analyzer_tools/Sentence_dictionnary.txt", "microsoft"))
   
