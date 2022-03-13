@@ -28,4 +28,16 @@ critical security flaws reported in CompName network management software
 critical CompName 0-Day vulnerability under active exploitation.
 trojan hijacks CompName with malicious extensions. 
 the flaws could be exploited to bypass authentication and authorization protections.
-successful exploitation of the three vulnerabilities could result in the execution of malicious code to achieve a complete site takeover.           
+successful exploitation of the three vulnerabilities could result in the execution of malicious code to achieve a complete site takeover. 
+CompName has been hacked.
+The CompName hack was a software supply chain attack.
+Hackers purportedly compromised CompName software build via an already-compromised Microsoft Office 365 account.
+According to a statement by CompName, the hackers inserted malware into two Orion software updates, which were installed by customers.
+These updates were subsequently installed by many of CompName customers, which include Fortune 500 businesses and federal agencies.
+The CompName hack exploited the company's software build environment.
+Throughout, we'll provide some background on the hack by describing exactly what happened with CompName, how the hack was able to occur.
+The CompName hack was a major event.
+The CompName hack is the commonly used term to refer to the supply chain breach that involved the CompName system.
+CompName confirmed they had been infected with the malware when they saw the infection in customer systems.
+CompName also confirmed that it found signs of the malware in its systems.
+CompName, a prominent cybersecurity firm, announced they were a victim to a nation-state attack.
