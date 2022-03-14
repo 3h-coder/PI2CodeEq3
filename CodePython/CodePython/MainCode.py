@@ -12,7 +12,6 @@ import warnings
 from TextAnalyzer import TextAnalyzer
 import TextAnalysis
 import string
-nlp = spacy.load('en_core_web_sm') #python -m spacy download en
 warnings.filterwarnings("ignore", message="The localize method is no longer necessary, as this time zone supports the fold attribute")
 
 #-----------------------------------------------------------------------------Websites-----------------------------------------------------------------------------------------                
@@ -2128,7 +2127,7 @@ def RunProgram2(companies, date):
         WebScraping2(company, date)
 
 def main():
-    RunProgram2(["mozilla"], "25 Feb 2022")
+    RunProgram2(["google"], "1 Mar 2022")
     #textAnalyzerTest()
     #print(TextAnalyzer.LoadSentenceDic("analyzer_tools/Sentence_dictionnary.txt", "microsoft"))
   
