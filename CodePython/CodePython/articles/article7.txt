@@ -1,39 +1,96 @@
+Known victims so far include the US Treasury, the US NTIA, and FireEye itself.
+Catalin Cimpanu was a security reporter for ZDNet between Sep 2018 and Feb 2021.
+Hackers believed to be operating on behalf of a foreign government have breached software provider SolarWinds and then deployed a malware-laced update for its Orion software to infect the networks of multiple US companies and government networks, US security firm FireEye said today.   
 
 
-By Michael Hill
+                        Cyber security 101: Protect your privacy from hackers, spies, and the government
+                    
+
+Simple steps can make the difference between losing your online accounts or maintaining what is now a precious commodity: Your privacy.
+
+Read More
+
+FireEye's report comes after Reuters, the Washington Post, and Wall Street Journal reported on Sunday intrusions at the US Treasury Department and the US Department of Commerce's National Telecommunications and Information Administration (NTIA).
+The SolarWinds supply chain attack is also how hackers gained access to FireEye's own network, which the company disclosed earlier this week.   
+The Washington Post cited sources claiming that multiple other government agencies were also impacted.   
+Reuters reported that the incident was considered so serious that it led to a rare meeting of the US National Security Council at the White House, a day earlier, on Saturday.   
+Sources speaking with the Washington Post linked the intrusion to APT29, a codename used by the cyber-security industry to describe hackers associated with the Russian Foreign Intelligence Service (SVR).   
+FireEye wouldn't confirm the APT29 attribution and gave the group a neutral codename of UNC2452, although several sources in the cyber-security community told ZDNet the APT29 attribution, done by the US government, is most likely correct, based on current evidence.   
+In security alerts sent to its customers in private on Sunday, Microsoft also confirmed the SolarWinds compromise and provided countermeasures to customers that may have been affected.   
+SolarWinds published a press release late on Sunday admitting to the breach of Orion, a software platform for centralized monitoring and management, usually employed in large networks to keep track of all IT resources, such as servers, workstations, mobiles, and IoT devices.   
+The software firm said that Orion update versions 2019.4 through 2020.2.1, released between March 2020 and June 2020, have been tainted with malware.   
+FireEye named this malware SUNBURST and published a technical report earlier today, along with detection rules on GitHub.   
+Microsoft named the malware Solorigate and added detection rules to its Defender antivirus.   
+
+The number of victims was not disclosed.   
+Despite initial reports on Sunday and the hacking campaign doesn't appear to have been targeted at the US, specifically.   
+"The campaign is widespread, affecting public and private organizations around the world," FireEye said.   
+"The victims have included government, consulting, technology, telecom and extractive entities in North America, Europe, Asia and the Middle East. We anticipate there are additional victims in other countries and verticals," FireEye added.   
+SolarWinds said it plans to release a new update (2020.2.1 HF 2) on Tuesday, December 15, that "replaces the compromised component and provides several additional security enhancements."   
+The US Cybersecurity and Infrastructure Agency (CISA) has also issued an emergency directive with instructions on how government agencies can detect and analyze systems compromised with the SUNBURST malware.   
+Update 23:45 ET to add the information about the Microsoft and CISA security alerts. 
+  
+
+President Biden's executive order on crypto: Here's what it covers
 
 
-						
-							UK Editor, 
-								
-									
-								
+
+
+Ukraine reportedly adopts Clearview AI to track Russian invaders
 
 
 
 
+Best budget TV 2022: Awesome entertainment for less
 
 
 
 
+Best computer 2022: The top Mac, PC, and Chromebook picks
 
 
 
 
-CSO |
+Best streaming device deals available right now: March 2022
 
 
 
-Cybersecurity firm Cybereason and Google Cloud have unveiled a new joint solution to enhance the ability of defenders to predict, detect and respond to cyberattacks at scale. Cybereason XDR, powered by Google Chronicle, is designed to work at speed across the entire enterprise – including endpoints, networks, identities, cloud and workspaces. The partnership may be indicative of the modern threat detection and response market.
-In today’s environments, organizations typically face the challenge of managing a multi-connected attack surface with siloed solutions that hamper defense processes. With Cybereason XDR powered by Google Chronicle, defenders can leverage Cybereason AI-driven XDR to predict, understand, and end sophisticated attacks with what Cybereason claims is the only solution on the market that delivers planetary-scale protection, operation-centric detection and response, and attacker behavior prediction, according to the two companies.
-“Together Cybereason and Google Cloud are delivering the industry’s first true XDR platform,” stated Cybereason CEO and co-founder Lior Div in a press release. “Other vendors have simply done an endpoint extension and called it XDR. That’s not good enough. Our AI-driven XDR platform paints one unified story of an attack and it takes one coordinated set of actions to end attacks while predicting and preventing tomorrow’s threats.”
-Sunil Potti, general manager and vice president of cloud security at Google Cloud, added that, with this XDR solution, organizations can now reverse the adversary advantage and end malicious operations with confidence.
-Speaking to CSO, Forrester analyst Allie Mellen reflects what the platform indicates about the current state and future of endpoint protection and threat response. “Many EDR vendors have been partnering with SIEM vendors over the past year to deliver XDR – for example, Devo and EclecticIQ. This is one way EDR vendors can bring in additional log data from other sources without needing the expertise in log management in-house,” she says.
-These offerings are particularly beneficial for remote work because they give security teams visibility and insight into what is happening on endpoints, Mellen adds. “How much this new partnership will improve protection remains to be seen. However, with other XDR offerings in the space that have been available for over a year, we have seen end users get additional value. Particularly, end users rave about the detection quality with native XDR offerings,” Mellen concludes.
-More on network security:
-Michael Hill is the UK editor of CSO Online. He has spent the past five-plus years covering various aspects of the cybersecurity industry, with particular interest in the ever-evolving role of the human-related elements of information security.
-Copyright © 2021 IDG Communications, Inc.
-Copyright © 2022 IDG Communications, Inc.
+
+Best cheap phone 2022: Flagship features for under $450
 
 
-https://www.csoonline.com/article/3644422/cybereason-google-cloud-launch-xdr-solution-to-streamline-threat-detection-and-response.html
+
+
+Best snow blower 2022: It's time to ditch the shovel
+
+
+
+
+Best VoIP service 2022: Replicate an office phone
+
+
+
+
+Best Chromebook 2022: Top Chrome OS laptops
+
+
+
+Please review our terms of service to complete your newsletter subscription.
+
+            You agree to receive updates, promotions, and alerts from ZDNet.com. You may unsubscribe at any time.
+            By joining ZDNet, you agree to our Terms of Use and Privacy Policy.
+        
+
+            You agree to receive updates, promotions, and alerts from ZDNet.com. You may unsubscribe at any time.
+                                        
+            By signing up, you agree to receive the selected newsletter(s) which you may unsubscribe from at any time. You also agree to the Terms of Use and acknowledge the data collection and usage practices outlined in our Privacy Policy.
+        
+© 2022 ZDNET, A RED VENTURES COMPANY. ALL RIGHTS RESERVED.
+                    Privacy Policy |
+                    Cookie Settings |
+                    Advertise |
+                    Terms of Use
+
+
+
+https://www.zdnet.com/article/microsoft-fireeye-confirm-solarwinds-supply-chain-attack/

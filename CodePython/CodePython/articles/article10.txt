@@ -1,0 +1,89 @@
+In SEC documents filed today, SolarWinds said it notified 33,000 customers of its recent hack, but that only 18,000 used a trojanized version of its Orion platform.
+Catalin Cimpanu was a security reporter for ZDNet between Sep 2018 and Feb 2021.
+
+IT software provider SolarWinds downplayed a recent security breach in documents filed with the US Securities and Exchange Commission on Monday. 
+SolarWinds disclosed on Sunday that a nation-state hacker group breached its network and inserted malware in updates for Orion, a software application for IT inventory management and monitoring. 
+Orion app versions 2019.4 through 2020.2.1, released between March 2020 and June 2020, were tainted with malware, SolarWinds said in a security advisory. 
+The trojanized Orion update allowed attackers to deploy additional and highly stealthy malware on the networks of SolarWinds customers. 
+Also: Best VPN services of 2020: Safe and fast don't come for free    
+But while initial news reports on Sunday suggested that all of SolarWinds' customers were impacted, in SEC documents filed today, SolarWinds said that of its 300,000 total customers, only 33,000 were using Orion, a software platform for IT inventory management and monitoring, and that fewer than 18,000 are believed to have installed the malware-laced update. 
+The company said it notified all its 33,000 Orion customers on Sunday, even if they didn't install the trojanized Orion update, with information about the hack and mitigation steps they could take. 
+In a security advisory on Sunday and SEC filings today, SolarWinds said it plans to release an Orion update on Tuesday that will contain code to remove any traces of the malware from customer systems. 
+If customers can't wait until Tuesday, Microsoft, FireEye, and the US Cybersecurity and Infrastructure Agency (CISA) have also published technical reports on Sunday with instructions on how to identify traces of the SolarWinds Orion-delivered malware (named SUNBURST by FireEye and Solarigate by Microsoft), remove it from systems, and detect if hackers pivoted with a second-stage attack to internal networks. 
+But while details about how hackers pivoted from SolarWinds to customer networks via the tainted Orion malware have now come to light, SolarWinds has not yet said how hackers breached its own network. 
+Nonetheless, in the same SEC documents, SolarWinds said that it also learned from Microsoft about a compromise of its Office 365 email and office productivity accounts. 
+The company said it's currently investigating if the attackers used access to the email accounts to steal customer data. 
+SolarWinds did not specifically say that this email account compromise led to hackers gaining access to the server infrastructure supporting the Orion app's update mechanism. 
+The SolarWinds Orion platform hack is slowly turning out to be one of the most significant hacks in recent years. 
+Currently, the SolarWinds security breach has been linked to hacks at US security firm FireEye, the US Treasury Department, and the US Department of Commerce's National Telecommunications and Information Administration (NTIA). 
+The hack is, however, expected to be much, much worse. Forbes reported today that SolarWinds is a major contractor for the US government, with regular customers including the likes of CISA, US Cyber Command, the Department of Defense, the Federal Bureau of Investigation, the Department of Homeland Security, Veterans Affairs, and many others. 
+In addition, FireEye, which is investigating the incident as part of its own security breach, said the attackers also compromised targets all over the world, and not just in the US, including governments and private sector companies across several verticals. 
+Citing industry sources, Reuters reported today that despite a broad install base for the Orion platform, the attackers appear to have focused only on a small number of high-value targets, leaving most Orion customers unaffected. 
+Several IT administrators reported today that they found signs of the malware-laced Orion update on their systems, but they did not find signs of second-stage payloads, typically used by the attackers to escalate access to other systems and internal customer networks. 
+That is consistent with what I'm seeing with customers. SW Orion with no IOC
+SolarWinds said in SEC documents today that in the first three quarters of 2020, revenue from the Orion product line brought in approximately $343 million, representing about 45% of the company's total revenue. 
+If customers end up abandoning the app, the fallout from this security breach will end up having a major impact on SolarWinds' bottom line as well. 
+
+Microsoft Teams turns five. What's next?
+
+
+
+
+Microsoft to rebrand its partner program and focus resellers further around its cloud
+
+
+
+
+CISA and FBI warning: Hackers used these tricks to dodge multi-factor authentication and steal email from NGO
+
+
+
+
+NASA marks key milestone in its Artemis I Moon mission
+
+
+
+
+FBI and CISA warn over threats to satellite communications networks
+
+
+
+
+Keep your Microsoft Office skills up to date forever for just $30
+
+
+
+
+Microsoft March 2022 Patch Tuesday: 71 vulnerabilities fixed
+
+
+
+
+AI spending is rocketing, which means big changes ahead for shopping and customer service
+
+
+
+
+Ukraine reportedly adopts Clearview AI to track Russian invaders
+
+
+
+Please review our terms of service to complete your newsletter subscription.
+
+            You agree to receive updates, promotions, and alerts from ZDNet.com. You may unsubscribe at any time.
+            By joining ZDNet, you agree to our Terms of Use and Privacy Policy.
+        
+
+            You agree to receive updates, promotions, and alerts from ZDNet.com. You may unsubscribe at any time.
+                                        
+            By signing up, you agree to receive the selected newsletter(s) which you may unsubscribe from at any time. You also agree to the Terms of Use and acknowledge the data collection and usage practices outlined in our Privacy Policy.
+        
+© 2022 ZDNET, A RED VENTURES COMPANY. ALL RIGHTS RESERVED.
+                    Privacy Policy |
+                    Cookie Settings |
+                    Advertise |
+                    Terms of Use
+
+
+
+https://www.zdnet.com/article/sec-filings-solarwinds-says-18000-customers-are-impacted-by-recent-hack/

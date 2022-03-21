@@ -2016,7 +2016,7 @@ def ScrapeTwitter2(company, date):
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 def textAnalyzerTest():
-    text=TextAnalysis.LoadExampleText(6)
+    text=TextAnalysis.LoadExampleText(10)
     dicMots=["cyber-attack","ransomware","attack","threatened"]
     dicPhrases=["An unsecured server has exposed sensitive data belonging to KP Snacks employees.","Cyber-criminals have attacked KP Snacks with ransomware.", 
                 "KP Snacks is dealing with disruptions from a network security incident resulting from a ransomware attack.","KP Snacks was Hit by a cyberattack.", 
@@ -2024,7 +2024,7 @@ def textAnalyzerTest():
                 "After gaining access to the company's network, hackers deployed ransomware and took the snack maker's data hostage.","KP Snacks is safe and not under attack."] #These 2 sentences are tricky on purpose
     link="https://www.infosecurity-magazine.com/news/kp-snacks-under-cyberattack/"
     article_date=dateparser.parse("3 Feb 2022").date()
-    test=TextAnalyzer("KP Snacks", text, link, article_date)
+    test=TextAnalyzer("SolarWinds", text, link, article_date)
     test.RunAnalysis()
     test.Save()
 
@@ -2068,16 +2068,16 @@ def WebScraping2(company, date):
     date: date
         The date until which we scrape information. We do not search any information that is anterior to it.
     """
-    ScrapeHackerNews2(company, date)
-    ScrapeDarkReading2(company, date)
+    #ScrapeHackerNews2(company, date)
+    #ScrapeDarkReading2(company, date)
     ScrapeZDnet2(company, date)
-    ScrapeTechRP2(company, date)
-    ScrapeMcAfee2(company, date)
-    ScrapeGraham2(company, date)
-    ScrapeCSO2(company, date)
-    ScrapeInfosecmag2(company, date)
-    ScrapeNakedsec2(company, date)
-    ScrapeKebronsec2(company, date)
+    #ScrapeTechRP2(company, date)
+    #ScrapeMcAfee2(company, date)
+    #ScrapeGraham2(company, date)
+    #ScrapeCSO2(company, date)
+    #ScrapeInfosecmag2(company, date)
+    #ScrapeNakedsec2(company, date)
+    #ScrapeKebronsec2(company, date)
     try:
         ScrapeTwitter2(company, date)
     except:
@@ -2127,9 +2127,8 @@ def RunProgram2(companies, date):
         WebScraping2(company, date)
 
 def main():
-    RunProgram2(["google"], "1 Mar 2022")
-    #textAnalyzerTest()
-    #print(TextAnalyzer.LoadSentenceDic("analyzer_tools/Sentence_dictionnary.txt", "microsoft"))
-  
+    #RunProgram2(["solarwinds"], "10 Dec 2020")
+    textAnalyzerTest()
+
 main()
 

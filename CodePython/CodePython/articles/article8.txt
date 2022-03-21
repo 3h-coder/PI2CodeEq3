@@ -1,168 +1,21 @@
-Many readers were surprised to learn recently that the popular Norton 360 antivirus suite now ships with a program which lets customers make money mining virtual currency. But Norton 360 isn’t alone in this dubious endeavor: Avira antivirus — which has built a base of 500 million users worldwide largely by making the product free — was recently bought by the same company that owns Norton 360 and is introducing its customers to a service called Avira Crypto.
-Avira Crypto
-Founded in 2006, Avira Operations GmbH & Co. KG is a German multinational software company best known for their Avira Free Security (a.k.a. Avira Free Antivirus). In January 2021, Avira was acquired by Tempe, Ariz.-based NortonLifeLock Inc., the same company that now owns Norton 360.
-In 2017, the identity theft protection company LifeLock was acquired by Symantec Corp., which was renamed to NortonLifeLock in 2019. LifeLock is now included in the Norton 360 service; Avira offers users a similar service called Breach Monitor.
-Like Norton 360, Avira comes with a cryptominer already installed, but customers have to opt in to using the service that powers it. Avira’s FAQ on its cryptomining service is somewhat sparse. For example, it doesn’t specify how much NortonLifeLock gets out of the deal (NortonLifeLock keeps 15 percent of any cryptocurrency mined by Norton Crypto).
-“Avira Crypto allows you to use your computer’s idle time to mine the cryptocurrency Ethereum (ETH),” the FAQ explains. “Since cryptomining requires a high level of processing power, it is not suitable for users with an average computer. Even with compatible hardware, mining cryptocurrencies on your own can be less rewarding. Your best option is to join a mining pool that shares their computer power to improve their chance of mining cryptocurrency. The rewards are then distributed evenly to all members in the pool.”
-NortonLifeLock hasn’t yet responded to requests for comment, so it’s unclear whether Avira uses the same cryptomining code as Norton Crypto. But there are clues that suggest that’s the case. NortonLifeLock announced Avira Crypto in late October 2021, but multiple other antivirus products have flagged Avira’s installer as malicious or unsafe for including a cryptominer as far back as Sept. 9, 2021.
-Avira was detected as potentially unsafe for including a cryptominer back in Sept. 2021. Image: Virustotal.com.
-The above screenshot was taken on Virustotal.com, a service owned by Google that scans submitted files against dozens of antivirus products. The detection report pictured was found by searching Virustotal for “ANvOptimusEnablementCuda,” a function included in the Norton Crypto mining component “Ncrypt.exe.”
-Some longtime Norton customers took to NortonLifeLock’s online forum to express horror at the prospect of their antivirus product installing coin-mining software, regardless of whether the mining service was turned off by default.
-“Norton should be DETECTING and killing off crypto mining hijacking, not installing their own,” reads a Dec. 28 thread on Norton’s forum titled “Absolutely furious.”
-Others have charged that the crypto offering will end up costing customers more in electricity bills than they can ever hope to gain from letting their antivirus mine ETH. What’s more, there are hefty fees involved in moving any ETH mined by Norton or Avira Crypto to an account that the user can cash out, and many users apparently don’t understand they can’t cash out until they at least earn enough ETH to cover the fees.
-In August 2021, NortonLifeLock said it had reached an agreement to acquire Avast, another longtime free antivirus product that also claims to have around 500 million users. It remains to be seen whether Avast Crypto will be the next brilliant offering from NortonLifeLock.
-As mentioned in this week’s story on Norton Crypto, I get that participation in these cryptomining schemes is voluntary, but much of that ultimately hinges on how these crypto programs are pitched and whether users really understand what they’re doing when they enable them. But what bugs me most is they will be introducing hundreds of millions of perhaps less savvy Internet users to the world of cryptocurrency, which comes with its own set of unique security and privacy challenges that require users to “level up” their personal security practices in fairly significant ways.
-Update, Jan. 28, 9:41 a.m.: I meant to add this sooner, but not long after this story ran I heard from NortonLifeLock that the company only had 80 million customers, and that my 500 million headline was incorrect.
-“Your headline says that 500M Avira AV users were introduced to Cryptomining,” NortonLifeLock wrote to KrebsOnSecurity. “However, our company has approximately 80 million users globally. Additionally, NortonLifeLock and Avast remain separate companies.”
-I thought this was odd, given that Avira’s homepage very clearly stated the company had 500 million users:
- NortonLifeLock thanked me for the information, and said it was removing all instances of that number from its Web properties. The company has yet to explain whether that 500 million number was ever anywhere close to reality, and if so what happened to all those users.
-
-         This entry was posted on Saturday 8th of January 2022 01:05 PM 
-         
-Just to clarify – in Nov 2019 Broadcom acquired the Enterprise business of Symantec. What’s left was renamed to NortonLifeLock. Symantec is still alive as a group under Broadcom Software Group
-krebsonsecurity.com did not encrypt this message
-Why?
-Brian, could you do one of your occasional advice columns on best approaches for users without IT departments to replace these crypto-mining featured -malware programs?
-Yes. Remove them and turn on Windows Defender.
-Thank you. I trust Brian Krebs. I do not trust Symantec or the company that bought them. many thanks to you, Brian, for your heads up.
-Thank you Brian. Norton 360/LifeLock is offered as an employee benefit by my employer. The VPN feature has been “recommended” yet slows my laptop’s speed during boot-up and browsing. Your reply above to CyberCPA is to “Remove them” (Norton 360?) “and turn on Windows Defender”. I hope that your trust in Windows Defender is strong enough for me (or anyone) to remove Norton 360 and just get on with our lives. Thank you!
-If Microsoft Defender is good enough to be trusted by Huntress Labs, it’s good enough for me.
-sad you dont think for yourself….wake up!
-You can use the identity monitoring services of Lifelock (if those are included in your employee benefit) without using the Norton 360 a/v suite.  I do and it has caught two fraudulent attempts to open credit cards in my name.  My company security team recommends running Windows Defender and occasional “belt and suspender” manual scans with Malwarebytes Free (if you can tolerate the incessant nagging to upgrade to Premium, which you don’t IMHO need if you have Defender running).  I wish MB Free would offer an option to pay something just to stop the nagging without installing Premium.
-Is this sponsored by the local electric companies?  Since,  I suspect any income generated is less than the cost of electricity?
-Are you American by any chance?
-Other than a handful of high end processors and mid to high range graphics cards, mining will cost you more than what you take in.  (and even then, you might clear $.5/day CPU mining after electricity at best.)   Anything less than a high end device, and you are paying for your crypto.
-The calculus is a lot more complicated than some “experienced cryptominers” would have you believe.
-Quotes like $1/day or $0.50/day seem to assume 3 things.
-1)  The cryptocurrency is traded in for USD immediately instead of holding for a spike in value.
-2)  Some average electricity (like $0.12/kwh) cost that doesn’t take into account time of day usage which many people have.  They may think that everyone must mine 24/7, rather than just when a home PC is running.
-3)  Dedicated mining rigs that have NO USE other than mining.  The reality of laptops and home PCs, is that they consume plenty of power just being on, doing daily tasks.  And there is a LOT of spare CPU and GPU processing that can be used.  This is “spare” because the chips are already powered up, and cycling at a nominal clock rate whether or not they are running at 2% utilization or 20%.  It is not linear, and it is not intuitive.  The energy consumption difference between a laptop sitting idle, and mining crypto is NOT the same as the difference between a running high end cryptomining rig and having it powered off.
-A good analogy would be how hybrid cars can get vastly better MPG without needing to be plugged in at all… all by simply recovering what was already being wasted.
-Another comparison would be “renewable energy” calculation.  Solar panels only get 20% of the energy from photons, but nobody cares, because that photon was going to be wasted when it hits the ground anyway.
-The truth is that there is no simple ratio between hashrate and power consumption that translates between completely different setups and use cases.
-An array with dedicated cyrptomining rigs has to account for all power consumption, because there is no waste stream to tap into.
-A PC or laptop has a significant supply of “spare” resources being wasted, and that can be tapped into without the corresponding increase in power consumption.
-multiple levels, just wrong
-your PC will use way more power when it starts grinding crypto… there’s no argument for cycles going un-used … PC’s don’t work just like light bulbs, they have power management that will spend more power for more processing
-assuming the value of the currency when earned and not when waiting for a spike is mathmatically correct, as you’re now holding an asset… you could equally just buy the assets, and hold on for a spike …. so trying to say people actually earn more than the stated figures just rubbish again
-Corporate greed:  a world-wide race to the bottom!
-Massive lawsuit coming to Norton and Avira. You can’t just use someone’s resources to mine crypto regardless if there’s an option to opt-out. This is theft and they will pay for it.
-John, this is opt-in, not opt-out, and there’s no theft.
-TLDR much?  It’s actually opt-in.
-“..but customers have to opt in to using the service that powers it.”
-Make sure you answer the IRS crypto question correctly now that you are receiving crypto:
-“At any time during the tax year, did you receive, sell, exchange or otherwise dispose of any financial interest in any virtual currency?”
-That’s a good callout, I’d be curious on Brian’s take on the tax implications of this.  I would think that it only becomes tax reportable if a user has transferred “their share” from Norton/Avira wallet to their personal wallet?  But I’ll admit I have zero idea.
-My understanding is if you have a Coinbase account and you have a taxable event with your crypto, they will send you a 1099 in the mail.
-This is a great question.  Will pose to someone in my network of Tax Professionals who has the ear of the IRS.
-@BrianKrebs Your understanding is a bit off.  The IRS question is not directly connected to incurring a taxable event.  Buying/investing in Virtual Currency–not just trading/using/selling–means you have to check that box.  Whether you have it in a wallet or in an Investment account, you need to be checking that box.
-Is there another part of the tax form that requires disclosure of cryptocurrencies held? This one doesn’t seem to. 
-https://krebsonsecurity.com/wp-content/uploads/2022/01/cointax.png
-Actually the ‘receive’ part covers this.
-By mining crypto currency, you are receiving an income from it (albeit a tiny one) and this has to count towards your taxable income.
-Well, that depends on whether crypto is a “real” currency or not, and AFAIK the jury’s still out on that thorny question.
-Because, if it’s a security (or rather “security”) the taxable income only happens if/when you actually sell those ETH.
-Anyway, this nonsense is unlikely to make more money than the power required to mine the coins. While Ethereum will switch to their planned PoS mining, making this particular implementation obsolete, there are enough other coins out there …
-Form 1099 reporting is required beginning for tax year 2023.  The IRS considers crypto currency to be property.  When property is sold or exchanged (meaning for goods or services) that event requires tax reporting.  The Form 1040, page 1 question is intended to alert the IRS that a taxpayer might have taxable events that require reporting. (In my view.)
-This is further muddled by the way Norton maintains control over the wallet on their cloud service.
-Is the ETH “owned” by the end user?  No, probably not.
-Not until the ETH reaches some minimum amount can the user even transfer to their own wallet.
-It is possible that no IRS disclosure will be needed for several years after opting into the program.
-What I find interesting is that Lifelock acquired a company called ID Analytics who had some really sweet proprietary tech which we used to identify possible breaches of PII. But within 2 years of being under Lifelock control, most of the people we had contact with, sales, support and engineers, had left the company.  Seems life under LifeLock control and their plans for how to use the tech were a problem for staff.  Fair enough, new boss makes the rules. We also ended up not renewing our contract with ID Analytics/LifeLock, lost confidence as LifeLock had so many run ins with oversight agencies.  Plus  off the record comments of ex-employees of ID Analytics regarding the new employers business views raised concerns over trust. So the tendency to acquire a company and mess it up was continued when Symantec bought LifeLock.  So while surprised at this whole turn of events I’m kind of not surprised.  LifeLock was a toxic company that made money, bought a good organization that it spoiled even it attracted more of the same toxicity.
-I wonder if Lifelock and Broadcom are linked at all, because a similar thing happened to the decent Symantec staff when Broadcom bought them – our Symantec sales manager actually warned us not to renew.
-This is more common than not in the constant acquisition/merger churn of corporate America.  Doubly so in Silicon Valley.
-Be interested to see what percentage of crypto is retained as commission by the vendor. It could be a very effective addition to income streams
-Thank goodness McAffe is still safe and effective!
-Haha…  Good one!
-Safe? Perhaps. Effective? It slows the machine down to a crawl. Particular when one is a hobby-developer – McAfee just doesn’t have an option to exclude a directory from scan. So every time you build a new version of your program, it gets scanned, along with all the libraries it fetched from Nuget (which can be a lot).
-Lemme guess…the new Avira miner is called “Acrypt.exe”, right?
-If the other major antivirus purveyor that starts with A-V does this, I’m not sure where to turn.
-Was there nobody in the room that mentioned the word ‘optics’ as this was being discussed?
-Krebs you got nothing to write about don’t you?
-Your blog deteriorated drastically over the course of last 2 years.
-RIP.
-Well, this is extremely useful information for users of Avira or any Norton/Lifelock product.  Grim information, but useful.  See the comment about the cost of electricity.
-If my butt hurt, that’s what I might write.
-And yet, here you are.
-Thanks, Brian.
-Cryptocurrency is so inextricably bound up with bad guys, it’s really amazing the gall and brass these outfits have.
-But then, everything which is legal is moral, right?
-So A-V really stands for Avarice+Venality
-Engine definitions update is more important than antuvirus software updatw
-Thanks for a clear and and important article on this Mr. Krebs. I use neither Norton or Avira (or Windows for that matter) but some friends and family do so. I will be referring them (actually the few that seem to care about these sorts of things) to read up here on this creeping cryptoe in the door.
-do you think the brave browser has the crypto mining thingy?
-https://brave.com/wallet/?source=techstories.org
-Optional version, the default download will not download to the program with mining, i just tested.
-I think we are missing a bigger issue.  My concern isn’t the opt in/out,  the tax reporting, or even the security awareness of cryto wallets.  My concern is that an A/V package needs to be secure not hacked.  The more code added that is unrelated to the core A/V function, the larger the attack surface and the greater the risk.  Seems like the A/V solutions from NortonLifeLock are not following Secure Programming 101.
-If the crypto miner is included as part of the software package, it can be turned on remotely without (in most cases) the user’s knowledge.  The best solution is Windows Defender, education, and common sense.
-Anything that could remotely run an existing binary, can probably also just download it too.
-The best choice is to switch to Linux or BSD.
-I agree – they would be able to mine digital coins much faster.
-This is surely a short lived venture by NortonLifeLock Inc given that the Ethereum blockchain will be moving to proof of stake soon. Not to mention a highly controversial one.
-However, If they then adjust the software to play a role in a distributed Ethereum staking pool (massively lower energy consumption whilst still earning ETH and validating transactions) then this could be a very clever way to engage an existing customer base with the Ethereum ecosystem.
-Antivirus software does seem an odd place to put it, but it is software that is commonly running the whole time the machine is on, so there is some logic.
-Lovely……and really what was the point of antivirus in the first place?
-In the future…..the IRS will show up at your home and seize your assets because you didn’t report that .0001 of bitcoin you mined via your anti-virus program….
-1 – This reinforces my deeply held belief that Norton *is* a virus.
-2 – As someone involved in the launch of the free MS anti-malware product that eventually got rolled into Defender, I’m kinda pleased to see it being called out.
-There’s a lot of websites out there that use WebAssembly to mine.  So just visiting many popular websites will eat up your GPU cycles: https://www.sec.cs.tu-bs.de/pubs/2019a-dimva.pdf
-I kinda predicted a similar turn of events some years ago.  But didn’t think it would start with a security company like Norton.
-Cryptomining has been synonymous with malware for so long, a LOT of people are shocked and appalled when they should have seen this coming.
-–
-Companies are going to find new revenue streams.  Gone are the days where you can buy a perpetual license for software suites.  Subscription services are all the rage, IF they can provide real value on a continual basis.  But really, why should people pay $10+ per month for something when there are cheaper alternatives.
-–
-I figured legit websites (like business/financial sites) would be the first to include cryptomining Javascript into their webpages, as an alternative to advertising revenue.
-Sites are getting less revenue from the ignorable sidebar ads, so they have been moving towards popups, pinned banners, animations, autoplay videos, and other intrusive means to get attention to ads so they can pay the website more revenue.
-–
-I would actually not mind a bit of cryptomining rather than seeing so many damn ads.  My time and attention is more valuable to me than my spare CPU/GPU cycles.
-But of course, it should be opt in (perhaps a cookie), and should only run within the isolated browser tab space.  Definitely not appropriate for a security tool running with high privileges like Norton.
-Link or it didn’t happen.
-They’re trying to do something different with an OPTIONAL feature that is very much in-line with the investment strategies of millions of people and then there is all this fuss. 
-If you’re not into crypto, are afraid of crypto, are unhappy with NortonLifeLock – Just buy someone else. There are SO MANY OPTIONS. but just don’t cry when your new AV adds the optional mining feature too because It makes a TON of sense. 
-I’m sad to see Krebs reporting this the same way the local irrelevant tabloid did.
-any users are seeing an uptick in spam/phishing emails to renew their Norton AV license; these emails are also bypassing the gmail spam filters.
-can this be related to the new Norton crypto mining function; ie any Norton user is now a target for hackers to exploit any crypto wallet or transaction?
-Your email address will not be published. Required fields are marked *
-Comment 
-Name * 
-Email * 
-Website 
- 
+SolarWinds, the enterprise monitoring software provider which found itself at the epicenter of the most consequential supply chain attacks, said as many as 18,000 of its high-profile customers might have installed a tainted version of its Orion products.
+The acknowledgment comes as part of a new filing made by the company to the US Securities and Exchange Commission on Monday.
+The Texas-based company serves more than 300,000 customers worldwide, including every branch of the US military and four-fifths of the Fortune 500 companies.
+The "incident was likely the result of a highly sophisticated, targeted and manual supply chain attack by an outside nation state," SolarWinds said in the regulatory disclosure, adding it "currently believes the actual number of customers that may have had an installation of the Orion products that contained this vulnerability to be fewer than 18,000."
+The company also reiterated in its security advisory that besides 2019.4 HF 5 and 2020.2 versions of SolarWinds Orion Platform, no other versions of the monitoring software or other non-Orion products were impacted by the vulnerability.
+Specifics regarding how the hackers penetrated SolarWinds' own network are still fuzzy, but the company noted in its filing that it was alerted to a compromise of its Microsoft Office 365 email and office productivity accounts that it's currently investigating to determine how long it existed and if the weakness was "associated with the attack on its Orion software build system."
+Troublingly, according to a report from security researcher Vinoth Kumar, it also appears that a publicly-accessible SolarWinds GitHub repository was leaking FTP credentials of the domain "downloads.solarwinds.com," thus allowing an attacker to potentially upload a malicious executable disguised as Orion software updates to the downloads portal. Even worse, the FTP server was protected by a trivial password.
+Following Kumar's responsible disclosure last year, the company addressed the misconfiguration on November 22, 2019.
+The development comes a day after cybersecurity firm FireEye said it identified a nine-month-long global intrusion campaign targeting public and private entities that introduce malicious code into legitimate software updates for SolarWinds' Orion software to break into the companies' networks and install a backdoor called SUNBURST ("SolarWinds.Orion.Core.BusinessLayer.dll").
+"The malicious DLL calls out to a remote network infrastructure using the domains avsvmcloud.com. to prepare possible second-stage payloads, move laterally in the organization, and compromise or exfiltrate data," Microsoft said in a write-up.
+The US Department of Homeland Security was breached, as were the departments of Commerce and Treasury, Reuters reported yesterday. The espionage campaign also included the December 8 cyberattack on FireEye, although it's not immediately clear whether the intrusion and exfiltration was a direct result of a rogue SolarWinds update.
+"The campaign demonstrates top-tier operational tradecraft and resourcing consistent with state-sponsored threat actors," said FireEye CEO Kevin Mandia. "These compromises are not self-propagating; each of the attacks require meticulous planning and manual interaction."
+While the fallout caused by the hacking campaign is still unknown, fingers have been pointed at APT29, a hacking collective affiliated with the Russian foreign intelligence service. FireEye, which is tracking the campaign as "UNC2452," has not linked the attack to Russia.
+For its part, SolarWinds is expected to issue a second hotfix later today that replaces the vulnerable component and adds several extra security enhancements.
+"The SUNBURST campaign represents a uniquely distressing intrusion event with implications for multiple industries and network operators," DomainTools' Senior Security Researcher, Joe Slowik, said.
+"The ubiquity of SolarWinds in large networks, combined with the potentially long dwell time of intrusions facilitated by this compromise, mean victims of this campaign need not only recover their SolarWinds instance, but may need to perform widespread password resets, device recovery, and similar restoration activity to completely evict an intruder."
+"Through continuous monitoring of network traffic and an understanding of what hosts are communicating, defenders can leverage attacker weaknesses and dependencies to overcome these otherwise daunting challenges," he added.
+Sign up for cybersecurity newsletter and get latest news updates delivered straight to your inbox daily.
 
 
-
-Δ
-Mailing List
-Search KrebsOnSecurity
-Recent Posts
-Spam Nation
-A New York Times Bestseller! 
-Thinking of a Cybersecurity Career?
-Read this.
-All About Skimmers 
-Click image for my skimmer series.
-Story Categories
-The Value of a Hacked PC
-Badguy uses for your PC
-Badguy Uses for Your Email 
-Your email account may be worth far more than you imagine.
-Most Popular Posts
-Why So Many Top Hackers Hail from Russia
-Category: Web Fraud 2.0
-Innovations from the Underground
-ID Protection Services Examined
-Is Antivirus Dead?
-The reasons for its decline
-The Growing Tax Fraud Menace
-File 'em Before the Bad Guys Can 
-Inside a Carding Shop
-A crash course in carding. 
-Beware Social Security Fraud
-Sign up, or Be Signed Up! 
-How Was Your Card Stolen?
-Finding out is not so easy. 
-Krebs’s 3 Rules…
-...For Online Safety. 
-
-
-https://krebsonsecurity.com/2022/01/500m-avira-antivirus-users-introduced-to-cryptomining/
+https://thehackernews.com/2020/12/nearly-18000-solarwinds-customers.html

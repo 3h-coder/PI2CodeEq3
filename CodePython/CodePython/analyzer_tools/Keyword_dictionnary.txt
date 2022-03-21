@@ -65,3 +65,4 @@ vulnerabilities
 whaling
 worm
 worms
+zero-day

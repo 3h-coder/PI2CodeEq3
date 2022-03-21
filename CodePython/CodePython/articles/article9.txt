@@ -1,0 +1,93 @@
+Microsoft says 80% of the victims it identified were located in the United States.
+Catalin Cimpanu was a security reporter for ZDNet between Sep 2018 and Feb 2021.
+
+Microsoft said it identified more than 40 of its customers that installed trojanized versions of the SolarWinds Orion platform and where hackers escalated intrusions with additional, second-stage payloads. 
+The OS maker said it was able to discover these intrusions using data collected by Microsoft Defender antivirus product, a free antivirus product built into all Windows installations. 
+Also: Best VPNs 
+Microsoft President Brad Smith said his company is now in the process of notifying all the impacted organizations, 80% of which are located in the United States, with the rest being spread across seven other countries -- namely Canada, Mexico, Belgium, Spain, the UK, Israel, and the UAE. 
+While the current list of known victims of the SolarWinds hack mostly includes US government agencies, Smith said the government sector is only a small portion of the victim list, with 44% being IT companies, such as software firms and equipment providers. 
+
+The Microsoft President also said the attack is ongoing, with the hackers trying to compromise new companies still, despite the incident being public and actively investigated. 
+"It's certain that the number and location of victims will keep growing," Smith said. 
+The latest victim on this list is Microsoft itself, which, hours before Smith's analysis, admitted to having installed trojanized version of the SolarWinds app inside its own infrastructure. 
+Reuters reported that hackers accessed Microsoft's internal network, but Microsoft denied that they were able to reach production systems and impact its business customers and end-users. 
+Five days later, the breadth of the SolarWinds hack continues to grow. 
+This entire incident began last week when security firm FireEye said that a state-sponsored hacking group accessed its internal network, stole pen-testing tools and tried to access documents on its government contracts. 
+While investigating the breach, FireEye tracked down the intrusion to a malware-laced version of SolarWinds Orion, a network monitoring tool used inside large enterprise networks. 
+Notified by FireEye, SolarWinds admitted on Sunday to getting hacked, disclosing that several Orion app updates released between March and June contained a backdoor trojan. 
+A day later, SolarWinds admitted in SEC documents that around 18,000 customers had installed the trojanized updates, triggering a massive search inside enterprise networks, with IT personnel looking to see if they had installed the malware-laced Orion app version and if second-stage malware payloads were used to escalate attacks. 
+This proved a cumbersome and difficult task, as the malware, named SUNBURST, or Solorigate, contained a decoupled design between the first and second-stage payloads that made it tricky to determine on what and how many systems the hackers escalated their access. 
+Nonetheless, on Wednesday, Microsoft took steps to protect users and seized the web domain that the first-stage SUNBURST malware was used to report to attackers. Together with GoDaddy and FireEye, Microsoft turned the domain into a kill switch in order to prevent the SUNBURST malware from pinging back to its creators and downloading second-stage payloads. 
+Nonetheless, companies that had already been infected before this kill switch was set up now need to be discovered. 
+According to Smith, this number is currently at around 40, but the number will most likely grow as investigators learn more about these second-stage payloads, some of which have been identified by Symantec under the name of Teardrop. 
+Below is a map showing the current distribution of systems infected with the first-stage SUNBURST malware, per Microsoft Defender telemetry. 
+
+Smith, which has often called for governments to stop attacking the private sector as part of their cyber-espionage operations, did not attribute the attack to any particular country, but it did criticize the attackers. 
+"This is not 'espionage as usual,' even in the digital age," Smith said. "Instead, it represents an act of recklessness that created a serious technological vulnerability for the United States and the world." 
+"In effect, this is not just an attack on specific targets, but on the trust and reliability of the world's critical infrastructure in order to advance one nation's intelligence agency." 
+Smith called for stronger international rules for dealing with the countries that carry out such reckless attacks. 
+Reporting from the Washington Post claimed that Russia's APT29 hacking group is behind the SolarWinds hack, but no government or security firm has backed up the paper's claim. APT29 has been previously linked by US and Estonian intelligence agencies to the Russian Foreign Intelligence Service (SVR). 
+
+Cloud computing and XBox growth behind rise in Microsoft's carbon emissions
+
+
+
+
+AWS rejects new sign-ups and Microsoft suspends new sales in Russia
+
+
+
+
+Microsoft to show how Windows 'powers the future of hybrid work'
+
+
+
+
+Red Hat moves out of Russia
+
+
+
+
+Microsoft study finds 50 percent of leaders have plans for a full return to the office
+
+
+
+
+Uh-oh: Microsoft says it is adding more 'fun' to your Windows search
+
+
+
+
+Microsoft: There's a critical shortage of women in cybersecurity, and we need to do something about it
+
+
+
+
+Within hours of the Log4j flaw being revealed, these hackers were using it
+
+
+
+
+Best budget TV 2022: Awesome entertainment for less
+
+
+
+Please review our terms of service to complete your newsletter subscription.
+
+            You agree to receive updates, promotions, and alerts from ZDNet.com. You may unsubscribe at any time.
+            By joining ZDNet, you agree to our Terms of Use and Privacy Policy.
+        
+
+            You agree to receive updates, promotions, and alerts from ZDNet.com. You may unsubscribe at any time.
+                                        
+            By signing up, you agree to receive the selected newsletter(s) which you may unsubscribe from at any time. You also agree to the Terms of Use and acknowledge the data collection and usage practices outlined in our Privacy Policy.
+        
+© 2022 ZDNET, A RED VENTURES COMPANY. ALL RIGHTS RESERVED.
+                    Privacy Policy |
+                    Cookie Settings |
+                    Advertise |
+                    Terms of Use
+
+
+
+https://www.zdnet.com/article/microsoft-says-it-identified-40-victims-of-the-solarwinds-hack/

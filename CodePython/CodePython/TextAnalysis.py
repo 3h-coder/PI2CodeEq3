@@ -26,7 +26,7 @@ def extract_example(number): #Don't forget to update the number
     number: int
         The article number in our folder containing all the txt files.
     """
-    URL="https://krebsonsecurity.com/2022/01/500m-avira-antivirus-users-introduced-to-cryptomining/" #changer l'url
+    URL="https://www.zdnet.com/article/sec-filings-solarwinds-says-18000-customers-are-impacted-by-recent-hack/" #changer l'url
     page=requests.get(URL)
     soup=BeautifulSoup(page.text, "lxml")
 
@@ -96,7 +96,7 @@ def TestCountOccurences(text):
 
 def IdentifySubject(sentence):
     """
-    Returns the subject of a sentence
+    Returns a tuple of size 2 containing the text of the subject and its spacy dependency.
 
     Parameters:
     -------------
@@ -133,11 +133,10 @@ def DetectSentences(text, keywords):
 
     for sentence in list(doc.sents):
         for keyword in keywords:
-            if keyword in str(sentence) or keyword.capitalize() in str(sentence):
+            if keyword in str(sentence) or keyword.capitalize() in str(sentence) or keyword.lower():
                 count+=1
                 keysentences.append(sentence)
                 break #Pour ne pas prendre plusieurs fois la même phrase si elle contient plusieurs des mots présents dans la liste
-
     return keysentences
 
 #For testing purposes
@@ -364,19 +363,32 @@ def DetectTenses(sentence):
     return tenses
 
 def IdentifyRoot(sentence):
+    """
+    Returns a tuple of size 2 containing the text of the root and its spacy dependency.
+
+    Parameters:
+    -------------
+    sentence: str
+        analyzed sentence
+    """
     root=""
     doc=nlp(sentence)
     for token in doc:
         if token.dep_=="ROOT":
             return token.text, token.dep_
 
-
-
 def detailSpacy(sentence):
+    """
+    Displays all variables for each token object in a given sentence.
+
+    Parameters:
+    -------------
+    sentence: str
+        The sentence from which we will extract the tokens.
+    """
     doc=nlp(sentence)
     for token in doc:
         print(token.text, token.lemma_, token.pos_, token.tag_, token.dep_,token.shape_, token.is_alpha, token.is_stop)
-
 
 
 def TestDetectTenses():
@@ -393,8 +405,8 @@ def main_function():
     #TestIdentifyDateInText()
     #TestLexicalField()
     #TestDetectTenses()
-    #extract_example()
-    detailSpacy("hackers")
+    extract_example(10)
+    #detailSpacy("the microsoft hack exploited the company's software build environment.")
 
 if __name__=="__main__":
     main_function()

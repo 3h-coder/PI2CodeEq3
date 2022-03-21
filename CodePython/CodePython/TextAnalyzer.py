@@ -133,82 +133,6 @@ class TextAnalyzer(object):
         #print sentences
         return sentences
 
-    def RunAnalysis(self, wordDic=[], sentDic=[]):
-        """
-        Analyzes the text variable to update the status, result, date and crit_sents variables.
-
-        Parameters
-        -------------
-        wordDic: list[str]
-            List of keywords from which we will search specific sentences.
-            (These keywords belong to the cyber attack lexical field.)
-
-        sentDic: list[str]
-            List of sentences we will use to compare the text sentences and raise an alert based on the similarity.
-            (The sentences in this variable are typically the ones that would make us raise a level 3 alert.)
-        """
-        if wordDic==[]: 
-            wordDic=TextAnalyzer.wordDic
-        if sentDic==[]:
-            sentDic=TextAnalyzer.LoadSentenceDic("analyzer_tools/Sentence_dictionnary.txt", self.company)
-        max_rate=0.95 #If this similarity score is reached or exceeded, a level 3 alert is raised.
-        med_rate=0.85
-        lvl2_rate_nb=20 #If 10 scores are located between the med_rate and max_rate, a level 2 alert is raised.
-        lvl1_rate_nb=15 #If 5 scores are located between the med_rate and max_rate, a level 1 alert is raised.
-        self.date=datetime.now()
-        self.status=0 #Default status
-        self.result="Nothing to report." #Default result
-        similarityScores={}
-        keysentences=TextAnalysis.DetectSentences(self.text, wordDic) #First, we start by extracting the sentences that contain our keywords.
-        for text_sentence in keysentences: #Then, we compare each of these sentences with the example phrases from our sentDic variable.
-            date_too_old=False
-            text_sentence_copy=str(text_sentence).lower() #To simplify the comparison process, all compared sentences will be in lowercase.
-            DetectedDates=TextAnalysis.IdentifyDateSentence(str(text_sentence), datetime.combine(self.text_date, datetime.min.time())) #We now want to make sure that the sentence doesn't mention 
-            #an event that is too old and thus irrelevant. (We want to avoid false positives by doing that)
-            for date in DetectedDates:
-                if date < self.text_date-timedelta(days=7): #If the occurence happened more than a week before the article/tweet post date, it is considered as too old.
-                    date_too_old=True
-            if not date_too_old:
-                similarityScores[text_sentence]=[]
-                for example_sentence in sentDic:
-                    score=TextAnalysis.CompareSimilarity(text_sentence_copy,str(example_sentence)) #We evaluate the similarity between the extracted sentence and the example sentence lowercased.
-                    #if score > 0.9:
-                        #print("There is a very high similarity between our text sentence:\""+str(text_sentence)+"\" and our example sentence:\"" \
-                            #+str(example_sentence)+"\" (score of:"+str(score)+")")
-                    #elif score > 0.8:
-                        #print("There is medium similarity between our text sentence:\""+str(text_sentence)+"\" and our example sentence:\"" \
-                            #+str(example_sentence)+"\" (score of:"+str(score)+")")
-                    #else:
-                        #print("There is a low similarity between our text sentence:\""+str(text_sentence)+"\" and our example sentence:\"" \
-                            #+str(example_sentence)+"\" (score of:"+str(score)+")")    
-                    similarityScores[text_sentence].append(score) #And save the score
-                    #print("----------------------------------next example sentence----------------------------------")
-                #print("----------------------------------||next text sentence||----------------------------------")
-        for key in similarityScores: #We then browse for each extracted sentence the corresponding scores. Key is the extracted sentence, value is the list of scores after comparison (len(value)==len(sentDic)).
-            scores=similarityScores[key]
-            count_med_rate=0
-            for score in scores: #We browse the score list for a given sentence.
-                if score>=max_rate:  #We verify whether the maximum score is reached or exceeded, if so we raise a level 3 alert. 
-                    self.status=3
-                    self.result="/!\\ A level 3 alert has been raised /!\\"
-                    break #We move on to the next phrase as it will never be higher.
-                if score>med_rate and score<max_rate:
-                    count_med_rate+=1
-                    if count_med_rate >= lvl2_rate_nb:
-                        if self.status < 3: #A lower status cannot overwrite a higher one.
-                            self.status=2
-                            self.result="/!\\ A level 2 alert has been raised /!\\"
-                            #We do not move on to the next phrase here because there is a possibility that the next score will be > max_rate 
-                            #and thus overwrite this assignment.
-                    if count_med_rate >= lvl1_rate_nb:
-                        if self.status < 2:
-                            self.status=1
-                            self.result="/!\\ A level 1 alert has been raised /!\\"
-                            #We do not move on to the next phrase here because there is a possibility that the next score is > max_rate or that
-                            #count_med_rate will become >= lvl2_rate_nb and thus overwrite this assignment.
-            if self.status>0: #If the sentence raised an alert, we save it in our crit_sents variable.
-                self.crit_sents.append(key)
-        #print("Number of critical sentences :"+str(len(self.crit_sents)))
 
     def RunAnalysis(self, wordDic=[], sentDic=[]):
         """
@@ -232,7 +156,9 @@ class TextAnalyzer(object):
         self.status=0 #Default status
         self.result="Nothing to report." #Default result
         compsentences=TextAnalysis.DetectSentences(self.text, [self.company]) #First, we start by extracting the sentences where the company is mentionned.
+        print(compsentences)
         for sentence in compsentences:
+            sentence_status=0
             sentence_copy=str(sentence).lower() #To simplify the comparison process, all compared sentences will be in lowercase.
             date_too_old=False #We then check whether the sentence mentions an event that has occured more than a week prior to the article/tweet date.
             DetectedDates=TextAnalysis.IdentifyDateSentence(sentence_copy, datetime.combine(self.text_date, datetime.min.time()))
@@ -242,74 +168,25 @@ class TextAnalyzer(object):
             if not date_too_old: #We only proceed to the rest of the analysis if the date found is not considered as too old.
                 for word in wordDic: #We now browse our word Dictionnary
                     if word in sentence_copy: #To check if the sentence also countains one of these words.
-                        self.status=1 #If yes, the status is updated to 1
-                        self.result="/!\\ A level 1 alert has been raised /!\\"
-                        self.crit_sents.append(sentence) #We save the sentence as critical
-                        break #We do not need to check whether the sentence contains other words from the dictionnary as we will not save it more than once.
-                if(self.status==1): #We now proceed to further/deeper analysis
-                    for example_sentence in sentDic:
-                        score=TextAnalysis.CompareSimilarity(sentence_copy, example_sentence) #We use the Spacy similarity feature to go more in depth into the analysis
-                        if(score >= 0.9 and score < 0.93):
-                            if self.status<3: #A lower status cannot overwrite a higher status, we thus only update the status if it is lower than 3.
-                                self.status=2
-                                self.result="/!\\ A level 2 alert has been raised /!\\"
-                        elif(score >=0.93):
-                            self.status=3
-                            self.result="/!\\ A level 3 alert has been raised /!\\"
-                            #Although the status will never get any higher, we do not break out of the loop here as we may still find other critical sentences that we want to save.
-
-    def RunAnalysis(self, wordDic=[], sentDic=[]):
-        if wordDic==[]: 
-            wordDic=TextAnalyzer.wordDic
-        if sentDic==[]:
-            sentDic=TextAnalyzer.LoadSentenceDic("analyzer_tools/Sentence_dictionnary.txt", self.company)
-        self.date=datetime.now()
-        self.status=0 #Default status
-        self.result="Nothing to report." #Default result
-        sentence_status=0
-        compsentences=TextAnalysis.DetectSentences(self.text, [self.company]) #First, we start by extracting the sentences where the company is mentionned.
-        for sentence in compsentences:
-            sentence_copy=str(sentence).lower() #To simplify the comparison process, all compared sentences will be in lowercase.
-            date_too_old=False #We then check whether the sentence mentions an event that has occured more than a week prior to the article/tweet date.
-            DetectedDates=TextAnalysis.IdentifyDateSentence(sentence_copy, datetime.combine(self.text_date, datetime.min.time()))
-            for date in DetectedDates:
-                if date < self.text_date-timedelta(days=7):
-                    date_too_old=True
-            if not date_too_old:
-                #----------------------------First layer of analysis-----------------------------------------
-                for word in wordDic: #We now browse our word Dictionnary
-                    if word in sentence_copy: #To check if the sentence also countains one of these words.
-                        if self.status<1:
+                        sentence_status=1
+                        if self.status<1: #A lower status cannot overwrite a higher status, we thus only update the status if it is lower than 1.
                             self.status=1 #If yes, the status is updated to 1
                             self.result="/!\\ A level 1 alert has been raised /!\\"
                             self.crit_sents.append(sentence) #We save the sentence as critical
-                            sentence_status=1
                             break #We do not need to check whether the sentence contains other words from the dictionnary as we will not save it more than once.
-                #----------------------------Second layer of analysis-----------------------------------------
-                if sentence_status==1:
-                    try:
-                        subj=TextAnalysis.IdentifySubject(sentence_copy) #The main subject of the sentence
-                        root=TextAnalysis.IdentifyRoot(sentence_copy) #The root of the sentence
-                        if subj[0] in wordDic or TextAnalysis.GetLemma(subj[0]) in wordDic:
-                            if self.status<2:
-                                self.status=2 
-                                self.result="/!\\ A level 2 alert has been raised /!\\"
-                            sentence_status=2
-                        if root[0] in wordDic or TextAnalysis.GetLemma(root[0]) in wordDic:
-                            if self.status<2:
-                                self.status=2 
-                                self.result="/!\\ A level 2 alert has been raised /!\\"
-                            sentence_status=2
-                    except:
-                        pass
-                #----------------------------Third layer of analysis-----------------------------------------
-                if sentence_status==2:
+                if(sentence_status>=1): #We now proceed to further/deeper analysis
                     for example_sentence in sentDic:
                         score=TextAnalysis.CompareSimilarity(sentence_copy, example_sentence) #We use the Spacy similarity feature to go more in depth into the analysis
-                        if(score >= 0.94):
-                                self.status=3
-                                self.result="/!\\ A level 3 alert has been raised /!\\"
-                                sentence_status=3
+                        if(score >= 0.9 and score < 0.93):
+                            sentence_status=2
+                            if self.status<2: 
+                                self.status=2
+                                self.result="/!\\ A level 2 alert has been raised /!\\"
+                        elif(score >=0.93):
+                            sentence_status=3
+                            self.status=3
+                            self.result="/!\\ A level 3 alert has been raised /!\\"
+                            #Although the status will never get any higher, we do not break out of the loop here as we may still find other critical sentences that we want to save.
 
 
     def Save(self):
