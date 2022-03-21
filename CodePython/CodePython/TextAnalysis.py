@@ -129,12 +129,11 @@ def DetectSentences(text, keywords):
     """
     doc=nlp(text)
     keysentences=[]
-    count=0
 
     for sentence in list(doc.sents):
+        sentence_copy=str(sentence).lower()
         for keyword in keywords:
-            if keyword in str(sentence) or keyword.capitalize() in str(sentence) or keyword.lower():
-                count+=1
+            if keyword.lower() in sentence_copy:
                 keysentences.append(sentence)
                 break #Pour ne pas prendre plusieurs fois la même phrase si elle contient plusieurs des mots présents dans la liste
     return keysentences
