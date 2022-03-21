@@ -15,7 +15,7 @@ from nltk import word_tokenize, pos_tag
 nlp = spacy.load('en_core_web_md')
 import warnings
 warnings.filterwarnings("ignore", message="The localize method is no longer necessary, as this time zone supports the fold attribute")
-
+#https://spacy.io/usage/linguistic-features | https://spacy.io/api/token#attributes
 
 def extract_example(number): #Don't forget to update the number
     """
@@ -105,8 +105,8 @@ def IdentifySubject(sentence):
     """
     doc = nlp(sentence)
     for token in doc:
-        if token.dep_ == 'nsubj':
-            return token.text
+        if token.dep_ == "nsubj" or token.dep_== "nsubjpass":
+            return token.text, token.dep_
 
 #For testing purposes
 def TestIdentifySubject(text):
@@ -275,12 +275,6 @@ def TestLexicalField():
     LexicalField(keyword)
     print(keywords)
 
-#To do the first time you run the code:
-#import nltk
-#nltk.download('punkt')
-#nltk.download('averaged_perceptron_tagger')
-#nltk.download('universal_tagset')
-
 def CompareSimilarity(text1, text2):
     """
     Compares the similarity between 2 texts and returns a similarity coefficient between 0 to 1 (0 being no similarity and 1 being identical)
@@ -296,6 +290,10 @@ def CompareSimilarity(text1, text2):
     doc2 = nlp(text2)
     sim=doc1.similarity(doc2)
     return sim
+
+def GetLemma(word):
+    doc=nlp(word)
+    return doc[0].lemma_
 
 def DetectTenses(sentence):
     """
@@ -365,6 +363,22 @@ def DetectTenses(sentence):
                     tenses.append((str(words[i][0]) + ' ' + str(words[i+1][0]), 'future'))
     return tenses
 
+def IdentifyRoot(sentence):
+    root=""
+    doc=nlp(sentence)
+    for token in doc:
+        if token.dep_=="ROOT":
+            return token.text, token.dep_
+
+
+
+def detailSpacy(sentence):
+    doc=nlp(sentence)
+    for token in doc:
+        print(token.text, token.lemma_, token.pos_, token.tag_, token.dep_,token.shape_, token.is_alpha, token.is_stop)
+
+
+
 def TestDetectTenses():
     sentence = "Cisco will just have been making it in an advisory published this week."
     tenses = DetectTenses(sentence)
@@ -378,8 +392,9 @@ def main_function():
     #TestIdentifierSujet()
     #TestIdentifyDateInText()
     #TestLexicalField()
-    TestDetectTenses()
+    #TestDetectTenses()
     #extract_example()
+    detailSpacy("hackers")
 
 if __name__=="__main__":
     main_function()

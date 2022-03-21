@@ -41,3 +41,4 @@ The CompName hack is the commonly used term to refer to the supply chain breach 
 CompName confirmed they had been infected with the malware when they saw the infection in customer systems.
 CompName also confirmed that it found signs of the malware in its systems.
 CompName, a prominent cybersecurity firm, announced they were a victim to a nation-state attack.
+successful exploitation of the three vulnerabilities could result in the execution of malicious code to achieve a complete site takeover.        

@@ -258,6 +258,60 @@ class TextAnalyzer(object):
                             self.result="/!\\ A level 3 alert has been raised /!\\"
                             #Although the status will never get any higher, we do not break out of the loop here as we may still find other critical sentences that we want to save.
 
+    def RunAnalysis(self, wordDic=[], sentDic=[]):
+        if wordDic==[]: 
+            wordDic=TextAnalyzer.wordDic
+        if sentDic==[]:
+            sentDic=TextAnalyzer.LoadSentenceDic("analyzer_tools/Sentence_dictionnary.txt", self.company)
+        self.date=datetime.now()
+        self.status=0 #Default status
+        self.result="Nothing to report." #Default result
+        sentence_status=0
+        compsentences=TextAnalysis.DetectSentences(self.text, [self.company]) #First, we start by extracting the sentences where the company is mentionned.
+        for sentence in compsentences:
+            sentence_copy=str(sentence).lower() #To simplify the comparison process, all compared sentences will be in lowercase.
+            date_too_old=False #We then check whether the sentence mentions an event that has occured more than a week prior to the article/tweet date.
+            DetectedDates=TextAnalysis.IdentifyDateSentence(sentence_copy, datetime.combine(self.text_date, datetime.min.time()))
+            for date in DetectedDates:
+                if date < self.text_date-timedelta(days=7):
+                    date_too_old=True
+            if not date_too_old:
+                #----------------------------First layer of analysis-----------------------------------------
+                for word in wordDic: #We now browse our word Dictionnary
+                    if word in sentence_copy: #To check if the sentence also countains one of these words.
+                        if self.status<1:
+                            self.status=1 #If yes, the status is updated to 1
+                            self.result="/!\\ A level 1 alert has been raised /!\\"
+                            self.crit_sents.append(sentence) #We save the sentence as critical
+                            sentence_status=1
+                            break #We do not need to check whether the sentence contains other words from the dictionnary as we will not save it more than once.
+                #----------------------------Second layer of analysis-----------------------------------------
+                if sentence_status==1:
+                    try:
+                        subj=TextAnalysis.IdentifySubject(sentence_copy) #The main subject of the sentence
+                        root=TextAnalysis.IdentifyRoot(sentence_copy) #The root of the sentence
+                        if subj[0] in wordDic or TextAnalysis.GetLemma(subj[0]) in wordDic:
+                            if self.status<2:
+                                self.status=2 
+                                self.result="/!\\ A level 2 alert has been raised /!\\"
+                            sentence_status=2
+                        if root[0] in wordDic or TextAnalysis.GetLemma(root[0]) in wordDic:
+                            if self.status<2:
+                                self.status=2 
+                                self.result="/!\\ A level 2 alert has been raised /!\\"
+                            sentence_status=2
+                    except:
+                        pass
+                #----------------------------Third layer of analysis-----------------------------------------
+                if sentence_status==2:
+                    for example_sentence in sentDic:
+                        score=TextAnalysis.CompareSimilarity(sentence_copy, example_sentence) #We use the Spacy similarity feature to go more in depth into the analysis
+                        if(score >= 0.94):
+                                self.status=3
+                                self.result="/!\\ A level 3 alert has been raised /!\\"
+                                sentence_status=3
+
+
     def Save(self):
         path="analysis_results/{}".format(date.today())
         if not os.path.exists(path):
