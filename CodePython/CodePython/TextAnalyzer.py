@@ -247,14 +247,15 @@ class TextAnalyzer(object):
 
     
     def Save(self):
-        path="analysis_results/{}".format(date.today())
-        if not os.path.exists(path):
-            os.mkdir(path)
-        path+="/"+self.company
-        if not os.path.exists(path):
-            os.mkdir(path)
-        with open (path+"/{}".format(str(self.Id)+"-"+str(self.status)+".txt"), "w", encoding="utf-8") as file: 
-            file.write(self.__str__())
+        if self.status>0:
+            path="analysis_results/{}".format(date.today())
+            if not os.path.exists(path):
+                os.mkdir(path)
+            path+="/"+self.company
+            if not os.path.exists(path):
+                os.mkdir(path)
+            with open (path+"/{}".format(str(self.Id)+"-"+str(self.status)+".txt"), "w", encoding="utf-8") as file: 
+                file.write(self.__str__())
 
     if __name__=="__main__":
         #Test()

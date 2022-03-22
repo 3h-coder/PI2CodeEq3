@@ -2201,10 +2201,11 @@ def Menu():
                 RunProgram2(companies, date)
         elif selection==2:
             filepath=filedialog.askopenfilename(initialdir="analysis_results")
-            #os.system(filepath)
-            with open(filepath, "r", encoding="utf-8") as file:
-                print(file.read())
-                
+            try:
+                with open(filepath, "r", encoding="utf-8") as file:
+                    print(file.read())
+            except:
+                os.system(filepath)
 
 def main():
     #RunProgram2(["solarwinds"], "10 Dec 2020")
