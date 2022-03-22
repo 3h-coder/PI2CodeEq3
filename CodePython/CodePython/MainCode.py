@@ -2200,12 +2200,15 @@ def Menu():
                 print("Running the program now...")
                 RunProgram2(companies, date)
         elif selection==2:
-            filepath=filedialog.askopenfilename(initialdir="analysis_results")
-            try:
-                with open(filepath, "r", encoding="utf-8") as file:
-                    print(file.read())
-            except:
-                os.system(filepath)
+            if not os.path.exists("analysis_results"):
+                print("It seems like you do not have any alerts to browse through.")
+            else:
+                filepath=filedialog.askopenfilename(initialdir="analysis_results")
+                try:
+                    with open(filepath, "r", encoding="utf-8") as file:
+                        print(file.read())
+                except:
+                    os.system(filepath)
 
 def main():
     #RunProgram2(["solarwinds"], "10 Dec 2020")

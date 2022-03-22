@@ -247,7 +247,10 @@ class TextAnalyzer(object):
 
     
     def Save(self):
-        if self.status>0:
+        """
+        Saves the TextAnalyzer object into a .txt file
+        """
+        if self.status>0: #We only save alerts
             path="analysis_results/{}".format(date.today())
             if not os.path.exists(path):
                 os.mkdir(path)
