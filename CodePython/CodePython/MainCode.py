@@ -1,18 +1,20 @@
 #Do not forget to install from the requirements.txt file before running the program.
 
 from bs4.element import SoupStrainer
-import requests, webbrowser
+import requests
 from bs4 import BeautifulSoup
-import spacy 
 import tweepy
 import datetime
-import pandas as pd
 import dateparser
 import warnings
 from TextAnalyzer import TextAnalyzer
 import TextAnalysis
 import string
 warnings.filterwarnings("ignore", message="The localize method is no longer necessary, as this time zone supports the fold attribute")
+import tkinter
+from tkinter import filedialog
+import os
+tkinter.Tk().withdraw()
 
 #-----------------------------------------------------------------------------Websites-----------------------------------------------------------------------------------------                
 #The goal here is to scrape data from articles. Each website has a 2 scraping functions associated. The first one limits the search to an arbitrary number of pages, while the second will search for 
@@ -2121,9 +2123,92 @@ def RunProgram2(companies, date):
     for company in companies:
         WebScraping2(company, date)
 
+
+def Menu():
+    """
+    User friendly menu to use the program or browse through saved aleerts.
+    """
+    while True:
+        print("----------------------------------------Knock-Knock Alert Tool----------------------------------------")
+        print("                                        What do you wish to do?")
+        print("1: Run the program")
+        print("2: Browse through the alerts")
+        print("Enter either 1 or 2: ")
+        while True:
+            try:
+                selection=int(input())
+                while selection <1 or selection >2:
+                    print("You must enter either 1 or 2: ")
+                    try:
+                        selection=int(input())
+                    except:
+                        selection=-1
+            except:
+                print("You must enter either 1 or 2: ")
+                continue
+            else:
+                break
+        if selection==1:
+            companies=[]
+            while True:
+                print("Please enter a company name you would like to surveil: ")
+                company=input()
+                companies.append(company)
+                print("would you like to add another one? (y/n): ")
+                answer=input()
+                while answer != "y" and answer!="n" and answer!="yes" and answer!="no":
+                    print("You must enter either y or n: ")
+                    answer=input()
+                if answer=="n" or answer=="no":
+                    break
+            print("Select a search option:\n1: Search by page limit\n2: Search by date\nEnter either 1 or 2:")
+            while True:
+                try:
+                    selection=int(input())
+                    while selection <1 or selection >2:
+                        print("You must enter either 1 or 2: ")
+                        try:
+                            selection=int(input())
+                        except:
+                            selection=-1
+                except:
+                    print("You must enter either 1 or 2: ")
+                    continue
+                else:
+                    break
+            if selection==1:
+                print("Enter a page limit (must be between 1 and 500): ")
+                while True:
+                    try:
+                        page_limit=int(input())
+                        while page_limit<1 or page_limit>500:
+                            print("You must enter an integer between 1 and 500: ")
+                            try:
+                                page_limit=int(input())
+                            except:
+                                page_limit=-1
+                    except:
+                        print("You must enter an integer between 1 and 500: ")
+                        continue
+                    else:
+                        break
+                print("Running the program now...")
+                RunProgram(companies, page_limit)
+            if selection==2:
+                print("Enter a date until which you want to search information: ")
+                date=input()
+                print("Running the program now...")
+                RunProgram2(companies, date)
+        elif selection==2:
+            filepath=filedialog.askopenfilename(initialdir="analysis_results")
+            #os.system(filepath)
+            with open(filepath, "r", encoding="utf-8") as file:
+                print(file.read())
+                
+
 def main():
-    RunProgram2(["solarwinds"], "10 Dec 2020")
-    #textAnalyzerTest()
+    #RunProgram2(["solarwinds"], "10 Dec 2020")
+    Menu()
 
 main()
 

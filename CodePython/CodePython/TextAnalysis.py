@@ -15,7 +15,7 @@ from nltk import word_tokenize, pos_tag
 nlp = spacy.load('en_core_web_md')
 import warnings
 warnings.filterwarnings("ignore", message="The localize method is no longer necessary, as this time zone supports the fold attribute")
-#https://spacy.io/usage/linguistic-features | https://spacy.io/api/token#attributes
+#https://spacy.io/usage/linguistic-features | https://spacy.io/api/token#attributes | https://spacy.io/api/token
 
 def extract_example(number): #Don't forget to update the number
     """
@@ -396,6 +396,22 @@ def TestDetectTenses():
     print('\n------------------------------Detected verbs------------------------------')
     print(tenses)
 
+def SyntacticTests():
+    sentence="SolarWinds disclosed on Sunday that a nation-state hacker group breached its network and inserted malware in updates for Orion, a software application for IT inventory management and monitoring."
+    doc=nlp(sentence)
+    ancestors_list=[]
+    conjuncts_list=[]
+    children_list=[]
+    for a in doc[10].ancestors:
+        ancestors_list.append(a)
+    print(ancestors_list)
+    for c in doc[10].conjuncts:
+        conjuncts_list.append(c)
+    print(conjuncts_list)
+    for child in doc[10].children:
+        children_list.append(child)
+    print(children_list)
+
 def main_function():
     #print(example_bloc)
     #TestDetectSentences(example_bloc)
@@ -404,8 +420,9 @@ def main_function():
     #TestIdentifyDateInText()
     #TestLexicalField()
     #TestDetectTenses()
-    extract_example(10)
-    #detailSpacy("the microsoft hack exploited the company's software build environment.")
+    #extract_example(10)
+    detailSpacy("SolarWinds disclosed on Sunday that a nation-state hacker group breached its network and inserted malware in updates for Orion, a software application for IT inventory management and monitoring.")
+    SyntacticTests()
 
 if __name__=="__main__":
     main_function()
