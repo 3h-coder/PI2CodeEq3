@@ -14,6 +14,7 @@ warnings.filterwarnings("ignore", message="The localize method is no longer nece
 import tkinter
 from tkinter import filedialog
 import os
+import time
 tkinter.Tk().withdraw()
 
 #-----------------------------------------------------------------------------Websites-----------------------------------------------------------------------------------------                
@@ -2123,10 +2124,59 @@ def RunProgram2(companies, date):
     for company in companies:
         WebScraping2(company, date)
 
+def DailyRun(companies, page_limit=2):
+    """
+    Searches information over a few certified sources on the internet to raise an alert whenever a company is in a state of danger or attack.
+    Meant to be used as a background application, will scrape information every 24 hours.
+
+    Parameters
+    -------------
+    companies: list[str]
+        The company names we are trying to scrape information about.
+
+    page_limit (optional): int
+        The maximum number of pages the program will browse, the default value is 2.
+    """
+    while True:
+        RunProgram(comapnies, page_limit)
+        time.sleep(86400) #24 hours sleep
+
+def DailyRun2(companies, date):
+    """
+    Searches information over a few certified sources on the internet to raise an alert whenever a company is in a state of danger or attack.
+    Meant to be used as a background application, will scrape information every 24 hours.
+
+    Parameters
+    -------------
+    companies: list[str]
+        The company names we are trying to scrape information about.
+
+    date: date
+        The date until which we scrape information. We do not search any information that is anterior to it.
+    """
+    while True:
+        RunProgram2(companies, date)
+        time.sleep(86400) 
+
+def DailyRun2bis(companies):
+    """
+    Searches information over a few certified sources on the internet to raise an alert whenever a company is in a state of danger or attack.
+    Meant to be used as a background application, will scrape information every 24 hours and search for information that is less than 24 hours old.
+
+    Parameters
+    -------------
+    companies: list[str]
+        The company names we are trying to scrape information about.
+    """
+    yesterday=datetime.datetime.today()-datetime.timedelta(days=1)
+    yesterday=yesterday.date()
+    while True:
+        RunProgram2(companies, yesterday)
+        time.sleep(86400)
 
 def Menu():
     """
-    User friendly menu to use the program or browse through saved aleerts.
+    User friendly menu to use the program or browse through saved alerts.
     """
     while True:
         print("----------------------------------------Knock-Knock Alert Tool----------------------------------------")
@@ -2212,6 +2262,7 @@ def Menu():
 
 def main():
     #RunProgram2(["solarwinds"], "10 Dec 2020")
+    #DailyRun2bis(["solarwinds"])
     Menu()
 
 main()
