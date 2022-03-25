@@ -1143,7 +1143,8 @@ def ScrapeCSO(company, page_limit=2): #Necessary URL rebuilding
     mainpage=requests.get(URL)
     if(mainpage.ok): 
         soup=BeautifulSoup(mainpage.text, "lxml") 
-        anchors=soup.find_all('a')
+        main_div=soup.find('div', {"class":"main-col"})
+        anchors=main_div.find_all('a')
         link_found=""
         for a in anchors:
             anchor_link=a.get('href')
@@ -1172,7 +1173,8 @@ def ScrapeCSO(company, page_limit=2): #Necessary URL rebuilding
             nextpage=requests.get(nextpageURL)
             if nextpage.ok:
                 soup=BeautifulSoup(nextpage.text, "lxml")
-                anchors=soup.find_all('a')
+                main_div=soup.find('div', {"class":"main-col"})
+                anchors=main_div.find_all('a')
                 for a in anchors:
                     anchor_link=a.get('href')
                     if(anchor_link != None and a.get('href')!=link_found):
