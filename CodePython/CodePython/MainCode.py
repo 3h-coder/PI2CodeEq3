@@ -422,7 +422,6 @@ def ScrapeZDnet(company, page_limit=2): #URL rebuilding necessary  --> stringObj
             if next_a!=None and (next_a['href'].startswith("https://")):
                 nextpageURL=next_a['href']
             if(nextpageURL!=""):
-                print(nextpageURL)
                 page_counter=page_counter+1
                 nextpage=requests.get(nextpageURL)
                 if nextpage.ok:
@@ -592,21 +591,24 @@ def ScrapeTechRP(company, page_limit=2):
             if(a.get('href') != None and a.get('href')!=link_found and not a.get('href').startswith("https://www.techrepublic.com/resource-library")): 
                 if (company in a.get('href')) or (company in a.text) or (company.lower() in a.get('href')) or (company.lower() in a.text) \
                 or (company.capitalize() in a.get('href')) or (company.capitalize() in a.text):
-                    link_found=a.get('href')
-                    newpage=requests.get(a.get('href'))
-                    newsoup=BeautifulSoup(newpage.text, "lxml")
-                    wrapper=a.find_parent('article')
-                    span=wrapper.find('span',{"class":"date-published"})
-                    article_date=span.find('time').text 
-                    article_date=dateparser.parse(article_date).date()
-                    article=""
-                    for paragraph in newsoup.find_all('p'):
-                        article+="\n"+paragraph.text
-                    ta=TextAnalyzer(company, article, link_found, article_date) 
-                    ta.RunAnalysis() 
-                    found=True
-                    print("Information found on "+a.get('href')+"   "+ta.result)
-                    ta.Save()
+                    try:
+                        link_found=a.get('href')
+                        newpage=requests.get(a.get('href'))
+                        newsoup=BeautifulSoup(newpage.text, "lxml")
+                        wrapper=a.find_parent('article')
+                        span=wrapper.find('span',{"class":"date-published"})
+                        article_date=span.find('time').text 
+                        article_date=dateparser.parse(article_date).date()
+                        article=""
+                        for paragraph in newsoup.find_all('p'):
+                            article+="\n"+paragraph.text
+                        ta=TextAnalyzer(company, article, link_found, article_date) 
+                        ta.RunAnalysis() 
+                        found=True
+                        print("Information found on "+a.get('href')+"   "+ta.result)
+                        ta.Save()
+                    except:
+                        pass
         while(page_counter<page_limit): 
             nextpageURL=""
             next_a=soup.find('a', {"class":"next page-numbers"})
@@ -622,21 +624,24 @@ def ScrapeTechRP(company, page_limit=2):
                         if(a.get('href') != None and a.get('href')!=link_found and not a.get('href').startswith("https://www.techrepublic.com/resource-library")):
                             if (company in a.get('href')) or (company in a.text) or (company.lower() in a.get('href')) or (company.lower() in a.text) \
                             or (company.capitalize() in a.get('href')) or (company.capitalize() in a.text):
-                                link_found=a.get('href')
-                                newpage=requests.get(a.get('href'))
-                                newsoup=BeautifulSoup(newpage.text, "lxml")
-                                wrapper=a.find_parent('article')
-                                span=wrapper.find('span',{"class":"date-published"})
-                                article_date=span.find('time').text 
-                                article_date=dateparser.parse(article_date).date()
-                                article=""
-                                for paragraph in newsoup.find_all('p'):
-                                    article+="\n"+paragraph.text
-                                ta=TextAnalyzer(company, article, link_found, article_date) 
-                                ta.RunAnalysis() 
-                                found=True
-                                print("Information found on "+a.get('href')+"   "+ta.result)
-                                ta.Save()
+                                try:
+                                    link_found=a.get('href')
+                                    newpage=requests.get(a.get('href'))
+                                    newsoup=BeautifulSoup(newpage.text, "lxml")
+                                    wrapper=a.find_parent('article')
+                                    span=wrapper.find('span',{"class":"date-published"})
+                                    article_date=span.find('time').text 
+                                    article_date=dateparser.parse(article_date).date()
+                                    article=""
+                                    for paragraph in newsoup.find_all('p'):
+                                        article+="\n"+paragraph.text
+                                    ta=TextAnalyzer(company, article, link_found, article_date) 
+                                    ta.RunAnalysis() 
+                                    found=True
+                                    print("Information found on "+a.get('href')+"   "+ta.result)
+                                    ta.Save()
+                                except:
+                                    pass
                 else: 
                     print("Request Failure: "+nextpageURL+" returned: "+str(nextpage))
                     break
@@ -1114,10 +1119,6 @@ def ScrapeGraham2(company, date):
             print("Could not scrape any information about "+ company+" on "+URL)
     else: 
         print("Request Failure: "+URL+" returned: "+str(mainpage))
-
-def ScrapeITsecguru(company): #Infinite scroll, not done yet
-    URL="https://www.itsecurityguru.org/news/"
-    print("Nothing for now.")
 
 def ScrapeCSO(company, page_limit=2): #Necessary URL rebuilding 
     """
@@ -2138,7 +2139,7 @@ def DailyRun(companies, page_limit=2):
         The maximum number of pages the program will browse, the default value is 2.
     """
     while True:
-        RunProgram(comapnies, page_limit)
+        RunProgram(companies, page_limit)
         time.sleep(86400) #24 hours sleep
 
 def DailyRun2(companies, date):
@@ -2227,7 +2228,7 @@ def Menu():
                 else:
                     break
             if selection==1:
-                print("Enter a page limit (must be between 1 and 500): ")
+                print("Enter a page limit (must be between 1 and 500): ") 
                 while True:
                     try:
                         page_limit=int(input())
